@@ -1,3 +1,1 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7a6ec46df9bb361a375f24dd573be18a60b78868a25201b8d5f796de9d3a4e85
-size 141
+GEOGCS["GCS_GRS_1980",DATUM["D_GRS_1980",SPHEROID["GRS_1980",6378137,298.2572221]],PRIMEM["Greenwich",0],UNIT["Degree",0.0174532925199433]]
