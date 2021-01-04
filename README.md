@@ -3,9 +3,13 @@ RTP Model Update for the Chattanooga TPO 2023 RTP
 
 ## Installation
 
-1. Clone the repository to a directory (e.g., C:\apps)
+1. Clone the repository to a local directory (e.g., C:\apps)
 ```
 >> git clone https://github.com/wsp-sag/client_chattanooga_rtp_update.git
+```
+  * This project relies on Git LFS to store and track large and / or binary files. To install Git LFS, run the following command inside the local repository.
+```
+>> git lfs install
 ```
 2. Install [Anaconda 64bit Python 3](https://www.anaconda.com/distribution/)
 
