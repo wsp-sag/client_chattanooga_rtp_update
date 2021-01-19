@@ -1,0 +1,1 @@
+https://data.census.gov/cedsci/table?q=vehicles&g=0500000US13047.140000,13083.140000,13295.140000,47065.140000&tid=ACSDT5Y2019.B08201&moe=false&hidePreview=true
