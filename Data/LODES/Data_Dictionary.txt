@@ -1,0 +1,20 @@
+2018 LODES Workplace Area Characteristics (WAC) Number of Jobs table by Chattanooga-Hamilton County model employment categories.
+
+w_geocode: Census block group FIPS code
+state: state name 
+county: name of the county
+tract:  Six digit census tract FIPS
+block_group: Four digit block group FIPS
+empfoo_p: food employment (NAICS: 72)
+empgov_p: government employment (NAICS: 92)
+empind_p: industrial employment (NAICS: 22,31-33, 42, 48-49)
+empmed_p: medical employment (NAICS: 62)
+empofc_p: office employment (NAICS: 51-56)
+empret_p: retail employment (NAICS: 44-45)
+empsvc_p: service employment (NAICS: 71, 81)
+empoth_p: other employment (NAICS: 11, 21, 23)
+empedu_p: educational employment (NAICS: 61)
+empTotal: Total employment (sum of all above nine categories)
+emptrn_p: transportation employment (NAICS: 42, 48-49)*
+
+*Note that transporation employment is not an exclusive class, but is part of industriact employment.
