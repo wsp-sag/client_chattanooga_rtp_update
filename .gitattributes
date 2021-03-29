@@ -1,11 +1,27 @@
 *.zip filter=lfs diff=lfs merge=lfs -text
+
+## ESRI Shapefiles
 *.dbf filter=lfs diff=lfs merge=lfs -text
-*.key filter=lfs diff=lfs merge=lfs -text
 *.shp filter=lfs diff=lfs merge=lfs -text
 *.shx filter=lfs diff=lfs merge=lfs -text
-*.dat filter=lfs diff=lfs merge=lfs -text
+*.sbx filter=lfs diff=lfs merge=lfs -text
+*.sbn filter=lfs diff=lfs merge=lfs -text
+
+## TransCAD Binary Files
+*.bin filter=lfs diff=lfs merge=lfs -text
+*.BX filter=lfs diff=lfs merge=lfs -text
 *.dbd filter=lfs diff=lfs merge=lfs -text
+*.dln filter=lfs diff=lfs merge=lfs -text
+*.kln filter=lfs diff=lfs merge=lfs -text
+*.pts filter=lfs diff=lfs merge=lfs -text
+*.sty filter=lfs diff=lfs merge=lfs -text
+*.upx filter=lfs diff=lfs merge=lfs -text
+*.key filter=lfs diff=lfs merge=lfs -text
+
 Data/LODES/tn_wac_S000_JT00_2014.csv filter=lfs diff=lfs merge=lfs -text
 Data/LODES/tn_wac_S000_JT00_2018.csv filter=lfs diff=lfs merge=lfs -text
 Data/LODES/ga_wac_S000_JT00_2014.csv filter=lfs diff=lfs merge=lfs -text
 Data/LODES/ga_wac_S000_JT00_2018.csv filter=lfs diff=lfs merge=lfs -text
+
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.pdb filter=lfs diff=lfs merge=lfs -text

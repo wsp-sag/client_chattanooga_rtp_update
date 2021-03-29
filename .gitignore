@@ -6,3 +6,19 @@ data/Network_Attribute_*
 
 data/gtfs/route_shapes_*
 data/LODES/*_diff_*
+
+
+**/*/5_DaySim/Buffer/output_shortest_path.txt
+**/*/5_DaySim/Buffer/output_shortest_path.txt.bin
+**/*/5_DaySim/Buffer/output_shortest_path.txt.index
+
+## TransCAD Logs
+log.xml
+log.xsl
+report.xml
+report.xsl
+
+## Scenario Logs
+Log_*.txt
+
+**/2_Scenarios/*/Outputs

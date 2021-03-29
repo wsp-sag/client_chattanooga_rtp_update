@@ -1,0 +1,37 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ##This is a temporary main control file with lots of TODOs to move 
+> ##this whole effort to a package with project specific config and run files
+> 
+> #Rprof()
+> 
+> #-----------------------
+> #Load packages
+> #-----------------------
+> ##TODO consider local R installation, with predownloaded packages in that library
+> library(foreign)
+> library(reshape)
+> library(XLConnect)
+Loading required package: XLConnectJars
+Error : .onLoad failed in loadNamespace() for 'rJava', details:
+  call: fun(libname, pkgname)
+  error: No CurrentVersion entry in Software/JavaSoft registry! Try re-installing Java and make sure R and Java have matching architectures.
+Error: package 'XLConnectJars' could not be loaded
+Execution halted
