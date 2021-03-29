@@ -2,3 +2,7 @@
 
 **/comparisons/*.jpg
 data/Network_Attribute_*
+
+
+data/gtfs/route_shapes_*
+data/LODES/*_diff_*
