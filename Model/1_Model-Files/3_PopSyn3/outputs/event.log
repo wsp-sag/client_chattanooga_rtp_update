@@ -1,0 +1,96 @@
+01-Apr-2021 16:58:56:070, INFO, JPPF client starting with sslEnabled = false
+01-Apr-2021 16:58:56:070, INFO, start of runPopulationGenerator: parsing xml file
+01-Apr-2021 16:58:56:111, INFO, connection [driver1] created
+01-Apr-2021 16:58:56:493, INFO, running 1 processing thread
+01-Apr-2021 16:58:56:493, INFO, Using default thread manager
+01-Apr-2021 16:58:56:834, INFO, creating the controls arrays.
+01-Apr-2021 16:58:56:917, INFO, balancing household weights over initial PUMA controls ...
+01-Apr-2021 16:58:56:917, INFO, getting incidence table data for pums ...
+01-Apr-2021 16:58:56:947, INFO, getting MAZ Level Control: Total GQ Population count incidence table.
+01-Apr-2021 16:58:57:042, INFO, getting Regional META Control: Total Regional GQ Population count incidence table.
+01-Apr-2021 16:58:57:137, INFO, combining final incidence tables.
+01-Apr-2021 16:58:57:137, INFO, balancing incidence table 0 has 2957 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+01-Apr-2021 16:58:57:137, INFO, balancing incidence table 1 has 2957 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+01-Apr-2021 16:58:57:137, INFO, balancing incidence table total households control index = 0.
+01-Apr-2021 16:58:57:167, INFO, getting MAZ Level Control: Total GQ Population count incidence table.
+01-Apr-2021 16:58:57:257, INFO, getting Regional META Control: Total Regional GQ Population count incidence table.
+01-Apr-2021 16:58:57:357, INFO, combining final incidence tables.
+01-Apr-2021 16:58:57:357, INFO, balancing incidence table 0 has 3691 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+01-Apr-2021 16:58:57:357, INFO, balancing incidence table 1 has 3691 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+01-Apr-2021 16:58:57:357, INFO, balancing incidence table total households control index = 0.
+01-Apr-2021 16:58:57:377, INFO, getting MAZ Level Control: Total GQ Population count incidence table.
+01-Apr-2021 16:58:57:483, INFO, getting Regional META Control: Total Regional GQ Population count incidence table.
+01-Apr-2021 16:58:57:554, INFO, combining final incidence tables.
+01-Apr-2021 16:58:57:554, INFO, balancing incidence table 0 has 2832 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+01-Apr-2021 16:58:57:564, INFO, balancing incidence table 1 has 2832 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+01-Apr-2021 16:58:57:564, INFO, balancing incidence table total households control index = 0.
+01-Apr-2021 16:58:57:564, INFO, balancing household weights over initial PUMA controls ...
+01-Apr-2021 16:58:57:564, INFO,  Summary Report for Iteration 2, Delta=8.488382581655371E-12
+01-Apr-2021 16:58:57:564, INFO,  Summary Report for Iteration 2, Delta=2.3385184550117806E-10
+01-Apr-2021 16:58:57:564, INFO,    control     target    current       currentWtd         relaxWts            gamma
+01-Apr-2021 16:58:57:564, INFO,  Summary Report for Iteration 3, Delta=0.0
+01-Apr-2021 16:58:57:564, INFO,    control     target    current       currentWtd         relaxWts            gamma
+01-Apr-2021 16:58:57:564, INFO,          1       1539      1539.000000     1.539000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:564, INFO,    control     target    current       currentWtd         relaxWts            gamma
+01-Apr-2021 16:58:57:574, INFO, Task 1: initial PUMA 10013[ L19US-D9295PD2_pool-2-thread-1_10013 ] completed.
+01-Apr-2021 16:58:57:574, INFO,          1       4397      4396.999998     4.397000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:574, INFO,          1       7779      7778.999972     7.779000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:574, INFO, 
+01-Apr-2021 16:58:57:574, INFO, Task 2: initial PUMA 190047[ L19US-D9295PD2_pool-2-thread-2_190047 ] completed.
+01-Apr-2021 16:58:57:574, INFO, Task 3: initial PUMA 180047[ L19US-D9295PD2_pool-2-thread-3_180047 ] completed.
+01-Apr-2021 16:58:57:574, INFO, Time for initial PUMA balancing for all pumas = 17.00 millisecs.
+01-Apr-2021 16:58:57:574, INFO, calculating new PUMA meta controls ...
+01-Apr-2021 16:58:57:574, INFO, appending new PUMA meta controls to original PUMA controls ...
+01-Apr-2021 16:58:57:574, INFO, balancing household weights over final PUMA controls ...
+01-Apr-2021 16:58:57:593, INFO,  Summary Report for Iteration 2, Delta=9.708117524846032E-14
+01-Apr-2021 16:58:57:593, INFO,    control     target    current       currentWtd         relaxWts            gamma
+01-Apr-2021 16:58:57:593, INFO,          1       1539      1539.000000     1.539000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:593, INFO,          2       1539      1539.000000     1.539000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:593, INFO, 
+01-Apr-2021 16:58:57:593, INFO, 
+01-Apr-2021 16:58:57:593, INFO, 
+01-Apr-2021 16:58:57:593, INFO,  Summary Report for Iteration 2, Delta=6.742130860949075E-13
+01-Apr-2021 16:58:57:593, INFO, Task 1: final PUMA 10013[ L19US-D9295PD2_pool-3-thread-1_10013 ] completed.
+01-Apr-2021 16:58:57:593, INFO,    control     target    current       currentWtd         relaxWts            gamma
+01-Apr-2021 16:58:57:593, INFO,          1       4397      4396.999998     4.397000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:593, INFO,          2       4397      4396.999998     4.397000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:593, INFO, 
+01-Apr-2021 16:58:57:593, INFO, 
+01-Apr-2021 16:58:57:593, INFO, 
+01-Apr-2021 16:58:57:593, INFO, Task 2: final PUMA 190047[ L19US-D9295PD2_pool-3-thread-2_190047 ] completed.
+01-Apr-2021 16:58:57:633, INFO,  Summary Report for Iteration 373, Delta=2.166340427823338E-11
+01-Apr-2021 16:58:57:633, INFO,    control     target    current       currentWtd         relaxWts            gamma
+01-Apr-2021 16:58:57:633, INFO,          1       7779      7778.999972     7.779000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:633, INFO,          2       7779      7778.999972     7.779000e+03     1.000000e+00     1.000000e+00
+01-Apr-2021 16:58:57:633, INFO, 
+01-Apr-2021 16:58:57:633, INFO, 
+01-Apr-2021 16:58:57:633, INFO, 
+01-Apr-2021 16:58:57:633, INFO, Task 3: final PUMA 180047[ L19US-D9295PD2_pool-3-thread-3_180047 ] completed.
+01-Apr-2021 16:58:57:633, INFO, Time for final PUMA balancing for all pumas = 56.60 millisecs.
+01-Apr-2021 16:58:57:633, INFO, finished with PUMA balancing
+01-Apr-2021 16:58:57:633, INFO, Allocating household records to TAZs and MAZs ...
+01-Apr-2021 16:59:02:168, INFO, [client: driver1 - ClassServer] Attempting connection to the class server at localhost:11111
+01-Apr-2021 16:59:18:813, INFO, user.dir = C:\Users\USYS671257\Desktop\PopSyn2019
+01-Apr-2021 16:59:18:813, INFO, java.library.path = runtime\lib
+01-Apr-2021 16:59:18:813, INFO, java.class.path = runtime\config;runtime\common-base.jar;runtime\popsyn3Unsigned.jar;runtime\lib\com.google.ortools.linearsolver.jar;runtime\lib\sqljdbc4.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\collections-generic-4.01.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\colt-1.2.0.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\concurrent-1.3.4.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\groovy-all-1.6.5.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jcommon-1.0.15.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jfreechart-1.0.12.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jmxremote_optional.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jppf-admin.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jppf-client.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jppf-common-node.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jppf-common.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\js.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jung-algorithms-2.0.1.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jung-api-2.0.1.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jung-graph-impl-2.0.1.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\jung-visualization-2.0.1.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\log4j-1.2.15.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\looks-2.2.2.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\miglayout-3.7-swing.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\slf4j-api-1.6.1.jar;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\slf4j-log4j12-1.6.1.jar
+01-Apr-2021 16:59:18:813, INFO, loading jnilinearsolver.dll 
+01-Apr-2021 16:59:18:863, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_0_10013 ]
+01-Apr-2021 16:59:18:943, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_1_190047 ]
+01-Apr-2021 16:59:19:043, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_2_180047 ]
+01-Apr-2021 16:59:19:043, INFO, TAZ[ L19US-D9295PD2_node processing-1_0_10013 ], 1 of 3 completed.
+01-Apr-2021 16:59:19:043, INFO, TAZ[ L19US-D9295PD2_node processing-1_1_190047 ], 2 of 3 completed.
+01-Apr-2021 16:59:19:043, INFO, TAZ[ L19US-D9295PD2_node processing-1_2_180047 ], 3 of 3 completed.
+01-Apr-2021 16:59:19:864, INFO, done allocating TAZs and MAZs.
+01-Apr-2021 16:59:19:964, INFO, query for creating output synthetic households table = SELECT hhIds.*, t1.serialno, t1.np, t1.hincp, t1.ten, t1.bld, t1.nwrkrs_esr, t1.hhincAdj, t1.adjinc, t1.veh, t1.hht, t1.type, t1.npf, t1.hupac, t1.hhchild, t1.GQFLAG, t1.GQTYPE INTO synpop_hh_gq FROM hhIds LEFT JOIN temphh t1 ON hhIds.finalPumsId=t1.hhnum
+01-Apr-2021 16:59:19:964, INFO, Time for creating output synthetic households table = 0.0016666666666666668 minutes.
+01-Apr-2021 16:59:20:044, INFO, query for creating output synthetic persons table = SELECT hhIds.*, t1.sporder, t1.agep, t1.sex, t1.wkhp, t1.esr, t1.schg, t1.employed, t1.wkw, t1.mil, t1.schl, t1.indp02, t1.indp07, t1.occp02, t1.occp10, t1.GQFLAG, t1.GQTYPE INTO synpop_person_gq FROM hhIds LEFT JOIN temppers t1 ON hhIds.finalPumsId=t1.hhnum
+01-Apr-2021 16:59:20:044, INFO, Time for creating output synthetic persons table = 0.0013333333333333333 minutes.
+01-Apr-2021 16:59:20:044, INFO, Time for full model run = 0.40 minutes.
