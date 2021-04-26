@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DaySimBufferingTool>
+  <INPUTS>
+    <FILEPATHS>
+      <ParcelFile>C:\Users\USYS671257\Desktop\Buffer_2019\Input\ParcelFile.dat</ParcelFile>
+      <IntersectionFile>C:\Users\USYS671257\Desktop\Buffer_2019\Input\IntersectionFile.dat</IntersectionFile>
+      <TransitStopsFile>C:\Users\USYS671257\Desktop\Buffer_2019\Input\TransitStopsFile.dat</TransitStopsFile>
+      <OpenSpacesFile>C:\Users\USYS671257\Desktop\Buffer_2019\Input\OpenSpacesFile.dat</OpenSpacesFile>
+      <CircuityFile />
+      <NodeDistanceType>DTALite</NodeDistanceType>
+      <NodeFile>C:\Users\USYS671257\Desktop\Buffer_2019\Input\NodeFile.csv</NodeFile>
+      <NodeDistanceFile>C:\Users\USYS671257\Desktop\Buffer_2019\Input\NodeDistanceFile.txt</NodeDistanceFile>
+      <ParcelNodeFile>C:\Users\USYS671257\Desktop\Buffer_2019\temp\parcelnode.dat</ParcelNodeFile>
+      <OpenSpacesNodeFile>C:\Users\USYS671257\Desktop\Buffer_2019\temp\opennode.dat</OpenSpacesNodeFile>
+    </FILEPATHS>
+    <PARAMETERS>
+      <DistCalcType>Node-to-Node</DistCalcType>
+      <BuffType>Logistic decay</BuffType>
+      <BuffDist1>660</BuffDist1>
+      <BuffDecaySlope1>0.76</BuffDecaySlope1>
+      <BuffExpParam1>-2.5205</BuffExpParam1>
+      <BuffOffset1>2640</BuffOffset1>
+      <BuffDist2>1320</BuffDist2>
+      <BuffDecaySlope2>0.76</BuffDecaySlope2>
+      <BuffExpParam2>-0.4365</BuffExpParam2>
+      <BuffOffset2>2640</BuffOffset2>
+    </PARAMETERS>
+  </INPUTS>
+  <OUTPUTS>
+    <BufferedParcelFile>C:\Users\USYS671257\Desktop\Buffer_2019\Output\Chatt_MZ2019_buffed.dat</BufferedParcelFile>
+    <SaveXMLFile>C:\Users\USYS671257\Desktop\Buffer_2019\config.xml</SaveXMLFile>
+  </OUTPUTS>
+</DaySimBufferingTool>
