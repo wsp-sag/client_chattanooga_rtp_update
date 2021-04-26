@@ -1,0 +1,2 @@
+record_id,from_node_id,to_node_id,distance
+
