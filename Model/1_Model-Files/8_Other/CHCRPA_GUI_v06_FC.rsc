@@ -996,7 +996,7 @@ TotTrk = CreateExpression(mvw.line, "TotTrk" , "Tot_SUT + Tot_MUT", null)
 SetRecordsValues(null, {{"AB_TRKFlow","BA_TRKFlow","Tot_TRKFlow"}, null}, "Formula", {"ABTrk","BATrk","TotTrk"},null)
 
 //Reporting
-if info.modyear = 2014 then do
+if info.modyear = 2019 then do // update 2014 to 2019 --YS
 	{calSUT.type , calSUT.vol , calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
 	RunMacro("CalRep", 0, calSUT)
 
