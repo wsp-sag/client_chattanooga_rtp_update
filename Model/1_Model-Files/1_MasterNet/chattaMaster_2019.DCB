@@ -1,5 +1,5 @@
 Chatt_MasterNet
-650
+654
 "ID",I,1,4,0,4,0,,"","",,"Blank",
 "STATE",C,5,2,0,2,0,,"","",,"Copy","STATE"
 "COUNTYID",I,7,4,0,12,0,,"","",,"Copy","COUNTYID"
@@ -103,3 +103,4 @@ Chatt_MasterNet
 "CMP_B",I,639,4,0,12,0,,"","",,"Blank","CMP_B"
 "FROM_ID",I,643,4,0,12,0,,"","",,"Blank","FROM_ID"
 "TO_ID",I,647,4,0,12,0,,"","",,"Blank","TO_ID"
+"I24_Cal",I,651,4,0,12,0,,"","",,"Blank",
