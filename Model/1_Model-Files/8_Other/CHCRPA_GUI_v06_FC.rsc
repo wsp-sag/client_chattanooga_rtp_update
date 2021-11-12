@@ -848,9 +848,9 @@ shared tazvec, linevec
 	 else FCCLASS
 
    SetDataVector(mvw.line + "|", "FUNCNEW", Nz(FUNCNEW), {{"Sort Order",{{"ID","Ascending"}}}})
-
-	{linevec.ID, linevec.Leng, linevec.Dir, linevec.FC ,linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.Divided, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol} = GetDataVectors(mvw.line + "|",
-	{"ID"      , "Length"    ,"Dir"       , "FUNCNEW",  "Access"       , "AB_LANES"      , "BA_LANES"      , "RAMP"      , "MEDIAN"      , "DIVIDED"      , "TAZID"      ,"TWOTURNLN"      ,"LN_Width"      ,"RS_Width"      ,"SPD_LMT"      , "PSpeed_Adj"      , "AUXLANE"      , "WEAVELANE"      , "MTN_TERRA"       , "AB_BaseVol"      , "BA_BaseVol"}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
+  // Add I24_Cal to ajust capacity on I24--YS 10/29/2021
+	{linevec.ID, linevec.Leng, linevec.Dir, linevec.I24_Cal, linevec.FC ,linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.Divided, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol} = GetDataVectors(mvw.line + "|",
+	{"ID"      , "Length"    ,"Dir"       , "I24_Cal", "FUNCNEW",  "Access"       , "AB_LANES"      , "BA_LANES"      , "RAMP"      , "MEDIAN"      , "DIVIDED"      , "TAZID"      ,"TWOTURNLN"      ,"LN_Width"      ,"RS_Width"      ,"SPD_LMT"      , "PSpeed_Adj"      , "AUXLANE"      , "WEAVELANE"      , "MTN_TERRA"       , "AB_BaseVol"      , "BA_BaseVol"}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
 
 	//RunMacro("IntrsctnDens")
 
@@ -858,8 +858,8 @@ shared tazvec, linevec
 		RunMacro("controls", controlvec)
 	{linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync} = GetDataVectors(mvw.line + "|", {"A_Control","B_Control","A_Priority","B_Priority","A_Synch","B_Synch"} , {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
 
-
-	spdfld = {linevec.Leng, linevec.Dir, linevec.FC, linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol}
+	// Add I24_Cal to ajust capacity on I24--YS 10/29/2021
+	spdfld = {linevec.Leng, linevec.Dir, linevec.I24_Cal, linevec.FC, linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol}
 		RunMacro("spdcap", spdfld)
 		RunMacro("gencost_setup")
 

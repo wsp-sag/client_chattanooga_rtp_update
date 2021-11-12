@@ -102,7 +102,7 @@ Macro "spdcap" (linearr)
      // ------------ PREPROCESS ------------
      // Read in input data field vectors
 
-	{Leng, Dir, FC, Access, AB_Lanes, BA_Lanes, Ramp, Median, TAZID, TurnLane, LnWidth, RsWidth, PSpeed, PSpeedAdj, ACtrl, BCtrl, APrio, BPrio, ASync, BSync, auxlane, weavelane, truckclimb, ab_basevol, ba_basevol} = linearr
+	{Leng, Dir, I24_Cal, FC, Access, AB_Lanes, BA_Lanes, Ramp, Median, TAZID, TurnLane, LnWidth, RsWidth, PSpeed, PSpeedAdj, ACtrl, BCtrl, APrio, BPrio, ASync, BSync, auxlane, weavelane, truckclimb, ab_basevol, ba_basevol} = linearr
 
 	PSpeed = if PSpeedAdj <> null then PSpeedAdj else PSpeed
 
@@ -348,8 +348,14 @@ Macro "spdcap" (linearr)
      ba_f_delay = min(1,(-460 + 745*log(ba_spdratio*ffspeed))/(-460 + 745*log(ffspeed)))
 
      // adjusted peak hour lane capacities
-     ab_pkhrlncap = nz(pkhrlncap) * ab_f_delay
-     ba_pkhrlncap = nz(pkhrlncap) * ba_f_delay
+     // ab_pkhrlncap = nz(pkhrlncap) * ab_f_delay
+     // ba_pkhrlncap = nz(pkhrlncap) * ba_f_delay
+
+     // peak hour capacities  Ajust capacity on I24 --YS
+     ab_pkhrlncap = if (I24_Cal = 1) then 1.3*nz(pkhrlncap)*ab_f_delay else
+                    if (I24_Cal = 2) then 1.6*nz(pkhrlncap)*ab_f_delay else nz(pkhrlncap)*ab_f_delay
+     ba_pkhrlncap = if (I24_Cal = 1) then 1.3*nz(pkhrlncap)*ba_f_delay else
+                    if (I24_Cal = 2) then 1.6*nz(pkhrlncap)*ba_f_delay else nz(pkhrlncap)*ba_f_delay
 
      // peak hour capacities
      ab_pkcap = AB_Lanes * ab_pkhrlncap
