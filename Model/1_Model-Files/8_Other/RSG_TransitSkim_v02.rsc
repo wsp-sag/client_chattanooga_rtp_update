@@ -3,13 +3,13 @@ Transit Skimming
 nagendra.dhakar@rsginc.com
 Orig Date: 10/05/2015
 
-@ST - Updated for Chattanooga 01/29/2016 
+@ST - Updated for Chattanooga 01/29/2016
 @ND - Updated for OP time period 02/02/2016
 */
 
 Macro "TransitSkimming" (Args)
 	shared mvw, skim, indir, outdir //variables passed from GUI.rsc
-	
+
     RunMacro("SetTransitParameters",Args)
     RunMacro("PrepareInputs")
     RunMacro("BuildDriveConnectors")
@@ -24,10 +24,10 @@ EndMacro
 // 04/24/2013 - Incorporated the Transit Model code from the MTA Model
 Macro "SetTransitParameters" (Args)
 	//variables passed from GUI.rsc
-	shared mvw, skim, indir, outdir	
-	
+	shared mvw, skim, indir, outdir
+
 	//UpdateProgressBar("SetTransitParameters",)
-	
+
 	// settings
     shared Periods, Modes, AccessModes, AccessAssgnModes
 	// parameters
@@ -38,7 +38,7 @@ Macro "SetTransitParameters" (Args)
     shared route_stop, route_stop_bin, route_bin
 	shared modetable, modexfertable, MovementTable
     // output files
-	shared mc_network_file, net_file, opskim_file, pkskim_file, OutZData, pnr_time_mat 
+	shared mc_network_file, net_file, opskim_file, pkskim_file, OutZData, pnr_time_mat
     shared OutMarketSegment, stat_file, runtime
 
 	/* Transit Time Periods
@@ -46,11 +46,11 @@ Macro "SetTransitParameters" (Args)
 	OP: 9am - 3pm
 	PM: 3pm - 6pm
 	OP: 6pm - 6am
-	*/		
-		
+	*/
+
 	//  Set paths
     RunMacro("TCB Init")
-	
+
 // ***************************** TEST ********************************************
 	zone_dbd      = mvw.tazfile
 	route_system  = mvw.rtsfile
@@ -68,31 +68,31 @@ Macro "SetTransitParameters" (Args)
     PNR_TerminalTime            = 1                           											// in minutes
     MaxPNR_DriveTime            = 20                           											// in minutes
 // *********************************************************************************
-		
+
     parts = SplitPath(zone_dbd)
     zone_bin            = parts[1] + parts[2] + parts[3] + ".bin"                  // TAZ layer bin file
-                                              
+
     parts = SplitPath(route_system)
     route_stop          = parts[1] + parts[2] + parts[3] + "S.dbd"                  // associated stop layer
     route_stop_bin      = parts[1] + parts[2] + parts[3] + "S.bin"                  // stop layer bin file
     route_bin           = parts[1] + parts[2] + parts[3] + "R.bin"                  // route layer bin file
-                                   				
+
     parts = SplitPath(highway_dbd)
     highway_link_bin    = parts[1] + parts[2] + parts[3] + ".bin"                   // highway link layer bin file
     highway_node_bin    = parts[1] + parts[2] + parts[3] + "_.bin"                  // highway node layer bin file
 
-    //  Output Files  
-    mc_network_file     = outdir.transit + "Network_MC.net"	
+    //  Output Files
+    mc_network_file     = outdir.transit + "Network_MC.net"
 	net_file 					= 	{outdir.transit + "NetworkC_AM.net",
 									 outdir.transit + "NetworkC_PM.net",
-									 outdir.transit + "NetworkC_OP.net"}		
+									 outdir.transit + "NetworkC_OP.net"}
 	pnr_time_mat 				= 	{outdir.transit + "PNR_Time_AM.mtx",
 									 outdir.transit + "PNR_Time_PM.mtx",
 									 outdir.transit + "PNR_Time_OP.mtx"}
 	skim.transit = pnr_time_mat
     OutZData            = outdir.transit + "ZoneDataMC.asc"
     OutMarketSegment    = outdir.transit + "hhauto.dat"
-		
+
 //  ************************************************************************************************************************************
 
 	//  Define Parameters
@@ -122,42 +122,42 @@ Macro "PrepareInputs"
 
 // STEP 1.1: Add required fields in the highway layer (if not already existing)
 	RunMacro("AddFields")
-	
+
 	//find node id field
 	hnodeview = OpenTable("hnodes","FFB",{highway_node_bin,})
 	fields = GetFields(hnodeview, "All")
 	nodeidfield = fields[1][1] // sometime id field in .bin and .dcb are different. so always get the first field as id field
 
 // STEP 1.2: Fill the highway fields with default values
-	
+
     layers = GetDBlayers(highway_dbd)
     nlayer = layers[1]
     llayer = layers[2]
     db_nodelyr = highway_dbd + "|" + nlayer
     db_linklyr = highway_dbd + "|" + llayer
-	
+
 	view_names = GetViewNames()
-	
+
 	for i=1 to view_names.length do
 		CloseView(view_names[i])
 	end
-	
+
 	RunMacro("TCB Init")
-	
+
 	// populate default auto travel time values
 	for iper=1 to Periods.length do
 		Opts = null
 		Opts.Input.[Dataview Set] = {db_linklyr, llayer}
 		Opts.Global.Fields = {"AB_"+Periods[iper]+"Time",
 							  "BA_"+Periods[iper]+"Time"}
-		Opts.Global.Method = "Formula"		
+		Opts.Global.Method = "Formula"
 		Opts.Global.Parameter = {"if (AB_AFFTime=null | AB_AFFTime<0.001) then Length*60/25 else AB_AFFTime",
 								 "if (BA_AFFTime=null | BA_AFFTime<0.001) then Length*60/25 else BA_AFFTime"}
-						 
+
 		ret_value = RunMacro("TCB Run Operation", "Fill Dataview", Opts, &Ret)
 		if !ret_value then goto quit
 	end
-		
+
 	// Fill WalkLink, WalkTime and LinkTTF
     Opts = null
     Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where ID>=1"}         // Fill All links with LinkTTF=1
@@ -174,7 +174,7 @@ Macro "PrepareInputs"
     Opts.Global.Parameter = {"98","[" + llayer + "].Length*60/"+string(WalkSpeed)}
     ret_value = RunMacro("TCB Run Operation", 1, "Fill Dataview", Opts)
     if !ret_value then goto quit
-    
+
     // Cap walktime on long centroid connectors to take care of huge zones in the suburbs
     Opts = null
     Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where DOT_FC=98 & Length>0.5"}    // centroid connectors longer than 0.5 miles
@@ -183,7 +183,7 @@ Macro "PrepareInputs"
     Opts.Global.Parameter = {"0.5*60/"+string(WalkSpeed)}     // walk time no longer than 0.5 mile walk
     ret_value = RunMacro("TCB Run Operation", 1, "Fill Dataview", Opts)
     if !ret_value then goto quit
-		
+
     Opts = null
     Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where DOT_FC<=2 | Ramp=1"}    // freeways, ramps
     Opts.Global.Fields = {"[LinkTTF]"}
@@ -222,7 +222,7 @@ Macro "PrepareInputs"
                                                 "[" + llayer + "].Length*60/"+string(TransitOnlyLinkDefaultSpeed[i]),
                                                 "[" + llayer + "].Length*60/"+string(TransitOnlyLinkDefaultSpeed[i]),
                                                 "[" + llayer + "].Length*60/"+string(TransitOnlyLinkDefaultSpeed[i]),
-												"[" + llayer + "].Length*60/"+string(TransitOnlyLinkDefaultSpeed[i]),  
+												"[" + llayer + "].Length*60/"+string(TransitOnlyLinkDefaultSpeed[i]),
                                                 "[" + llayer + "].Length*60/"+string(TransitOnlyLinkDefaultSpeed[i]),
                                                 "[" + llayer + "].Length*60/"+string(TransitOnlyLinkDefaultSpeed[i]),
                                                 "[" + llayer + "].Length*60/"+string(TransitOnlyLinkDefaultSpeed[i])}  // LinkTTF=3 for transit only links
@@ -239,7 +239,7 @@ Macro "PrepareInputs"
     Opts.Global.Parameter = {0}
     ret_value = RunMacro("TCB Run Operation", 6, "Fill Dataview", Opts)
     // if !ret_value then goto quit
-	
+
     for iper=1 to Periods.length do
         // first set all flag to null and then add 1's to the selected stops
         Opts = null
@@ -258,8 +258,8 @@ Macro "PrepareInputs"
         ret_value = RunMacro("TCB Run Operation", 6, "Fill Dataview", Opts)
         if !ret_value then goto quit
     end
-		
-	
+
+
 // STEP 1.6: Open & read the modes table to add Dwell Times
     dim DwellTimeFactor[100]
     ModeTable=OpenTable("modetable","dBASE",{modetable,})
@@ -277,7 +277,7 @@ Macro "PrepareInputs"
         i=i+1
         rec=GetNextRecord(view_set, null, null)
     end
-	
+
     NumModes=i-1-3    // last 3 are not really modes: walk, transitonly, and nowalk.
 
 		// Fill Dwell time values by period
@@ -289,7 +289,7 @@ Macro "PrepareInputs"
         Opts.Global.Method = "Formula"
         Opts.Global.Parameter = {"Distance_LastStop*" + String(DwellTimeFactor[imode][2])}
         ret_value = RunMacro("TCB Run Operation", 5, "Fill Dataview", Opts, &Ret)
-				//if !ret_value then goto quit		// comment this out as not all modes in the routes file		
+				//if !ret_value then goto quit		// comment this out as not all modes in the routes file
 			end
 		end
 
@@ -298,9 +298,9 @@ Macro "PrepareInputs"
 
 		SetView("zonedata")
 		qry = "Select * where External<>1"
-		
+
 		SelectByQuery("zones", "Several", qry)
-		
+
     CreateMatrix({"zones","ID","Rows"}, {"zones","ID","Columns"},
                  {{"File Name",outdir.transit + "zone.mtx"}, {"Type" ,"Short"}, {"Tables" ,{"Matrix 1"}}})
 
@@ -351,15 +351,15 @@ Macro "BuildDriveConnectors"
     Opts.Global.[Network Options].[Keep Duplicate Links] = "FALSE"
     Opts.Global.[Network Options].[Ignore Link Direction] = "FALSE"
     Opts.Global.[Network Options].[Time Units] = "Minutes"
-    Opts.Global.[Link Options] = {{"Length", {llayer+".Length", llayer+".Length", , , "False"}},  
-    	{"TimeCAM_*", {llayer+".AB_AMTime", llayer+".BA_AMTime", , , "False"}}, 
-    	{"TimeCPM_*", {llayer+".AB_PMTime", llayer+".BA_PMTime", , , "False"}}, 
+    Opts.Global.[Link Options] = {{"Length", {llayer+".Length", llayer+".Length", , , "False"}},
+    	{"TimeCAM_*", {llayer+".AB_AMTime", llayer+".BA_AMTime", , , "False"}},
+    	{"TimeCPM_*", {llayer+".AB_PMTime", llayer+".BA_PMTime", , , "False"}},
     	{"TimeCOP_*", {llayer+".AB_OPTime", llayer+".BA_OPTime", , , "False"}}}
     Opts.Global.[Length Units] = "Miles"
     Opts.Global.[Time Units] = "Minutes"
     Opts.Output.[Network File] = mc_network_file
     ret_value = RunMacro("TCB Run Operation", "Build Highway Network", Opts, &Ret)
-    if !ret_value then goto quit 
+    if !ret_value then goto quit
 
    for iper=1 to Periods.length do
 				innet=mc_network_file
@@ -391,14 +391,14 @@ Macro "BuildDriveConnectors"
         dacc_time_cur   := NullToZero(dacc_time_cur)
         rowID           = GetMatrixRowLabels(dacc_time_cur)
         pnrID           = GetMatrixColumnLabels(dacc_time_cur)
-        
+
         for i=1 to rowID.length do
             drive_time   = GetMatrixVector(dacc_time_cur,  {{"Row", StringToInt(rowID[i])}})
             drive_distance   = GetMatrixVector(dacc_dist_cur,  {{"Row", StringToInt(rowID[i])}})
             DriveTime    = Vector(drive_time.length, "Float",)
             // identify production area type
             rh1 = LocateRecord(tazview+"|", "ID", {StringToInt(rowID[i])}, {{"Exact", "True"}})
-            if rh1 <> null then ProdAType=tazview.AREA_TYPE                                                            
+            if rh1 <> null then ProdAType=tazview.AREA_TYPE
             if ProdAType = 1 then DrWt = 99       // no connector from CBD
             if (ProdAType = 2 | ProdAType = 3 | ProdAType = 4) then DrWt = 1.5
 
@@ -418,7 +418,7 @@ Macro "BuildDriveConnectors"
                                                                          DrWt*((pnrshed - drive_time[j]) + (pnrshed - drive_time[j])*(pnrshed - drive_time[j])) +
                                                                          (((AutoOperatingCost/100)/AOCC_PNR)*drive_distance[j]/ValueofTime) +
                                                                          (pnrcost/ValueofTime) +
-                                                                         PNR_TerminalTime                             
+                                                                         PNR_TerminalTime
                     if (drive_time[j] > MaxPNR_DriveTime) then DriveTime[j] = null
                     if (DriveTime[j] > 45) then DriveTime[j] = null
                 end
@@ -442,7 +442,7 @@ Macro "BuildTransitPaths"
     shared route_stop, route_stop_bin, TerminalTimeMtx, modetable, modexfertable     // input files
     shared pnr_time_mat, runtime // output files
 	  shared iper_count, iacc_count, imode_count // for quick transit skim
-	
+
     RunMacro("TCB Init")
 
     layers = GetDBlayers(highway_dbd)
@@ -452,23 +452,23 @@ Macro "BuildTransitPaths"
     db_linklyr = highway_dbd + "|" + llayer
 	counter=Periods.length*Modes.length*AccessModes.length
 	count=1
-	            
-	           
+
+
 // Main loop
     for iper=1 to Periods.Length do
         for iacc=1 to AccessModes.Length do
             for imode=1 to Modes.Length do
-            
+
 				//UpdateProgressBar("Build transit paths Loop - "+ Periods[iper] +" - " + AccessModes[iacc] + " - "+  Modes[imode] + " -" +i2s(count)+" of " +i2s(counter),)
                 outtnw = outdir.transit + Periods[iper] + "_" + AccessModes[iacc] + Modes[imode] + ".tnw"
                 outskim = outdir.transit + Periods[iper] + "_" + AccessModes[iacc] + Modes[imode] + ".mtx"
                 outtps  = outdir.transit + Periods[iper] + "_" + AccessModes[iacc] + Modes[imode] + ".tps"
-								
+
 				pnr_file = pnr_time_mat[iper]
-								
+
 				//if imode=1 then selmode=" (Mode<>null & Mode=3)"  // local bus
 				selmode=" (Mode<>null & (Mode=3 | Mode=4))"  // shuttle
-								
+
 				// STEP 4.1: Build Transit Network
                 Opts = null
                 Opts.Input.[Transit RS] = route_system
@@ -480,33 +480,33 @@ Macro "BuildTransitPaths"
 				//Opts.Input.[Drive Set] = {db_linklyr, llayer, "Driving Links", "Select * where IN_HIGHWAY=1 | DOT_FC=98"}
                 Opts.Global.[Network Label] = "Based on 'Route System'"
                 Opts.Global.[Network Options].[Link Attributes] = {{"Length", {llayer + ".Length", llayer + ".Length"}, "SUMFRAC"},
-                                                                   {"ID", {llayer + ".ID", llayer + ".ID"}, "SUMFRAC"},																																 
+                                                                   {"ID", {llayer + ".ID", llayer + ".ID"}, "SUMFRAC"},
                                                                    {"TimeCAM_*", {llayer + ".AB_AMTime", llayer + ".BA_AMTime"}, "SUMFRAC"},
                                                                    {"TimeCPM_*", {llayer + ".AB_PMTime", llayer + ".BA_PMTime"}, "SUMFRAC"},
-                                                                   {"TimeCOP_*", {llayer + ".AB_OPTime", llayer + ".BA_OPTime"}, "SUMFRAC"},																																	 
+                                                                   {"TimeCOP_*", {llayer + ".AB_OPTime", llayer + ".BA_OPTime"}, "SUMFRAC"},
                                                                    {"WalkTime", {llayer + ".WalkTime", llayer + ".WalkTime"}, "SUMFRAC"},
                                                                    {"TransitTimeAM_*", {llayer + ".TransitTimeAM_AB", llayer + ".TransitTimeAM_BA"}, "SUMFRAC"},
 																   {"TransitTimePM_*", {llayer + ".TransitTimePM_AB", llayer + ".TransitTimePM_BA"}, "SUMFRAC"},
-                                                                   {"TransitTimeOP_*", {llayer + ".TransitTimeOP_AB", llayer + ".TransitTimeOP_BA"}, "SUMFRAC"}}	 
+                                                                   {"TransitTimeOP_*", {llayer + ".TransitTimeOP_AB", llayer + ".TransitTimeOP_BA"}, "SUMFRAC"}}
                 Opts.Global.[Network Options].[Street Attributes].Length = {llayer + ".Length", llayer + ".Length"}
-                Opts.Global.[Network Options].[Street Attributes].ID = {llayer + ".ID", llayer + ".ID"}							
+                Opts.Global.[Network Options].[Street Attributes].ID = {llayer + ".ID", llayer + ".ID"}
                 Opts.Global.[Network Options].[Street Attributes].[TimeCAM_*] = {llayer + ".AB_AMTime", llayer + ".BA_AMTime"}
                 Opts.Global.[Network Options].[Street Attributes].[TimeCPM_*] = {llayer + ".AB_PMTime", llayer + ".BA_PMTime"}
-                Opts.Global.[Network Options].[Street Attributes].[TimeCOP_*] = {llayer + ".AB_OPTime", llayer + ".BA_OPTime"}								
+                Opts.Global.[Network Options].[Street Attributes].[TimeCOP_*] = {llayer + ".AB_OPTime", llayer + ".BA_OPTime"}
                 Opts.Global.[Network Options].[Street Attributes].WalkTime = {llayer + ".WalkTime", llayer + ".WalkTime"}
                 Opts.Global.[Network Options].[Street Attributes].[TransitTimeAM_*] = {llayer + ".TransitTimeAM_AB", llayer + ".TransitTimeAM_BA"}
                 Opts.Global.[Network Options].[Street Attributes].[TransitTimePM_*] = {llayer + ".TransitTimePM_AB", llayer + ".TransitTimePM_BA"}
-                Opts.Global.[Network Options].[Street Attributes].[TransitTimeOP_*] = {llayer + ".TransitTimeOP_AB", llayer + ".TransitTimeOP_BA"}						
+                Opts.Global.[Network Options].[Street Attributes].[TransitTimeOP_*] = {llayer + ".TransitTimeOP_AB", llayer + ".TransitTimeOP_BA"}
                 Opts.Global.[Network Options].[Route Attributes].Route_ID = {"[Transit Routes].Route_ID"}
                 Opts.Global.[Network Options].[Route Attributes].Direction = {"[Transit Routes].Direction"}
                 Opts.Global.[Network Options].[Route Attributes].Track = {"[Transit Routes].Route"}
-                Opts.Global.[Network Options].[Route Attributes].Distance = {"[Transit Routes].Length"}              
+                Opts.Global.[Network Options].[Route Attributes].Distance = {"[Transit Routes].Length"}
                 Opts.Global.[Network Options].[Route Attributes].AM_HDWY = {"[Transit Routes].HW_AM"}
                 Opts.Global.[Network Options].[Route Attributes].PM_HDWY = {"[Transit Routes].HW_PM"}
-                Opts.Global.[Network Options].[Route Attributes].OP_HDWY = {"[Transit Routes].HW_OP"}									
+                Opts.Global.[Network Options].[Route Attributes].OP_HDWY = {"[Transit Routes].HW_OP"}
                 Opts.Global.[Network Options].[Route Attributes].Mode = {"[Transit Routes].Mode"}
 				Opts.Global.[Network Options].[Route Attributes].Fare = {"[Transit Routes].Fare"}
-                Opts.Global.[Network Options].[Route Attributes].FareType = {"[Transit Routes].FareType"}	            
+                Opts.Global.[Network Options].[Route Attributes].FareType = {"[Transit Routes].FareType"}
                 Opts.Global.[Network Options].[Stop Attributes] = {{"ID", {"[Transit Stops].ID"}},
                                                                    {"Longitude", {"[Transit Stops].Longitude"}},
                                                                    {"Latitude", {"[Transit Stops].Latitude"}},
@@ -514,19 +514,19 @@ Macro "BuildTransitPaths"
                                                                    {"Pass_Count", {"[Transit Stops].Pass_Count"}},
                                                                    {"Milepost", {"[Transit Stops].Milepost"}},
                                                                    {"STOP_ID", {"[Transit Stops].STOP_ID"}},
-                                                                   {"NearNode", {"[Transit Stops].NearNode"}}}     
+                                                                   {"NearNode", {"[Transit Stops].NearNode"}}}
                 Opts.Global.[Network Options].[Street Node Attributes].ID = {nlayer + ".ID"}
 				//Opts.Global.[Network Options].[Street Node Attributes].ID = {nlayer + "."+nodeidfield}       //test
                 //Opts.Global.[Network Options].[Street Node Attributes].CCSTYLE = {nlayer + ".Centroid"}             // todo - functional class for node to identify centroids?
                 Opts.Global.[Network Options].Walk = "Yes"
                 Opts.Global.[Network Options].[Mode Field] = "[Transit Routes].Mode"
                 Opts.Global.[Network Options].[Walk Mode] = llayer + ".WalkLink"
-                Opts.Global.[Network Options].TagField = "NearNode"																								 
-                Opts.Global.[Network Options].Overide = {"[Transit Stops].ID", "Transit Stops.NearNode"}							 
+                Opts.Global.[Network Options].TagField = "NearNode"
+                Opts.Global.[Network Options].Overide = {"[Transit Stops].ID", "Transit Stops.NearNode"}
                 Opts.Output.[Network File] = outtnw
 
                 ret_value = RunMacro("TCB Run Operation", "Build Transit Network", Opts, &Ret)
-                if !ret_value then goto quit					
+                if !ret_value then goto quit
 
             // STEP 3.2: Transit Network Setting PF
                 Opts = null
@@ -538,20 +538,20 @@ Macro "BuildTransitPaths"
                 Opts.Input.[Transit Network] = outtnw
                 Opts.Input.[Mode Table] = {modetable}
                 Opts.Input.[Mode Cost Table] = {modexfertable}
-								
-                if AccessModes[iacc]="Drive" then do                                                               
+
+                if AccessModes[iacc]="Drive" then do
                   Opts.Input.[OP Time Currency] = {pnr_file, "TimeC" + Periods[iper] + "_* (Skim)", , } 		// origin to parking node time matrix info
                   Opts.Input.[OP Dist Currency] = {pnr_file, "Length (Skim)", , }  													// origin to parking node distance matrix info
                   Opts.Input.[Driving Link Set] = {db_linklyr, llayer, "Selection", "Select * where (AB_" + Periods[iper] + "Time+BA_" + Periods[iper] +"Time)<>null"}
                 end
-								
+
                 Opts.Input.[Centroid Set] = {db_nodelyr, nlayer, "AllZones", "Select * where Centroid=1"}
                 Opts.Field.[Link Impedance] = "TransitTime"+Periods[iper]+"_*"
-								
+
                 if AccessModes[iacc]="Drive" then do
                   Opts.Field.[Link Drive Time] = "TimeC"+Periods[iper]+"_*"
                 end
-								
+
                 Opts.Field.[Route Headway] 		  = Periods[iper] + "_HDWY"
 				Opts.Field.[Route Fare] 		  = "Fare"
                 //Opts.Field.[Mode Fare]            = "FARE"
@@ -608,7 +608,7 @@ Macro "BuildTransitPaths"
 
                 ret_value = RunMacro("TCB Run Operation", "Transit Network Setting PF", Opts, &Ret)
                 if !ret_value then goto quit
-								
+
             // STEP 4.3: Update the transit network with layover times / dwell times
                 Opts = null
                 Opts.Input.[Transit RS] = route_system
@@ -627,9 +627,9 @@ Macro "BuildTransitPaths"
                 Opts.Global.Parameter = "BaseIVTT + Layover + [DwellTime_" + Periods[iper] +"]"  // Added dwell time to make sure IVTT in skims include dwell time
                 ret_value = RunMacro("TCB Run Operation", 7, "Fill Dataview", Opts, &Ret)
                 if !ret_value then goto quit
-								
+
 			thisIVTT = Periods[iper]+AccessModes[iacc]+Modes[imode]+"IVTT"
-			
+
 			RunMacro("TCB Init")
 			Opts = null
 			Opts.Input.[Transit RS] = route_system
@@ -638,10 +638,10 @@ Macro "BuildTransitPaths"
 			Opts.Global.[Update Attributes].[Stop Attributes].(thisIVTT) = {"[Transit Stops]."+thisIVTT}
 			ret_value = RunMacro("TCB Run Operation", "Update Transit Network Attributes", Opts, &Ret)
 			if !ret_value then goto quit
-								
+
             // NOTE: In-vehicle time in the transit networks includes IVTT and layover (no dwelling time) -> this is done for skimming purposes in order to count
             //     : dwelling time just once in the generalized cost
-					
+
             // STEP 4.4: Transit Skim PF
                 timevar = "TransitTime"+Periods[iper]+"_*"
 
@@ -649,31 +649,31 @@ Macro "BuildTransitPaths"
                 Opts.Input.Database = highway_dbd
 				Opts.Input.[Transit RS] = route_system
                 Opts.Input.Network = outtnw
-                  
+
                 Opts.Input.[Origin Set] = {db_nodelyr, nlayer, "AllZones", "Select * where Centroid=1"}
                 Opts.Input.[Destination Set] = {db_nodelyr, nlayer, "AllZones"}
                 Opts.Global.[Skim Var] = {"Generalized Cost", "Fare", "In-Vehicle Time", "Initial Wait Time", "Transfer Wait Time", "Transfer Penalty Time",
                                           "Transfer Walk Time", "Access Walk Time", "Egress Walk Time", "Access Drive Time", "Dwelling Time",
                                           "Number of Transfers", "In-Vehicle Distance", "Drive Distance", timevar}   // Number of Transfers are converted to Number of Boardings later
-                
+
                 Opts.Global.[OD Layer Type] = "Node"
                 Opts.Global.[Skim Modes] = {3, 4}
                 Opts.Output.[Skim Matrix].Label = Periods[iper] + AccessModes[iacc] + Modes[imode] + " (Skim)"
                 Opts.Output.[Skim Matrix].Compression = 0
                 Opts.Output.[Skim Matrix].[File Name] = outskim
-								
+
                 if AccessModes[iacc]="Drive" then do
 					Opts.Output.[OP Matrix].Label = "Origin to Parking Matrix"
 					Opts.Output.[OP Matrix].[File Name]= outdir.transit + Periods[iper] + AccessModes[iacc] + Modes[imode] + "_pnr_time.mtx"
 					Opts.Output.[Parking Matrix].Label = "Parking Matrix"
 					Opts.Output.[Parking Matrix].[File Name] = outdir.transit + Periods[iper] + AccessModes[iacc] + Modes[imode] + "_pnr_node.mtx"
                 end
-                
+
 				Opts.Output.[TPS Table] = outtps
 
                 ret_value = RunMacro("TCB Run Procedure", "Transit Skim PF", Opts, &Ret)
                 if !ret_value then goto quit
-              
+
             // STEP 5: Calculate boardings as xfers+1
                 Opts = null
                 Opts.Input.[Matrix Currency] = { outskim, "Number of Transfers",,}
@@ -682,18 +682,18 @@ Macro "BuildTransitPaths"
                 Opts.Global.[Expression Text] = "[Number of Transfers]+ 1"
                 Opts.Global.[Force Missing] = "No"
                 ret_value = RunMacro("TCB Run Operation", "Fill Matrices", Opts)
-                if !ret_value then goto quit                
-                
+                if !ret_value then goto quit
+
 								count=count+1
-								
+
              end  // end mode loop
          end  // end access mode loop
      end  // end period loop
-		 
+
     stime=GetDateAndTime()
     WriteLine(runtime,"\n End Build Transit Paths Loop       - "+SubString(stime,1,3)+","+SubString(stime,4,7)+""+SubString(stime,20,5)+" ("+SubString(stime,12,8)+") ")
     ret_value=1
-		
+
 quit:
 		//Return( RunMacro("TCB Closing", ret_value, True ) )
     stime=GetDateAndTime()
@@ -705,20 +705,20 @@ Macro "AddFields"
 	shared highway_dbd, highway_link_bin, highway_node_bin, zone_dbd, zone_bin, route_system
     shared route_stop, route_stop_bin, route_bin
 	shared modetable, modexfertable, MovementTable
-		
+
 /* on notfound goto quit  */
     view_name = OpenTable ("hwy_bin","FFB",{highway_link_bin,})
 
 WalkLink:
     on notfound goto WalkLinkIn
-		
+
 		// check if walk fields are present in the highway link layer
     GetField(view_name+".WalkLink")
-		
+
     goto TransitTime
 
 WalkLinkIn:
-		// add walk fields to the highway link table 
+		// add walk fields to the highway link table
     strct = GetTableStructure(view_name)
     for i = 1 to strct.length do strct[i] = strct[i] + {strct[i][1]} end
 
@@ -729,7 +729,7 @@ WalkLinkIn:
 
 TransitTime:
     on notfound goto TransitTimeIn
-		
+
 		// check if transit time fields are present in the highway link layer
     GetField(view_name+".TransitTimeAM_AB")
     goto AutoTime
@@ -745,16 +745,16 @@ TransitTimeIn:
                           {"TransitTimePM_BA", "Real", 10, 4, "False",,,, null},
                           {"TransitTimeOP_AB", "Real", 10, 4, "False",,,, null},
                           {"TransitTimeOP_BA", "Real", 10, 4, "False",,,, null}}
-    
-		ModifyTable(view_name, new_struct)		
-		
+
+		ModifyTable(view_name, new_struct)
+
 AutoTime:
 		on notfound goto AutoTimeIn
-		
+
 		// check if transit time fields are present in the highway link layer
     GetField(view_name+".AB_AMTime")
     goto MilepostLastStop
-		
+
 AutoTimeIn:
 		// add transit time fields to the highway link table
     strct = GetTableStructure(view_name)
@@ -766,14 +766,14 @@ AutoTimeIn:
                           {"BA_PMTime", "Real", 10, 4, "False",,,, null},
                           {"AB_OPTime", "Real", 10, 4, "False",,,, null},
                           {"BA_OPTime", "Real", 10, 4, "False",,,, null}}
-    
-		ModifyTable(view_name, new_struct)		
+
+		ModifyTable(view_name, new_struct)
 
 MilepostLastStop:
 	CloseView(view_name)
 	// open route stops
 	view_name = OpenTable ("stop_bin","FFB",{route_stop_bin,})
-	
+
 	on notfound goto MilepostLastStopIn
 	GetField(view_name+".MP_LastStop")
 	goto DistanceLastStop
@@ -807,16 +807,16 @@ CalculateDistanceLastStop:
 	Stopdb_layers = GetDBLayers(route_stop)
 	Stopview=AddLayertoWorkspace("Stopview", route_stop, Stopdb_layers[1])
 	SetLayer(Stopview)
-	
+
 	// selection set
 	nrecs=SelectByQuery("sorted_set", "Several", "Select * where Route_ID>0")
-	
+
 	// sort by route_id and milepost
 	SortSet("sorted_set","Route_ID, Milepost")
-	
+
 	// get route_id and milepost
 	MPStop=GetDataVectors("sorted_set",{"Route_ID","Milepost"},)
-	
+
 	// initialize variables
 	dim MPLastStop[MPStop[1].Length]
 	RouteID_prev=0
@@ -828,23 +828,23 @@ CalculateDistanceLastStop:
 		else MPLastStop[i]=MPStop[2][i-1]
 		RouteID_prev=RouteID
 	end
-	
+
 	// convert to array
 	MPLastStopVec=ArrayToVector(MPLastStop)
-	
+
 	//calculate distance from previous stop
 	DistanceLastStop=MPStop[2]-MPLastStopVec
-	
+
 	// Fill fields
 	SetDataVectors("sorted_set", {{"MP_LastStop", MPLastStopVec},{"Distance_LastStop", DistanceLastStop}}, )
-	
+
 	// remove layer from workspace
 	DropLayerFromWorkSpace(Stopview)
-		
+
 Skip:
 	// finished adding fields
-	ret_value=1		
-		
+	ret_value=1
+
 EndMacro
 
 
@@ -852,9 +852,9 @@ EndMacro
  Macro "ProcessTransitSkims"(Args)
     shared outdir, Periods, Modes, AccessModes
 
-    //  Define Parameters                                          
-    DeleteTempOutputFiles = 0     
-    
+    //  Define Parameters
+    DeleteTempOutputFiles = 0
+
     RunMacro("TCB Init")
 
     // STEP 3: Copy Transit Skims
@@ -863,20 +863,20 @@ EndMacro
         for imode=1 to Modes.Length do
            inmat  = outdir.transit + Periods[iper] + "_" + AccessModes[iacc] + Modes[imode] + ".mtx"
            outmat = outdir.transit + Periods[iper] + "_" + AccessModes[iacc] + Modes[imode] + "Skim.mtx"
-           new_mat = CopyFile(inmat,outmat)           
-         end   // transit mode  
-      end    // access mode  
-    end    // period 
+           new_mat = CopyFile(inmat,outmat)
+         end   // transit mode
+      end    // access mode
+    end    // period
 
-   
+
   // STEP 4: Set Null values to Zero, Also Zero-Out skim tables based on path hierarchy
   for iper=1 to Periods.length do
 	  for iacc=1 to AccessModes.Length do
       for imode=1 to Modes.Length do
-		            
+
 		        timevar = "TransitTime"+Periods[iper]+"_*"
                 m = OpenMatrix(outdir.transit + Periods[iper] + "_" + AccessModes[iacc] + Modes[imode] + "Skim.mtx", )
-                
+
                 mc1 = CreateMatrixCurrency(m, "Generalized Cost", , , )
                 mc2 = CreateMatrixCurrency(m, "Fare", , , )
                 mc3 = CreateMatrixCurrency(m, "In-Vehicle Time", , , )
@@ -893,7 +893,7 @@ EndMacro
                 mc14 = CreateMatrixCurrency(m, "Access Drive Distance", , , )
                 mc15 = CreateMatrixCurrency(m, timevar + " (Local Bus)", , , )
 				mc16 = CreateMatrixCurrency(m, timevar + " (Shuttle)", , , )
-                
+
                 mc1 := Nz(mc1)
                 mc2 := Nz(mc2)
                 mc3 := Nz(mc3)
@@ -927,11 +927,11 @@ EndMacro
 					mc13 := if ((mc15) <= 0) then 0 else mc13
 					mc14 := if ((mc15) <= 0) then 0 else mc14
 					mc15 := if ((mc15) <= 0) then 0 else mc15
-					mc16 := if ((mc15) <= 0) then 0 else mc16				
-				
+					mc16 := if ((mc15) <= 0) then 0 else mc16
+
                    FillMatrix(mc2, null, null, {"Multiply", 100}, )
                 end
-				
+
 				if (Modes[imode]="Shuttle") then do
 					mc1 := if ((mc16) <= 0) then 0 else mc1
 					mc2 := if ((mc16) <= 0) then 0 else mc2
@@ -949,9 +949,9 @@ EndMacro
 					mc14 := if ((mc16) <= 0) then 0 else mc14
 					mc15 := if ((mc16) <= 0) then 0 else mc15
 					mc16 := if ((mc16) <= 0) then 0 else mc16
-					
+
 					FillMatrix(mc2, null, null, {"Multiply", 100}, )
-					
+
 				end
 	      end
 	   end
@@ -981,17 +981,17 @@ quit:
   Return(ret_value)
 EndMacro
 
-Macro "CopyTransitSkims"   
+Macro "CopyTransitSkims"
     shared Scen_Dir, outdir, Periods, Modes, AccessModes, loop
     shared runtime // output files
-    
+
     // Export only Walk Transit Skims
     counter=Periods.length*Modes.length
     count=1
-		
+
 		//for debug
 	loop=info.iter
-    
+
     for iper=1 to Periods.Length do
         for imode=1 to Modes.Length do
             //UpdateProgressBar("saving skims - "+ Periods[iper] +" - " + "Walk" + " - "+  Modes[imode] + " -" +i2s(count)+" of " +i2s(counter),)
@@ -1000,10 +1000,10 @@ Macro "CopyTransitSkims"
 
             //copy loop specific skims
             outMat = outdir.transit + Periods[iper] + "_" + "Walk" + Modes[imode] + "Skim_" + String(loop) + ".mtx"
-            CopyFile(inMat, outMat)                
-            
+            CopyFile(inMat, outMat)
+
             count=count+1
         end
-    end 
-    
+    end
+
 EndMacro

@@ -8,17 +8,17 @@ endMacro
 
 //-------------------------------------------------------------------------------------------//
 Menu "CHCRPA"
-   MenuItem "CHCRPA" text: "CHCRPA" menu "CHCRPA Menu" 
+   MenuItem "CHCRPA" text: "CHCRPA" menu "CHCRPA Menu"
 endMenu
 
 Menu "CHCRPA Menu"
-	MenuItem "Travel Demand Model" do 
+	MenuItem "Travel Demand Model" do
 	manager = CreateObject("CHCRPA.GUIController", null)
 	output_data = RunDbox("CHCRPA", manager)
-	endItem 
-	MenuItem "Open Model Folder" do shared root status = RunProgram("explorer " + root.mod, {}) EndItem 
-	MenuItem "TDM Technical Documentation" do shared root TechDoc = root.mod + "\\0_Model-Documentation\\Chattanooga_TDM_Documentation_Draft04192016.pdf" LaunchDocument(TechDoc, ) EndItem 
-	//MenuItem "TDM Presentation" do shared root TDMPresentation = root.mod + "\\0_Model-Documentation\\TNstatewideModel_141208.pdf" LaunchDocument(TDMPresentation, ) EndItem  	
+	endItem
+	MenuItem "Open Model Folder" do shared root status = RunProgram("explorer " + root.mod, {}) EndItem
+	MenuItem "TDM Technical Documentation" do shared root TechDoc = root.mod + "\\0_Model-Documentation\\Chattanooga_TDM_Documentation_Draft04192016.pdf" LaunchDocument(TechDoc, ) EndItem
+	//MenuItem "TDM Presentation" do shared root TDMPresentation = root.mod + "\\0_Model-Documentation\\TNstatewideModel_141208.pdf" LaunchDocument(TDMPresentation, ) EndItem
 	MenuItem "Remove Menu" do RemoveMenuItem("CHCRPA") EndItem
 endMenu
 
@@ -38,19 +38,19 @@ Class "CHCRPA.GUIController"
 			on NotFound default
 			Return()
 		end
-	   //ResetLogFile() 
+	   //ResetLogFile()
 	   //ResetReportFile()
 	   mapname = GetMap()
 	   if mapname <> null then SetMapRedraw(null, "False")
 	   SetSelectDisplay("False")
-	   
+
 		root   = {} //Root Directories: model, documents, reference, scenario
 		indir  = {} //Scenario Input Directories
 		outdir = {} //Scenario Output Directories
 		net    = {} //assignnet, odmenet
 		mvw    = {} //taz, line, node, control
 		info   = {}
-	   
+
 		info.scenname = "Base"
 		info.iter = 0
 		info.prmsd = 1
@@ -67,13 +67,13 @@ Class "CHCRPA.GUIController"
 		MDY = FormatDateTime(dt, "MMMddyyyy")
 		info.runname  = "Run_"+MDY
 		info.timestamp = FormatDateTime(dt,"MMMddyyyy_HHmm")
-		
+
 	//Static Files
 		root.mod   = "C:\\Model"
 
      Enditem
 
-	 
+
 Macro "loadpaths" (temp) do
 	shared root, info, indir, outdir, mvw
 	shared net, skim, flow, od, post, daysim
@@ -81,13 +81,13 @@ Macro "loadpaths" (temp) do
 
 		dirinfo = GetDirectoryInfo(root.mod, "Directory")
 		if dirinfo = null then root.mod = ChooseDirectory("Choose the Model Directory", )
-		
+
 		root.doc      = root.mod + "\\0_Model-Documentation\\"
 		root.ref      = root.mod + "\\1_Model-Files\\"
-		
+
 	   //info.controlfile = root.ref +"control.dbf"
 	   //mvw.control = OpenTable("controlvw", "DBASE", {info.controlfile, })
-		
+
 		root.net      = root.ref + "1_MasterNet\\"
 		root.taz      = root.ref + "2_TAZ\\"
 		root.popsyn    = root.ref + "3_PopSyn3\\"
@@ -97,14 +97,14 @@ Macro "loadpaths" (temp) do
 		root.paramoth  = root.ref + "6_Parameters\\2_Other\\"
 		root.images    = root.ref + "7_Images\\"
 		root.other     = root.ref + "8_Other\\"
-		
-		info.calrep = root.paramoth + "CHCRPA_calrepinfo.bin"		
+
+		info.calrep = root.paramoth + "CHCRPA_calrepinfo.bin"
 		dsparamfile   = root.paramoth + "DScalc.dbf"
 		netparamfile  = root.paramoth + "netparams.dbf"
-		
+
 		root.scen       = root.mod + "\\2_Scenarios\\"+info.scenname
 		dirinfo = GetDirectoryInfo(root.scen, "Directory")
-		
+
 		info.log        = root.mod + "\\2_Scenarios\\"+info.scenname+"\\Log_"+info.timestamp+".txt"
 		if mvw.rtsfile <> null then do
 			//rtspath = SplitPath(mvw.rtsfile)
@@ -115,7 +115,7 @@ Macro "loadpaths" (temp) do
 		indir.hwy       = root.scen + "\\Inputs\\2_Networks\\"
 		indir.ext       = root.scen + "\\Inputs\\3_ExternalTravel\\"
 		indir.daysim    = root.scen + "\\Inputs\\4_DaySim\\"
-		
+
 		outdir.zone         = root.scen + "\\Outputs\\1_TAZ\\"
 		outdir.hwy          = root.scen + "\\Outputs\\2_Networks\\"
 			outdir.transit      = outdir.hwy + "Transit\\"
@@ -132,7 +132,7 @@ Macro "loadpaths" (temp) do
 		//mvw.mzbuff       = root.daysim + "Inputs\\2_MicroZones\\Chatt_MZ"+i2s(info.modyear)+"_buffed.dat"
 		//mvw.popsynhh     = root.daysim + "Inputs\\3_Households\\chattanooga_hh_"+i2s(info.modyear)+".dat"
 		//mvw.popsynperson = root.daysim + "Inputs\\4_Persons\\chattanooga_person_"+i2s(info.modyear)+".dat"
-		
+
 		skim.default = outdir.hwy + "Highway_Skim.mtx"
 		skim.am      = outdir.hwy + "Highway_Skim_AM.mtx"
 		skim.pm      = outdir.hwy + "Highway_Skim_PM.mtx"
@@ -156,7 +156,7 @@ Macro "loadpaths" (temp) do
 		flow.op     = outdir.tables + "AsnVol_OP_I0.bin"
 		flow.asn    = outdir.tables + "BCFW_LinkFlow.bin"
 		flow.trk    = outdir.tables + "TRK_LinkFlow.bin"
-		
+
 		//od.seed      = outdir.tables + "Seed_AirSage_Mar01.mtx"
 		od.trkseed   = outdir.ext + "Trk_Seed.mtx"
 		od.cvseed    = outdir.ext + "4TCV_Seed.mtx"
@@ -165,7 +165,7 @@ Macro "loadpaths" (temp) do
 		//od.seed      = outdir.tables + "Seed_R5.mtx"
 		od.daysim    = outdir.daysim + "DS_Trips_I0.mtx"
 		od.triptable = outdir.tables + "TripTable_I0.mtx"
-		
+
 		od.ee        = outdir.ext + "EE_"+i2s(info.modyear)+".mtx"
 		od.trk       = outdir.truck + "Truck_OD.mtx"
 		od.cv        = outdir.truck + "CV_OD.mtx"
@@ -173,7 +173,7 @@ Macro "loadpaths" (temp) do
 		od.transitam = outdir.tables + "TransitTrip_AM.mtx"
 		od.transitpm = outdir.tables + "TransitTrip_PM.mtx"
 		od.transitop = outdir.tables + "TransitTrip_OP.mtx"
-		
+
 		daysim.cfgtemplate = root.paramds + "Config.properties"
 		daysim.cfg_out     = outdir.daysim + "Config.properties"
 		daysim.sp_in       = root.paramds + "Config_SP.properties"
@@ -187,7 +187,7 @@ Macro "loadpaths" (temp) do
 		daysim.tripscsv    = outdir.daysim + "_trip_2.csv"
 		daysim.summary     = indir.daysim + "8_Summaries\\"
 		daysim.postcfg     = daysim.summary + "daysim_output_config.R"
-		
+
 		//Read param files
 		netparam  = RunMacro("LoadParams", netparamfile, null)
 		dsparam   = RunMacro("LoadParams", dsparamfile , null)
@@ -195,7 +195,7 @@ Macro "loadpaths" (temp) do
 	endItem
 	//endfold
 
-Macro "CheckScenario" do	
+Macro "CheckScenario" do
 	shared root
 	dirinfo = GetDirectoryInfo(root.scen, "Directory")
 	if dirinfo <> null then ShowMessage("Note: Scenario Name already exists. It is recommended to select a unique scenario name.")
@@ -217,13 +217,13 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 		controller.loadpaths(null)
 	endItem
 
-   button "Close" 22.5, 42, 10, 2 Cancel do 
+   button "Close" 22.5, 42, 10, 2 Cancel do
 	mapname = GetMap()
 	SetStatus(1, "@System0", )
 	SetStatus(2, "@System1", )
 	SetSelectDisplay("True")
 	if mapname <> null then SetMapRedraw(null, "True")
-	Return() 
+	Return()
    endItem
 
   Tab list 1, 0.5, 55, 45 variable: tab_idx
@@ -252,11 +252,11 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 		msg.gg= "www.rsginc.com"
 		msg.h = "May 2016"
     enditem
-        
+
 		Sample "clientbutton" .5, .5, 50, 8 Transparent contents: SamplePoint("Color Bitmap", root.images+"CHCRPA.bmp", -1, , )
 	text 13, 4.5 variable: msg.a
 	text 10, 4.5 variable: msg.b
-	
+
     text 1, 10.5 variable: msg.c
     text same, 12 variable: msg.d
     text same, 13 variable: msg.e
@@ -264,7 +264,7 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
     text same, 15.5 variable: msg.eb
     text same, 16.5 variable: msg.ec
     text same, 17.5 variable: msg.ed
-    
+
     text 32, 10.5 variable: msg.f
     text same, 12 variable: msg.ga
     text same, 13 variable: msg.gb
@@ -273,10 +273,10 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
     text same, 16.5 variable: msg.ge
     text same, 17.5 variable: msg.gf
 	text same, 18.5 variable: msg.gg
-    
+
 	Sample "clientlogo" 1, 20, 18, 5 Transparent contents: SamplePoint("Color Bitmap", root.images+"CHCRPAlogo.bmp", -1, null, null)
     Sample "rsglogo" 32, 20, 10, 5 Transparent contents: SamplePoint("Color Bitmap", root.images+"RSGlogo.bmp", -1, null, null)
-	
+
     text 21, 9 variable: msg.h
 //-------------------------------------------------------------------------------------------//
 //endfold
@@ -288,33 +288,33 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 	endItem
 
 	text "Scenario Name" 5, 1
-	edit text "scenname" 20, same, 25 variable: info.scenname do 
+	edit text "scenname" 20, same, 25 variable: info.scenname do
 		controller.loadpaths(null)
 		controller.CheckScenario()
 		endItem
-	
+
 	text "Model Year" 5, 2.5
-	edit Int "modyear" 20, same, 6 variable: info.modyear format:"0000" do 
+	edit Int "modyear" 20, same, 6 variable: info.modyear format:"0000" do
 		controller.loadpaths(null)
 		endItem
-		
+
 	text "CPU Cores" 30, 2.5
-	edit Int "Cores" 40, same, 4 variable: info.cores do 
+	edit Int "Cores" 40, same, 4 variable: info.cores do
 		info.cores = r2i(min(info.cores, 64))
 	endItem
-	
-   
+
+
    text "Model Path:" 2, 5
-   button "PathBrowse" 40.5, same, 10 Prompt:"Browse" do on escape goto endhere 
+   button "PathBrowse" 40.5, same, 10 Prompt:"Browse" do on escape goto endhere
 		root.mod = ChooseDirectory("Choose the Model Directory", {{"Initial Directory", root.mod}})
 		controller.loadpaths(null)
-   endhere: 
+   endhere:
    endItem
 	text "pathDirectory" 2.5, 6.5, 48 framed variable: root.mod
-   
-	
+
+
 	frame "masterinput"  1, 9, 51.5, 30 prompt: "Scenario Inputs"
-   
+
 	text "TAZ Layer"             3, 11
 	text "Master Network Layer"  3, 15
 	text "RTS File"              3, 19
@@ -323,12 +323,12 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 	text "PopSyn Household"      3, 31
 	text "PopSyn Persons"        3, 35
 
-	button "TAZBrowse"  44, 11, 6.5 Prompt:"Browse" do on escape goto endhere mvw.tazfile = ChooseFile({{"TAZ Layer (*.dbd)", "*.dbd"},{"Standard (*.dbd)","*.dbd"}}, "Choose a TAZ Layer", {,{"Initial Directory", root.taz},}) endhere: endItem	
-	button "MNetBrowse" 44, 15, 6.5 Prompt:"Browse" do on escape goto endhere mvw.masternet = ChooseFile({{"Master Network", "*.dbd"}}, "Choose the masternet layer", {,{"Initial Directory", root.net},}) endhere: endItem		
-	button "RTS File"   44, 19, 6.5 Prompt:"Browse" do on escape goto endhere mvw.rtsfile = ChooseFile({{"RTS File", "*.rts"}}, "Choose the RTS layer", {,{"Initial Directory", root.net},}) endhere: endItem			
+	button "TAZBrowse"  44, 11, 6.5 Prompt:"Browse" do on escape goto endhere mvw.tazfile = ChooseFile({{"TAZ Layer (*.dbd)", "*.dbd"},{"Standard (*.dbd)","*.dbd"}}, "Choose a TAZ Layer", {,{"Initial Directory", root.taz},}) endhere: endItem
+	button "MNetBrowse" 44, 15, 6.5 Prompt:"Browse" do on escape goto endhere mvw.masternet = ChooseFile({{"Master Network", "*.dbd"}}, "Choose the masternet layer", {,{"Initial Directory", root.net},}) endhere: endItem
+	button "RTS File"   44, 19, 6.5 Prompt:"Browse" do on escape goto endhere mvw.rtsfile = ChooseFile({{"RTS File", "*.rts"}}, "Choose the RTS layer", {,{"Initial Directory", root.net},}) endhere: endItem
 
-    button "ScenBrowse" 44, 23, 6.5 Prompt:"Browse" do 
-		on escape goto endhere 
+    button "ScenBrowse" 44, 23, 6.5 Prompt:"Browse" do
+		on escape goto endhere
 		/*
 		projfile = root.net+"Projects\\Project_List.bin"
 		projvw = OpenTable("projvw", "FFB", {projfile, })
@@ -340,15 +340,15 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 		CloseFile(ptr)
 		CloseView(projvw)
 		*/
-		mvw.scnfile = ChooseFile({{"Scenario File", "*.txt"}}, "Choose the Scenario definition file", {,{"Initial Directory", root.net+"Scenarios\\"},}) 
-	endhere: 
+		mvw.scnfile = ChooseFile({{"Scenario File", "*.txt"}}, "Choose the Scenario definition file", {,{"Initial Directory", root.net+"Scenarios\\"},})
+	endhere:
 	endItem
-	
-	button "PSMZ"   44, 27, 6.5 Prompt:"Browse" do on escape goto endhere mvw.mzbuff = ChooseFile({{"dat File", "*.dat"}}, "Choose the Buffered Microzone File", {,{"Initial Directory", root.daysim+"Inputs\\2_MicroZones\\"},}) endhere: endItem	
-	button "PSHH"   44, 31, 6.5 Prompt:"Browse" do on escape goto endhere mvw.popsynhh = ChooseFile({{"dat File", "*.dat"}}, "Choose the Households File", {,{"Initial Directory", root.daysim+"Inputs\\3_Households\\"},}) endhere: endItem		
-	button "PSPER"   44, 35, 6.5 Prompt:"Browse" do on escape goto endhere mvw.popsynperson = ChooseFile({{"dat File", "*.dat"}}, "Choose the Persons File", {,{"Initial Directory", root.daysim+"Inputs\\4_Persons\\"},}) endhere: endItem	
-	
-	//button "ScenView" 40, 19, 6.5 Prompt:"View" do status = RunProgram("notepad " + scnfile, ) endItem 
+
+	button "PSMZ"   44, 27, 6.5 Prompt:"Browse" do on escape goto endhere mvw.mzbuff = ChooseFile({{"dat File", "*.dat"}}, "Choose the Buffered Microzone File", {,{"Initial Directory", root.daysim+"Inputs\\2_MicroZones\\"},}) endhere: endItem
+	button "PSHH"   44, 31, 6.5 Prompt:"Browse" do on escape goto endhere mvw.popsynhh = ChooseFile({{"dat File", "*.dat"}}, "Choose the Households File", {,{"Initial Directory", root.daysim+"Inputs\\3_Households\\"},}) endhere: endItem
+	button "PSPER"   44, 35, 6.5 Prompt:"Browse" do on escape goto endhere mvw.popsynperson = ChooseFile({{"dat File", "*.dat"}}, "Choose the Persons File", {,{"Initial Directory", root.daysim+"Inputs\\4_Persons\\"},}) endhere: endItem
+
+	//button "ScenView" 40, 19, 6.5 Prompt:"View" do status = RunProgram("notepad " + scnfile, ) endItem
 
 	text "tazfile"      2.5, 12.5, 48 framed variable: Substitute(mvw.tazfile, root.ref, "..", null)
 	text "masterfile"   2.5, 16.5, 48 framed variable: Substitute(mvw.masternet, root.ref, "..", null)
@@ -358,7 +358,7 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 	text "pshhfile" 2.5, 32.5, 48 framed variable: Substitute(mvw.popsynhh, root.daysim, "..", null)
 	text "pspersonfile" 2.5, 36.5, 48 framed variable: Substitute(mvw.popsynperson, root.daysim, "..", null)
 
-  
+
 //-------------------------------------------------------------------------------------------//
 //endfold
 
@@ -368,15 +368,15 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 		info.spbutton = 1
 		info.spdir = indir.daysim+"6_ShadowPrices\\"
 	endItem
-	
+
 	Radio List 1, 2, 50, 4  Prompt: "Shadow Price" Variable: info.spbutton
 	Radio Button 2, 3  Prompt: "Run Default" do endItem
-	Radio Button 30, same  Prompt: "Select SP Scenario" do on escape goto endhere 
-		info.spscen = ChooseDirectory("Choose a Scenario", {,{"Initial Directory", root.mod+"\\2_Scenarios\\"},}) 
+	Radio Button 30, same  Prompt: "Select SP Scenario" do on escape goto endhere
+		info.spscen = ChooseDirectory("Choose a Scenario", {,{"Initial Directory", root.mod+"\\2_Scenarios\\"},})
 		info.spdir = info.spscen + "\\Outputs\\3_DaySim\\working\\"
 		ShowMessage(info.spdir)
-		endhere: 
-			if info.spscen = null then do 
+		endhere:
+			if info.spscen = null then do
 				info.spbutton = 1
 				info.spdir = indir.daysim+"6_ShadowPrices\\"
 			end
@@ -386,24 +386,24 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 	Button "Run All Steps" 5, 8, 45, 3 do
 	controller.loadpaths(null)
 	HideDbox()
-	RunMacro("Initialize") 
+	RunMacro("Initialize")
 	RunMacro("RunModel")
 	RunMacro("CloseAll")
-	
+
 	//Redraw Map
 	SetSelectDisplay("True")
 	mapname = GetMap()
 	if mapname <> null then do SetMapRedraw(null, "True") RedrawMap() end
-	
+
 	ShowMessage("Model & Post Processor Complete!")
 	ShowDbox()
 	enditem
-	
+
 frame "IndSteps"  1, 12.5, 51.5, 17 prompt: "Single Modules"
-   
+
    Button "step1" 5,  14, 45, 2  Prompt: "01 Initialize"        do on escape goto endhere
 		controller.loadpaths(null)
-		RunMacro("Initialize")    
+		RunMacro("Initialize")
 		RunMacro("TAZ_Process")
 		RunMacro("Network_Process")
 
@@ -414,26 +414,26 @@ frame "IndSteps"  1, 12.5, 51.5, 17 prompt: "Single Modules"
 		tazvec.SRVC = tazvec.PRO + tazvec.OSV
 		DSvec = {tazvec.HH, tazvec.TOTEMP, tazvec.RET, tazvec.SRVC}
 		RunMacro("DScalc", DSvec)
-		{tazvec.TOTACT} = GetDataVectors(mvw.taz + "|", {"TotActs"} , {{"Sort Order",{{mvw.taz+".ID","Ascending"}}}} ) 
+		{tazvec.TOTACT} = GetDataVectors(mvw.taz + "|", {"TotActs"} , {{"Sort Order",{{mvw.taz+".ID","Ascending"}}}} )
 
 		//Accessibility Calculator
 		accvec = {tazvec.HH, tazvec.TOTPOP, tazvec.TOTACT, tazvec.TOTEMP, tazvec.BAS, tazvec.IND, tazvec.RET, tazvec.FDL, tazvec.PRO, tazvec.OSV}
 		RunMacro("accessibility", accvec)
-		{tazvec.GenAccess} = GetDataVectors(mvw.taz + "|", {"GenAccess"} , {{"Sort Order",{{mvw.taz+".ID","Ascending"}}}} ) 
+		{tazvec.GenAccess} = GetDataVectors(mvw.taz + "|", {"GenAccess"} , {{"Sort Order",{{mvw.taz+".ID","Ascending"}}}} )
 
 		//Factor Rural Intrazonals
 		RunMacro("IZ_Factor", skim, tazvec)
 	endhere: endItem
-	
-   Button "step2" 5,  18, 45, 2  Prompt: "02 Run DaySim"   do on escape goto endhere 
-	controller.loadpaths(null)						 
+
+   Button "step2" 5,  18, 45, 2  Prompt: "02 Run DaySim"   do on escape goto endhere
+	controller.loadpaths(null)
 	RunMacro("daysim_setup")
 	RunMacro("daysim_output", "Auto")
 	RunMacro("daysim_output", "Transit")
-   endhere: endItem  
-   
-   Button "step3" 5, 22, 45, 2  Prompt: "03 Run Transit" do on escape goto endhere 
-	controller.loadpaths(null)						 
+   endhere: endItem
+
+   Button "step3" 5, 22, 45, 2  Prompt: "03 Run Transit" do on escape goto endhere
+	controller.loadpaths(null)
    RunMacro("Initialize")
 	RunMacro("CloseAll")
 	CopyFile(root.net + "MODES.dbf"        , indir.hwy + "MODES.dbf")
@@ -443,17 +443,17 @@ frame "IndSteps"  1, 12.5, 51.5, 17 prompt: "Single Modules"
 	RunMacro("TransitSkimming")
 	RunMacro("CloseAll")
 	RunMacro("TransitAssignment")
-	RunMacro("TransitReport") 
-   endhere: endItem  
-   
-   Button "step4" 5, 26, 45, 2  Prompt: "04 Run Assignment"        do on escape goto endhere 
-	controller.loadpaths(null)						 
+	RunMacro("TransitReport")
+   endhere: endItem
+
+   Button "step4" 5, 26, 45, 2  Prompt: "04 Run Assignment"        do on escape goto endhere
+	controller.loadpaths(null)
 	RunMacro("EI_Passenger_Model")
 	RunMacro("Truck_Model")
 	RunMacro("4TCV_Model")
 	RunMacro("UpdateTripTable", od)
 	RunMacro("Assign_Process", 0, 1)
-   endhere: endItem  
+   endhere: endItem
 
 /*
    Button "step5" 5, 30, 15, 2  Prompt: "Test" do on escape goto endhere
@@ -462,47 +462,47 @@ frame "IndSteps"  1, 12.5, 51.5, 17 prompt: "Single Modules"
 */
 
 /*
-   Button "in2" 25,  6.25, 10, 1.5  Prompt: "Inputs" do on escape goto endhere RunDBox("input2") endhere: endItem  
-   Button "in3" 25, 10.25, 10, 1.5  Prompt: "Inputs" do on escape goto endhere RunDBox("input3") endhere: endItem  
-   Button "in4" 25, 14.25, 10, 1.5  Prompt: "Inputs" do on escape goto endhere RunDBox("input4") endhere: endItem  
-   
-   //Button "out1"  40,  2.25, 10, 1.5  Prompt: "Outputs" do on escape goto endhere RunDBox("output1") endhere: endItem   
-   Button "out2"  40,  6.25, 10, 1.5  Prompt: "Outputs" do on escape goto endhere RunDBox("output2") endhere: endItem   
-   Button "out3"  40, 10.25, 10, 1.5  Prompt: "Outputs" do on escape goto endhere RunDBox("output3") endhere: endItem   
-   Button "out4"  40, 14.25, 10, 1.5  Prompt: "Outputs" do on escape goto endhere RunDBox("output4") endhere: endItem   
-*/ 
-	
-  
+   Button "in2" 25,  6.25, 10, 1.5  Prompt: "Inputs" do on escape goto endhere RunDBox("input2") endhere: endItem
+   Button "in3" 25, 10.25, 10, 1.5  Prompt: "Inputs" do on escape goto endhere RunDBox("input3") endhere: endItem
+   Button "in4" 25, 14.25, 10, 1.5  Prompt: "Inputs" do on escape goto endhere RunDBox("input4") endhere: endItem
+
+   //Button "out1"  40,  2.25, 10, 1.5  Prompt: "Outputs" do on escape goto endhere RunDBox("output1") endhere: endItem
+   Button "out2"  40,  6.25, 10, 1.5  Prompt: "Outputs" do on escape goto endhere RunDBox("output2") endhere: endItem
+   Button "out3"  40, 10.25, 10, 1.5  Prompt: "Outputs" do on escape goto endhere RunDBox("output3") endhere: endItem
+   Button "out4"  40, 14.25, 10, 1.5  Prompt: "Outputs" do on escape goto endhere RunDBox("output4") endhere: endItem
+*/
+
+
 //-------------------------------------------------------------------------------------------//
 //endfold
 
   Tab prompt: "Post"
 text "Scenario Year" 3, 2.5
 //fold
-	edit Int "postyear" 20, same, 6 variable: info.pyear format:"0000" do 
+	edit Int "postyear" 20, same, 6 variable: info.pyear format:"0000" do
 	pyear = info.pyear
 	endItem
-		
+
    text "Scenario Path:" 2, 5
-   button "PathBrowse" 40.5, same, 10 Prompt:"Browse" do on escape goto endhere 
+   button "PathBrowse" 40.5, same, 10 Prompt:"Browse" do on escape goto endhere
 		pscendir = ChooseDirectory("Choose the Scenario Folder", {{"Initial Directory", root.mod + "\\2_Scenarios"}})
-   endhere: 
+   endhere:
    endItem
 	text "PathDir" 2.5, 6.5, 48 framed variable: pscendir
 
 	text "Scenario TAZ" 3, 11
-	button "ScenTAZ"  44, 11, 6.5 Prompt:"Browse" do on escape goto endhere ptazfile = ChooseFile({{"Scenario TAZ (*.dbd)", "*.dbd"},{"Standard (*.dbd)","*.dbd"}}, "Choose a Scenario TAZ", {,{"Initial Directory", pscendir+"\\Outputs\\1_TAZ"},}) endhere: endItem	
+	button "ScenTAZ"  44, 11, 6.5 Prompt:"Browse" do on escape goto endhere ptazfile = ChooseFile({{"Scenario TAZ (*.dbd)", "*.dbd"},{"Standard (*.dbd)","*.dbd"}}, "Choose a Scenario TAZ", {,{"Initial Directory", pscendir+"\\Outputs\\1_TAZ"},}) endhere: endItem
 	text "tazfile"      2.5, 12.5, 48 framed variable: Substitute(ptazfile, pscendir, "..", null)
-	
+
 	text "Scenario Network"  3, 15
-	button "ScenNet" 44, 15, 6.5 Prompt:"Browse" do on escape goto endhere plinefile = ChooseFile({{"Scenario Network", "Net*.dbd"}}, "Choose the Scenario Network", {,{"Initial Directory", pscendir+"\\Outputs\\2_Networks"},}) endhere: endItem		
+	button "ScenNet" 44, 15, 6.5 Prompt:"Browse" do on escape goto endhere plinefile = ChooseFile({{"Scenario Network", "Net*.dbd"}}, "Choose the Scenario Network", {,{"Initial Directory", pscendir+"\\Outputs\\2_Networks"},}) endhere: endItem
 	text "masterfile"   2.5, 16.5, 48 framed variable: Substitute(plinefile, pscendir, "..", null)
-	
+
 	text "Trip Matrix"  3, 19
-	button "ScenMtx" 44, 19, 6.5 Prompt:"Browse" do on escape goto endhere ptripmtx = ChooseFile({{"Trip Matrix", "Trip*.mtx"}}, "Choose the TripTable", {,{"Initial Directory", pscendir+"\\Outputs\\6_TripTables"},}) endhere: endItem		
-	text "tripfile"   2.5, 20.5, 48 framed variable: Substitute(ptripmtx, pscendir, "..", null)	
-	
-   Button "post" 5, 30, 45, 3  Prompt: "Run Post Processor" do on escape goto endhere 
+	button "ScenMtx" 44, 19, 6.5 Prompt:"Browse" do on escape goto endhere ptripmtx = ChooseFile({{"Trip Matrix", "Trip*.mtx"}}, "Choose the TripTable", {,{"Initial Directory", pscendir+"\\Outputs\\6_TripTables"},}) endhere: endItem
+	text "tripfile"   2.5, 20.5, 48 framed variable: Substitute(ptripmtx, pscendir, "..", null)
+
+   Button "post" 5, 30, 45, 3  Prompt: "Run Post Processor" do on escape goto endhere
    		if pyear < 2014 then pyear = 2014
 		if pyear > 2045 then pyear = 2045
 		if pyear < 2020 then info.domoves = 0
@@ -510,12 +510,12 @@ text "Scenario Year" 3, 2.5
 		if ptazfile = null then throw("No TAZ Selected!")
 		ptazvw    = RunMacro("AddLayer", ptazfile, "Area")
 		plinevw   = RunMacro("AddLayer", plinefile, "Line")
-		
+
 		modeldir = root.ref
 		parampath = root.paramoth
 		reppath = pscendir+"\\Outputs\\7_Reports\\"
 		if info.domoves = 1 then status = RunProgram("cmd /c mkdir " + pscendir + "\\Outputs\\7_Reports\\MOVES",)
-		RunMacro("Post_Process", ptazvw, plinevw, netparam, parampath, reppath, pyear, info.domoves) 
+		RunMacro("Post_Process", ptazvw, plinevw, netparam, parampath, reppath, pyear, info.domoves)
 		if info.domoves = 1 then RunMacro("Post_MOVES", modeldir, pscendir, ptazvw, plinevw, pyear, ptripmtx)
 		ShowMessage("Post Processor Complete!")
 	endhere: endItem
@@ -530,21 +530,21 @@ Macro "Initialize"
 shared root, info, indir, outdir, mvw
 shared net, skim, flow, od, post, daysim
 shared netparam, dsparam, accparam
-		
+
 	//Create Scenario/Input/Output folders
 	dirinfo = GetDirectoryInfo(root.scen, "Directory")
 	if dirinfo = null then status = RunProgram("cmd /c mkdir " + root.scen,)
-	
+
 	for i = 1 to indir.length do
 		dirinfo = GetDirectoryInfo(indir[i][2], "Directory")
 		if dirinfo = null then status = RunProgram("cmd /c mkdir " + indir[i][2],)
 	end
-	
+
 	for i = 1 to outdir.length do
 		dirinfo = GetDirectoryInfo(outdir[i][2], "Directory")
 		if dirinfo = null then status = RunProgram("cmd /c mkdir " + outdir[i][2],)
 	end
-	
+
 	if mvw.scnfile <> null then do
 		mvw.linefile = ChooseFileName({{"Standard", "*.dbd"}}, "Choose name for new network file", {,{"Initial Directory", indir.hwy},{"Suggested Name","Network_"+info.scenname}, })
 		RunMacro("m2a", mvw.masternet, mvw.scnfile, mvw.linefile, mvw.rtsfile)
@@ -554,12 +554,12 @@ shared netparam, dsparam, accparam
 	else if mvw.scnfile = null then do
 		mvw.linefile = mvw.masternet
 	end
-	
+
 	//Sort out the input & output files
 		tazpath = SplitPath(mvw.tazfile)
 		intf = indir.zone+tazpath[3]+tazpath[4]
 		outtf = outdir.zone+tazpath[3]+tazpath[4]
-	
+
 		linepath = SplitPath(mvw.linefile)
 		inlf = indir.hwy+linepath[3]+linepath[4]
 		outlf = outdir.hwy+linepath[3]+linepath[4]
@@ -568,27 +568,27 @@ shared netparam, dsparam, accparam
 	//Write Inputs & Outputs
 		if intf <> mvw.tazfile then CopyDatabase(mvw.tazfile, intf)
 		if outtf <> mvw.tazfile then CopyDatabase(mvw.tazfile, outtf)
-		
+
 		if inlf <> mvw.linefile then CopyDatabase(mvw.linefile, inlf)
 		if outlf <> mvw.linefile then CopyDatabase(mvw.linefile, outlf)
-	
+
 	//Route System
 		if mvw.rtsfile <> null then do
 			rtspath = SplitPath(mvw.rtsfile)
 			inrts = indir.hwy + rtspath[3]+rtspath[4]	//created in m2a
-	
+
 			mvw.rtsfile = RunMacro("UpdateRTS", inrts, outlf)
 			rsinfo = GetRouteSystemInfo(mvw.rtsfile)
 			mvw.rts = rsinfo[3].Name
-			
+
 			if GetFileInfo(outupx) <> null then DeleteFile(outupx)	//Prevents Transit update dialog
 		end
-	
+
 	mvw.tazfile  = outtf
 	mvw.linefile = outlf
 	tazpath    = SplitPath(mvw.tazfile)
 	mvw.tazbin = tazpath[1] + tazpath[2] + tazpath[3] + ".bin"
-	
+
 	//walkfile = "C:\\TSTM_V3\\Data\\AllStreets\\TN_StreetCenterline.dbd"
 	//Model Officially Starts Here!
 	RunMacro("WriteLog", "RSG Chattanooga Model : "+(info.timestamp))
@@ -598,28 +598,28 @@ shared netparam, dsparam, accparam
 		mvw.line   = RunMacro("AddLayer", mvw.linefile, "Line")
 		mvw.node   = GetNodeLayer(mvw.line)
 		SetLayerVisibility(mvw.node, "False")
-	
+
 	//Selection Sets
 		SetView(mvw.line)
 		ModelSet   = "IN_HIGHWAY > 0"
 		//TransitSet = "IN_TRANSIT > 0"
 		//WalkSet    = "IN_WALK > 0"
-		
+
 		n = SelectByQuery("Street", "Several", "Select * where "+ModelSet,)
 		//n = SelectByQuery("Transit", "Several", "Select * where "+TransitSet,)
 		//n = SelectByQuery("Walk", "Several", "Select * where "+WalkSet,)
-		
+
 		SetView(mvw.node)
 		CentroidSet = "Centroid = 1"
 		n = SelectByQuery("Centroids", "Several", "Select * where "+CentroidSet,)
-	
+
 	//Copy Files to Model Input/Output
 		//CopyFile(root.pivot + "Seed_AirSage_Mar01.mtx", od.seed)
 		CopyFile(root.pivot + "4TCV_Seed.mtx", od.cvseed)
 		CopyFile(root.pivot + "Trk_Seed.mtx", od.trkseed)
 		//CopyFile(root.pivot + "Seed_R5.mtx", od.seed)
 		CopyFile(root.pivot + "External_Counts_"+i2s(info.modyear)+".dbf", od.countfile)
-		
+
 		CopyFile(root.pivot + "EI_Passenger.mtx", od.eiseed)
 		CopyFile(root.pivot + "EE_"+i2s(info.modyear)+".mtx", od.ee)
 endMacro
@@ -637,7 +637,7 @@ shared tazvec, linevec
 	//Intro TAZ & Network Processes
 	RunMacro("TAZ_Process")
 	RunMacro("Network_Process")
-	
+
 	RunMacro("WriteLog", "Network Skims & Accessibility")
 	RunMacro("skim_setup", net.assign, skim.default, null)
 
@@ -645,12 +645,12 @@ shared tazvec, linevec
 	tazvec.SRVC = tazvec.PRO + tazvec.OSV
 	DSvec = {tazvec.HH, tazvec.TOTEMP, tazvec.RET, tazvec.SRVC}
 	RunMacro("DScalc", DSvec)
-	{tazvec.TOTACT} = GetDataVectors(mvw.taz + "|", {"TotActs"} , {{"Sort Order",{{mvw.taz+".ID","Ascending"}}}} ) 
-	
+	{tazvec.TOTACT} = GetDataVectors(mvw.taz + "|", {"TotActs"} , {{"Sort Order",{{mvw.taz+".ID","Ascending"}}}} )
+
 //Accessibility Calculator
 	accvec = {tazvec.HH, tazvec.TOTPOP, tazvec.TOTACT, tazvec.TOTEMP, tazvec.BAS, tazvec.IND, tazvec.RET, tazvec.FDL, tazvec.PRO, tazvec.OSV}
 	RunMacro("accessibility", accvec)
-	{tazvec.GenAccess} = GetDataVectors(mvw.taz + "|", {"GenAccess"} , {{"Sort Order",{{mvw.taz+".ID","Ascending"}}}} ) 
+	{tazvec.GenAccess} = GetDataVectors(mvw.taz + "|", {"GenAccess"} , {{"Sort Order",{{mvw.taz+".ID","Ascending"}}}} )
 
 //Factor Rural Intrazonals
 	RunMacro("IZ_Factor", skim, tazvec)
@@ -661,7 +661,7 @@ shared tazvec, linevec
 	RunMacro("EI_Passenger_Model")
 	RunMacro("Truck_Model")
 	RunMacro("4TCV_Model")
-	
+
 
 	//Transit Skimming
 	RunMacro("WriteLog", "Running Transit Skims")
@@ -672,10 +672,10 @@ shared tazvec, linevec
 	//CopyFile(info.movetabdcb, indir.hwy + "MovementTable.dcb")
 	RunMacro("TransitSkimming")
 	RunMacro("CloseAll")
-	
+
 	mvw.taz    = RunMacro("AddLayer", mvw.tazfile, "Area")
 	mvw.line   = RunMacro("AddLayer", mvw.linefile, "Line")
-	mvw.node   = GetNodeLayer(mvw.line)	
+	mvw.node   = GetNodeLayer(mvw.line)
 
 while info.prmseam > 1 and info.prmsepm > 1 and info.prmseop > 1 and info.iter < 4 do
 	RunMacro("WriteLog", "Start Feedback Iteration "+i2s(info.iter))
@@ -691,7 +691,7 @@ while info.prmseam > 1 and info.prmsepm > 1 and info.prmseop > 1 and info.iter <
 	RunMacro("WriteLog", "DaySim Complete")
 	RunMacro("daysim_output", "Auto")
 	RunMacro("daysim_output", "Transit")
-	
+
 //Process Assignment
 	RunMacro("UpdateTripTable", od)
 
@@ -706,16 +706,16 @@ while info.prmseam > 1 and info.prmsepm > 1 and info.prmseop > 1 and info.iter <
 	RunMacro("WriteLog", "Update AM Skim")
 	RunMacro("skim_setup", net.assign, skim.am, "AM")
 	CopyFile(skim.am, outdir.hwy + "Highway_Skim_AM_I"+i2s(info.iter)+".mtx")
-	
+
 	RunMacro("WriteLog", "Update PM Skim")
 	RunMacro("skim_setup", net.assign, skim.pm, "PM")
 	CopyFile(skim.pm, outdir.hwy + "Highway_Skim_PM_I"+i2s(info.iter)+".mtx")
-	
+
 	RunMacro("WriteLog", "Update OP Skim")
 	RunMacro("skim_setup", net.assign, skim.op, "OP")
 	CopyFile(skim.op, outdir.hwy + "Highway_Skim_OP_I"+i2s(info.iter)+".mtx")
 
-	
+
 	if info.iter > 0 then do
 		RunMacro("WriteLog", "Feedback Statistics")
 		//od.lasttrip = outdir.tables + "TripTable_I"+i2s(info.iter-1)+".mtx"
@@ -725,11 +725,11 @@ while info.prmseam > 1 and info.prmsepm > 1 and info.prmseop > 1 and info.iter <
 		skim.lastam = outdir.hwy + "Highway_Skim_AM_I"+i2s(info.iter-1)+".mtx"
 		skim.lastpm = outdir.hwy + "Highway_Skim_PM_I"+i2s(info.iter-1)+".mtx"
 		skim.lastop = outdir.hwy + "Highway_Skim_OP_I"+i2s(info.iter-1)+".mtx"
-		
+
 		{info.prmsdam, info.prmseam} = RunMacro("Feedback", skim.thisam, skim.lastam, "AM")
 		{info.prmsdpm, info.prmsepm} = RunMacro("Feedback", skim.thispm, skim.lastpm, "PM")
 		{info.prmsdop, info.prmseop} = RunMacro("Feedback", skim.thisop, skim.lastop, "OP")
-		
+
 		ptr = OpenFile(info.log, "a")
 		ar_log = { "Iteration "+i2s(info.iter)    ,
 					"AM_PRMSD: "+r2s(info.prmsdam),
@@ -740,7 +740,7 @@ while info.prmseam > 1 and info.prmsepm > 1 and info.prmseop > 1 and info.iter <
 					"OP_PRMSE: "+r2s(info.prmseop)
 				}
 		WriteArray(ptr, ar_log)
-		CloseFile(ptr)      
+		CloseFile(ptr)
 	end
 
 
@@ -763,7 +763,7 @@ end
 RunMacro("CloseAll")
 RunMacro("WriteLog", "Transit Assignment")
 RunMacro("TransitAssignment")
-RunMacro("TransitReport") 
+RunMacro("TransitReport")
 RunMacro("WriteLog", "Transit Complete")
 
 RunMacro("CloseAll")
@@ -792,13 +792,13 @@ shared tazvec, linevec
 	//RunMacro("addfields", mvw.taz, {"INCHH_QRMTG"}, {"r"})
 	//exp.QRINC  = CreateExpression(mvw.taz, "QRINC" , "HHINC/1000", null)
 	//SetRecordsValues(null, {{"INCHH_QRMTG"}, null}, "Formula", {"QRINC"},null)
-	
+
 	arr = GetExpressions(mvw.taz)
 	for fld = 1 to arr.length do DestroyExpression(mvw.taz+"."+arr[fld]) end
-	
-	{tazvec.ID, tazvec.TAZArea, tazvec.HH, tazvec.TOTPOP,  tazvec.BAS, tazvec.IND , tazvec.RET , tazvec.FDL , tazvec.PRO , tazvec.OSV} = GetDataVectors(mvw.taz+"|", 
+
+	{tazvec.ID, tazvec.TAZArea, tazvec.HH, tazvec.TOTPOP,  tazvec.BAS, tazvec.IND , tazvec.RET , tazvec.FDL , tazvec.PRO , tazvec.OSV} = GetDataVectors(mvw.taz+"|",
 	{"ID"     , "Area"        , "HH"     ,"TOTPOP"      , "Basic_Emp","Indust_Emp","Retail_Emp","FoodLd_Emp","ProSrv_Emp","OthSrv_Emp"}, {{"Sort Order",{{"ID","Ascending"}}}, {"Missing as Zero", "True"}})
-	
+
 	//Calculate TOTEMP, PopDens, EmpDens
 	RunMacro("addfields", mvw.taz, {"Total_Emp", "TotActs","ACTDIV","EmpDens","PopDens"}, {r,r,r,r,r})
 	 tazvec.TOTEMP = tazvec.BAS + tazvec.IND + tazvec.RET + tazvec.FDL + tazvec.PRO + tazvec.OSV
@@ -817,28 +817,28 @@ shared tazvec, linevec
 	SetView(mvw.line)
 
 	//Line Layer Vectors
-	{linevec.ID, linevec.Leng, linevec.Dir, linevec.FC , linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.Divided, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol} = GetDataVectors(mvw.line + "|", 
+	{linevec.ID, linevec.Leng, linevec.Dir, linevec.FC , linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.Divided, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol} = GetDataVectors(mvw.line + "|",
 	{"ID"      , "Length"    ,"Dir"       , "FUNCCLASS","Access"       , "AB_LANES"      , "BA_LANES"      , "RAMP"      , "MEDIAN"      , "DIVIDED"      , "TAZID"      ,"TWOTURNLN"      ,"LN_Width"      ,"RS_Width"      ,"SPD_LMT"      , "PSpeed_Adj"      , "AUXLANE"      , "WEAVELANE"      , "MTN_TERRA"       , "AB_BaseVol"      , "BA_BaseVol"}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
-	
+
 	//RunMacro("IntrsctnDens")
-	
+
 	controlvec = {linevec.Dir, linevec.AB_Lanes, linevec.BA_Lanes, linevec.FC, linevec.Ramp}
 		RunMacro("controls", controlvec)
-	{linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync} = GetDataVectors(mvw.line + "|", {"A_Control","B_Control","A_Priority","B_Priority","A_Synch","B_Synch"} , {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} ) 
-	
+	{linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync} = GetDataVectors(mvw.line + "|", {"A_Control","B_Control","A_Priority","B_Priority","A_Synch","B_Synch"} , {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
+
 
 	spdfld = {linevec.Leng, linevec.Dir, linevec.FC, linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol}
 		RunMacro("spdcap", spdfld)
 		RunMacro("gencost_setup")
-		
-	if info.iter = 0 then do 
+
+	if info.iter = 0 then do
 		RunMacro("addfields", mvw.line, {"AB_AM_Time","BA_AM_Time","AB_PM_Time","BA_PM_Time","AB_OP_Time","BA_OP_Time","AB_CTime","BA_CTime"}, {"r","r","r","r","r","r","r","r"})
 		SetRecordsValues(null, {{"AB_AM_Time","BA_AM_Time","AB_PM_Time","BA_PM_Time","AB_OP_Time","BA_OP_Time","AB_CTime","BA_CTime"}, null}, "Formula", {"FFTime","FFTime","FFTime","FFTime","FFTime","FFTime","FFTime","FFTime"},null)
 		RunMacro("create_hnet")
 	end
-		
+
 		if info.iter > 0 then RunMacro("update_hnet", 1)
-		
+
 endMacro
 
 Macro "IZ_Factor" (skim, tazvec)
@@ -853,9 +853,9 @@ endMacro
 Macro "UpdateTripTable" (od)
 	shared root
 		//Join OD matrices into TripTable.mtx for assignment
-		
+
 		CopyFile(od.daysim, od.triptable)
-		
+
 		odmtx = OpenMatrix(od.triptable, "Auto")
 		odname = RenameMatrix(odmtx, "TripTable")
 		odfinal = CreateMatrixCurrencies(odmtx,null,null,null)
@@ -866,7 +866,7 @@ Macro "UpdateTripTable" (od)
 			odfinal.AM_Pass := odfinal.AM_Pass + nz(ei.AM_EIPass)
 			odfinal.PM_Pass := odfinal.PM_Pass + nz(ei.PM_EIPass)
 			odfinal.OP_Pass := odfinal.OP_Pass + nz(ei.OP_EIPass)
-		
+
 		//od.cv = root.pivot + "4TCV_Seed.mtx"
 		cvOD = OpenMatrix(od.cv,)
 		cv = CreateMatrixCurrencies(cvOD,null,null,null)
@@ -877,12 +877,12 @@ Macro "UpdateTripTable" (od)
 		//od.trk = root.pivot + "Trk_Seed.mtx"
 		trkOD = OpenMatrix(od.trk, "Auto")
 		trks = CreateMatrixCurrencies(trkOD,null,null,null)
-			 odfinal.AM_SUT := trks.AM_SUT 
-			 odfinal.PM_SUT := trks.PM_SUT 
-			 odfinal.OP_SUT := trks.OP_SUT 
-			 odfinal.AM_MUT := trks.AM_MUT 
-			 odfinal.PM_MUT := trks.PM_MUT 
-			 odfinal.OP_MUT := trks.OP_MUT 
+			 odfinal.AM_SUT := trks.AM_SUT
+			 odfinal.PM_SUT := trks.PM_SUT
+			 odfinal.OP_SUT := trks.OP_SUT
+			 odfinal.AM_MUT := trks.AM_MUT
+			 odfinal.PM_MUT := trks.PM_MUT
+			 odfinal.OP_MUT := trks.OP_MUT
 
 		odfinal.PASS := odfinal.AM_Pass + odfinal.PM_Pass + odfinal.OP_Pass
 		odfinal.SUT := odfinal.AM_SUT + odfinal.PM_SUT + odfinal.OP_SUT
@@ -908,7 +908,7 @@ shared netparam, dsparam, accparam
 	RunMacro("addfields", mvw.line, {"AB_OP_SUT"    , "BA_OP_SUT"    , "Tot_OP_SUT"} , {"r","r","r"})
 	RunMacro("addfields", mvw.line, {"AB_OP_MUT"    , "BA_OP_MUT"    , "Tot_OP_MUT"} , {"r","r","r"})
 	RunMacro("addfields", mvw.line, {"AB_OP_TotFlow", "BA_OP_TotFlow", "OP_TotFlow"} , {"r","r","r"})
-	
+
 	SetRecordsValues(mvw.line+"|", {{"AB_AM_Auto"   , "BA_AM_Auto"   , "Tot_AM_Auto"}, null}, "Value", {0,0,0}, null)
 	SetRecordsValues(mvw.line+"|", {{"AB_AM_SUT"    , "BA_AM_SUT"    , "Tot_AM_SUT"} , null}, "Value", {0,0,0}, null)
 	SetRecordsValues(mvw.line+"|", {{"AB_AM_MUT"    , "BA_AM_MUT"    , "Tot_AM_MUT"} , null}, "Value", {0,0,0}, null)
@@ -921,7 +921,7 @@ shared netparam, dsparam, accparam
 	SetRecordsValues(mvw.line+"|", {{"AB_OP_SUT"    , "BA_OP_SUT"    , "Tot_OP_SUT"} , null}, "Value", {0,0,0}, null)
 	SetRecordsValues(mvw.line+"|", {{"AB_OP_MUT"    , "BA_OP_MUT"    , "Tot_OP_MUT"} , null}, "Value", {0,0,0}, null)
 	SetRecordsValues(mvw.line+"|", {{"AB_OP_TotFlow", "BA_OP_TotFlow", "OP_TotFlow"} , null}, "Value", {0,0,0}, null)
-	
+
 	RunMacro("addfields", mvw.line, {"AB_Auto"   , "BA_Auto"  , "Tot_Auto"}, {"r","r","r"})
 	RunMacro("addfields", mvw.line, {"AB_SUT"    , "BA_SUT"   , "Tot_SUT"} , {"r","r","r"})
 	RunMacro("addfields", mvw.line, {"AB_MUT"    , "BA_MUT"   , "Tot_MUT"} , {"r","r","r"})
@@ -943,7 +943,7 @@ shared netparam, dsparam, accparam
 	SetRecordsValues(mvw.line+"|", {{"AB_AMPrePCE","BA_AMPrePCE","AMPrePCE"}, null}, "Value", {0,0,0}, null)
 	SetRecordsValues(mvw.line+"|", {{"AB_PMPrePCE","BA_PMPrePCE","PMPrePCE"}, null}, "Value", {0,0,0}, null)
 	SetRecordsValues(mvw.line+"|", {{"AB_OPPrePCE","BA_OPPrePCE","OPPrePCE"}, null}, "Value", {0,0,0}, null)
-	
+
  //if tod = 1 then RunMacro("MultiClassPreloadSetup")
  RunMacro("MultiClassTODPreloadSetup")
  RunMacro("PCEFlowCalc")
@@ -982,7 +982,7 @@ Macro "Feedback" (newod, lastod, tod)
 	oldmat = OpenMatrix(lastod, "Auto")
 	//newmc = CreateMatrixCurrencies(newmat, , ,)
 	//oldmc = CreateMatrixCurrencies(oldmat, , ,)
-	
+
 	if tod = "AM" then do
 		newtimemc = RunMacro("CheckMatrixCore", newmat, "AMTime (Skim)", ,)
 		oldtimemc = RunMacro("CheckMatrixCore", oldmat, "AMTime (Skim)", ,)
@@ -995,28 +995,28 @@ Macro "Feedback" (newod, lastod, tod)
 		newtimemc = RunMacro("CheckMatrixCore", newmat, "OPTime (Skim)", ,)
 		oldtimemc = RunMacro("CheckMatrixCore", oldmat, "OPTime (Skim)", ,)
 	end
-	
+
 	oldstats = MatrixStatistics(oldmat, )
-	
+
 	diffmc = RunMacro("CheckMatrixCore", newmat, "SquaredDiff", ,)
 	diffmc := Pow(newtimemc - oldtimemc,2)
-	
+
 	matstats = MatrixStatistics(newmat, )
 	sse  = matstats.SquaredDiff.Sum
 	tcnt = matstats.SquaredDiff.Count
-	
+
 	if tod = "AM" then sv = matstats.[AMTime (Skim)].Sum
 	if tod = "PM" then sv = matstats.[PMTime (Skim)].Sum
 	if tod = "OP" then sv = matstats.[OPTime (Skim)].Sum
-	
+
 	prmsd = Pow(sse/tcnt,0.5) / (sv/tcnt)
-	
+
 	rmsestats = MatrixRMSE(newtimemc, oldtimemc)
 	//rmsestats.Observations
 	//rmsestats.RMSE
 	//rmsestats.RelRMSE
 	//rmsestats.PercentDiff
-	
+
 Return({prmsd, rmsestats.RelRMSE})
 endMacro
 
@@ -1028,7 +1028,7 @@ timestamp = FormatDateTime(logtime, "MMMdd_HHmm")
 ptr = OpenFile(info.log, "a")
 ar_log = { timestamp+": "+msg }
 WriteArray(ptr, ar_log)
-CloseFile(ptr) 
+CloseFile(ptr)
 
 endMacro
 
