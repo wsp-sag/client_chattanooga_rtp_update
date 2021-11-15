@@ -57,8 +57,8 @@ Class "CHCRPA.GUIController"
 		info.prmseam = 100
 		info.prmsepm = 100
 		info.prmseop = 100
-		info.baseyear = 2014
-		info.modyear = 2014
+		info.baseyear = 2019
+		info.modyear = 2019
 		info.cores = 16
 		info.pyear = 2045
 		info.domoves = 1
@@ -503,8 +503,8 @@ text "Scenario Year" 3, 2.5
 	text "tripfile"   2.5, 20.5, 48 framed variable: Substitute(ptripmtx, pscendir, "..", null)
 
    Button "post" 5, 30, 45, 3  Prompt: "Run Post Processor" do on escape goto endhere
-   		if pyear < 2014 then pyear = 2014
-		if pyear > 2045 then pyear = 2045
+   		if pyear < 2019 then pyear = 2019
+		if pyear > 2050 then pyear = 2050
 		if pyear < 2020 then info.domoves = 0
 		if plinefile = null then throw("No Network Selected!")
 		if ptazfile = null then throw("No TAZ Selected!")
@@ -817,8 +817,40 @@ shared tazvec, linevec
 	SetView(mvw.line)
 
 	//Line Layer Vectors
-	{linevec.ID, linevec.Leng, linevec.Dir, linevec.FC , linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.Divided, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol} = GetDataVectors(mvw.line + "|",
-	{"ID"      , "Length"    ,"Dir"       , "FUNCCLASS","Access"       , "AB_LANES"      , "BA_LANES"      , "RAMP"      , "MEDIAN"      , "DIVIDED"      , "TAZID"      ,"TWOTURNLN"      ,"LN_Width"      ,"RS_Width"      ,"SPD_LMT"      , "PSpeed_Adj"      , "AUXLANE"      , "WEAVELANE"      , "MTN_TERRA"       , "AB_BaseVol"      , "BA_BaseVol"}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
+	{linevec.ID, linevec.Leng, linevec.Dir, linevec.FCCLASS , linevec.FCAREA, linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.Divided, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol} = GetDataVectors(mvw.line + "|",
+	{"ID"      , "Length"    ,"Dir"       , "FUNCCLASS",      "DOT_FCAREA",   "Access"       , "AB_LANES"      , "BA_LANES"      , "RAMP"      , "MEDIAN"      , "DIVIDED"      , "TAZID"      ,"TWOTURNLN"      ,"LN_Width"      ,"RS_Width"      ,"SPD_LMT"      , "PSpeed_Adj"      , "AUXLANE"      , "WEAVELANE"      , "MTN_TERRA"       , "AB_BaseVol"      , "BA_BaseVol"}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
+
+  // Calculate NEW funcclass(FUNCNEW) based on FHWA rewised functional class code and TPO designated urbanized areas--YS 2/17/2021
+	RunMacro("addfields", mvw.line, {"FUNCNEW"}, {"i"})
+
+   FCCLASS = linevec.FCCLASS
+   FCAREA = linevec.FCAREA
+
+	 FUNCNEW = if FCCLASS = 1 and FCAREA = 1 then 1
+	 else if FCCLASS = 1 and FCAREA = 2 then 11
+
+	 else if (FCCLASS = 2 or FCCLASS = 3) and FCAREA = 1 then 2
+	 else if FCCLASS = 2 and FCAREA = 2 then 12
+	 else if FCCLASS = 3 and FCAREA = 2 then 14
+
+	 else if FCCLASS = 4 and FCAREA = 1 then 6
+	 else if FCCLASS = 4 and FCAREA = 2 then 16
+
+	 else if FCCLASS = 5 and FCAREA = 1 then 7
+	 else if (FCCLASS = 5 or FCCLASS = 6) and FCAREA = 2 then 17
+	 else if FCCLASS = 6 and FCAREA = 1 then 8
+
+	 else if FCCLASS = 7 and FCAREA = 1 then 9
+	 else if FCCLASS = 7 and FCAREA = 2 then 19
+
+	 else if FCCLASS = 20 then 20
+
+	 else FCCLASS
+
+   SetDataVector(mvw.line + "|", "FUNCNEW", Nz(FUNCNEW), {{"Sort Order",{{"ID","Ascending"}}}})
+  // Add I24_Cal to ajust capacity on I24--YS 10/29/2021
+	{linevec.ID, linevec.Leng, linevec.Dir, linevec.I24_Cal, linevec.FC ,linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.Divided, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol} = GetDataVectors(mvw.line + "|",
+	{"ID"      , "Length"    ,"Dir"       , "I24_Cal", "FUNCNEW",  "Access"       , "AB_LANES"      , "BA_LANES"      , "RAMP"      , "MEDIAN"      , "DIVIDED"      , "TAZID"      ,"TWOTURNLN"      ,"LN_Width"      ,"RS_Width"      ,"SPD_LMT"      , "PSpeed_Adj"      , "AUXLANE"      , "WEAVELANE"      , "MTN_TERRA"       , "AB_BaseVol"      , "BA_BaseVol"}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
 
 	//RunMacro("IntrsctnDens")
 
@@ -826,8 +858,8 @@ shared tazvec, linevec
 		RunMacro("controls", controlvec)
 	{linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync} = GetDataVectors(mvw.line + "|", {"A_Control","B_Control","A_Priority","B_Priority","A_Synch","B_Synch"} , {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
 
-
-	spdfld = {linevec.Leng, linevec.Dir, linevec.FC, linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol}
+	// Add I24_Cal to ajust capacity on I24--YS 10/29/2021
+	spdfld = {linevec.Leng, linevec.Dir, linevec.I24_Cal, linevec.FC, linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.ACtrl, linevec.BCtrl, linevec.APrio, linevec.BPrio, linevec.ASync, linevec.BSync, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol}
 		RunMacro("spdcap", spdfld)
 		RunMacro("gencost_setup")
 
@@ -838,6 +870,8 @@ shared tazvec, linevec
 	end
 
 		if info.iter > 0 then RunMacro("update_hnet", 1)
+
+	// RunMacro("dropfields", mvw.line, {"FUNCNEW"})
 
 endMacro
 
@@ -962,7 +996,7 @@ TotTrk = CreateExpression(mvw.line, "TotTrk" , "Tot_SUT + Tot_MUT", null)
 SetRecordsValues(null, {{"AB_TRKFlow","BA_TRKFlow","Tot_TRKFlow"}, null}, "Formula", {"ABTrk","BATrk","TotTrk"},null)
 
 //Reporting
-if info.modyear = 2014 then do
+if info.modyear = 2019 then do // update 2014 to 2019 --YS
 	{calSUT.type , calSUT.vol , calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
 	RunMacro("CalRep", 0, calSUT)
 

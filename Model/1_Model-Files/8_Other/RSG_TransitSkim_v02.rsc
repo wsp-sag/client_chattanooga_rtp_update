@@ -168,7 +168,8 @@ Macro "PrepareInputs"
     if !ret_value then goto quit
 
     Opts = null
-    Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where IN_WALK=1 | DOT_FC=98" }    // Walk links and also centroids
+    // replace DOT_FC with FUNCCLASS(DOT_FC was renamed as "FUNCCLASS" in the new network) --YS 3/31/2021
+    Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where IN_WALK=1 | FUNCCLASS=98" }    // Walk links and also centroids
     Opts.Global.Fields = {"[WalkLink]","[WalkTime]"}
     Opts.Global.Method = "Formula"
     Opts.Global.Parameter = {"98","[" + llayer + "].Length*60/"+string(WalkSpeed)}
@@ -177,7 +178,7 @@ Macro "PrepareInputs"
 
     // Cap walktime on long centroid connectors to take care of huge zones in the suburbs
     Opts = null
-    Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where DOT_FC=98 & Length>0.5"}    // centroid connectors longer than 0.5 miles
+    Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where FUNCCLASS=98 & Length>0.5"}    // centroid connectors longer than 0.5 miles
     Opts.Global.Fields = {"[WalkTime]"}
     Opts.Global.Method = "Formula"
     Opts.Global.Parameter = {"0.5*60/"+string(WalkSpeed)}     // walk time no longer than 0.5 mile walk
@@ -185,7 +186,7 @@ Macro "PrepareInputs"
     if !ret_value then goto quit
 
     Opts = null
-    Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where DOT_FC<=2 | Ramp=1"}    // freeways, ramps
+    Opts.Input.[Dataview Set] = {db_linklyr, llayer, "Selection", "Select * where FUNCCLASS<=2 | Ramp=1"}    // freeways, ramps
     Opts.Global.Fields = {"[LinkTTF]"}
     Opts.Global.Method = "Value"
     Opts.Global.Parameter = {2}

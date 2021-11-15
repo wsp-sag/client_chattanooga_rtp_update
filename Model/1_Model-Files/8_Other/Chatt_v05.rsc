@@ -102,7 +102,7 @@ Macro "spdcap" (linearr)
      // ------------ PREPROCESS ------------
      // Read in input data field vectors
 
-	{Leng, Dir, FC, Access, AB_Lanes, BA_Lanes, Ramp, Median, TAZID, TurnLane, LnWidth, RsWidth, PSpeed, PSpeedAdj, ACtrl, BCtrl, APrio, BPrio, ASync, BSync, auxlane, weavelane, truckclimb, ab_basevol, ba_basevol} = linearr
+	{Leng, Dir, I24_Cal, FC, Access, AB_Lanes, BA_Lanes, Ramp, Median, TAZID, TurnLane, LnWidth, RsWidth, PSpeed, PSpeedAdj, ACtrl, BCtrl, APrio, BPrio, ASync, BSync, auxlane, weavelane, truckclimb, ab_basevol, ba_basevol} = linearr
 
 	PSpeed = if PSpeedAdj <> null then PSpeedAdj else PSpeed
 
@@ -161,7 +161,6 @@ Macro "spdcap" (linearr)
 
      SetDataVectors(mvw.line + "|", {{"FFSPEED",ffspeed},{"FFTIME",fftime}}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}})
      CloseView(jnvw)
-
 
      // ------------ INITIAL CAPACITY ESTIMATION (based on HCM 2000, neglecting control delay) ------------
 	 // ------------ See SB notes for comparison to HCM 2010 ------------
@@ -297,8 +296,6 @@ Macro "spdcap" (linearr)
 
      SetDataVectors(mvw.line + "|", {{"PKHRLNCAP",pkhrlncap}}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}})
 
-
-
      // ------------ UNIFORM CONTROL DELAY (based on HCM 2000) ------------
 
      clength = if (ACtrl = 1 or BCtrl = 1) then netparam.CLEN.value     // assume cycle length 90 sec. for all signals
@@ -351,12 +348,14 @@ Macro "spdcap" (linearr)
      ba_f_delay = min(1,(-460 + 745*log(ba_spdratio*ffspeed))/(-460 + 745*log(ffspeed)))
 
      // adjusted peak hour lane capacities
-     ab_pkhrlncap = nz(pkhrlncap) * ab_f_delay
-     ba_pkhrlncap = nz(pkhrlncap) * ba_f_delay
+     // ab_pkhrlncap = nz(pkhrlncap) * ab_f_delay
+     // ba_pkhrlncap = nz(pkhrlncap) * ba_f_delay
 
-
-
-
+     // peak hour capacities  Ajust capacity on I24 --YS
+     ab_pkhrlncap = if (I24_Cal = 1) then 1.3*nz(pkhrlncap)*ab_f_delay else
+                    if (I24_Cal = 2) then 1.6*nz(pkhrlncap)*ab_f_delay else nz(pkhrlncap)*ab_f_delay
+     ba_pkhrlncap = if (I24_Cal = 1) then 1.3*nz(pkhrlncap)*ba_f_delay else
+                    if (I24_Cal = 2) then 1.6*nz(pkhrlncap)*ba_f_delay else nz(pkhrlncap)*ba_f_delay
 
      // peak hour capacities
      ab_pkcap = AB_Lanes * ab_pkhrlncap
@@ -803,8 +802,9 @@ ext.delayfac = netparam.extpdelay.value
 */
 
 //Processing
+// Calculate NEW funcclass(FUNCNEW) based on FHWA rewised functional class code and TPO designated urbanized areas--YS 2/17/2021
 {id  , link.leng, link.fc    , link.ab_fft , link.ba_fft , link.waterx, link.rrx, ab_brpa  , ba_bpra  , ab_bprb  , ba_bprb  , ab_amcap  , ba_amcap  , ab_pmcap  , ba_pmcap  , ab_opcap  , ba_opcap  ,AB_DlyCap  , BA_DlyCap} = GetDataVectors(mvw.line + "|",
-{"ID", "Length" , "FUNCCLASS", "AB_AFFTIME", "BA_AFFTIME", "WATER_X"  , "RAIL_X", "AB_BPRA", "BA_BPRA", "AB_BPRB", "BA_BPRB", "AB_AMCAP", "BA_AMCAP", "AB_PMCAP", "BA_PMCAP", "AB_OPCAP", "BA_OPCAP","AB_DlyCap", "BA_DlyCap"}                              , {{"Sort Order",{{"ID","Ascending"}}}})
+{"ID", "Length" , "FUNCNEW", "AB_AFFTIME", "BA_AFFTIME", "WATER_X"  , "RAIL_X", "AB_BPRA", "BA_BPRA", "AB_BPRB", "BA_BPRB", "AB_AMCAP", "BA_AMCAP", "AB_PMCAP", "BA_PMCAP", "AB_OPCAP", "BA_OPCAP","AB_DlyCap", "BA_DlyCap"}                              , {{"Sort Order",{{"ID","Ascending"}}}})
 if info.iter = 0 then {link.ab_tt, link.ba_tt} = {link.ab_fft, link.ba_fft}
 if info.iter > 0 then {link.ab_tt, link.ba_tt} = GetDataVectors(mvw.line + "|", {"AB_CTime", "BA_CTime"}, {{"Sort Order",{{"ID","Ascending"}}}})
 
@@ -814,7 +814,7 @@ if info.iter = 0 then do
 			{
 			{"ID"         , "Integer", 16, null, "No"},
 			{"Length"     , "Real"   , 12, 2   , "No"},
-			{"FUNCCLASS"  , "Integer", 16, null, "No"},
+			{"FUNCNEW"  , "Integer", 16, null, "No"},
 			{"AB_AFFTIME" , "Real"   , 12, 2   , "No"},
 			{"BA_AFFTIME" , "Real"   , 12, 2   , "No"},
 			{"AB_CTime" , "Real"   , 12, 2   , "No"},
@@ -840,7 +840,7 @@ if info.iter = 0 then do
 	SetDataVectors(link.vw+"|",{
 				{"ID"        ,id}         ,
 				{"Length"    ,link.leng}  ,
-				{"FUNCCLASS" ,link.fc}    ,
+				{"FUNCNEW" ,link.fc}    ,
 				{"AB_AFFTIME",link.ab_fft} ,{"BA_AFFTIME",link.ba_fft},
 				{"WATER_X"   ,link.waterx},{"RAIL_X"    ,link.rrx}  ,
 				{"AB_BPRA"   ,ab_brpa}    ,{"BA_BPRA"   ,ba_bpra}   ,
@@ -1165,7 +1165,7 @@ status = RunProgram("cmd /c robocopy "+root.daysim+"Inputs\\ "+indir.daysim+" /S
 
 //Shadow Prices - Copy user selected shadow_price.txt or converge baseyear_SP 10x
 	status = RunProgram("cmd /c robocopy "+info.spdir+" "+outdir.dswrk+" *shadow*.txt /is /R:0 /W:0 /NP /NS /NC /NDL /NJH /TEE /LOG+:"+logfile,)
-	if info.spbutton = 1 and info.modyear <> 2014 then do
+	if info.spbutton = 1 and info.modyear <> 2019 then do  // update 2014 to 2019 --YS
 		for SPiter = 1 to 5 do
 			command_line = "cmd /c " + root.daysim + "Daysim.exe -c " + daysim.sp_out
 			//>Daysim.exe -c C:\Model\2_Scenarios\Base\Outputs\3_DaySim\Config_SP.properties
@@ -1357,7 +1357,7 @@ jnvw = JoinViews(mvw.taz + eivw, mvw.taz+".ID", eivw+".ID1", null)
 EI_Gen = if tazvec.ID < 1000 then max(337.826 - 28.8085*tazvec.GenAccess + 3.3727*Pow(tazvec.TOTEMP,0.5) + 0.6764*tazvec.FDL, 0) else 0
 SCEN_A = EI_Gen
 
-if info.scenname = "Base" and info.modyear = 2014 then do
+if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS
 	SetDataVectors(jnvw + "|", {{"BASE_ATR",SCEN_A} }, {{"Sort Order",{{"ID","Ascending"}}}})
 end
 
@@ -1609,7 +1609,7 @@ SetDataVectors(trkpavw + "|", {{"ID",tazvec.ID}, {"SU_Trks",SUT_Gen}, {"MU_Trks"
 		mcBaseSUT = RunMacro("CheckMatrixCore", SeedMtx, "SUT_Base", null, null)
 		mcBaseMUT = RunMacro("CheckMatrixCore", SeedMtx, "MUT_Base", null, null)
 
-	if info.scenname = "Base" and info.modyear = 2014 then do
+	if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS
 		mcBaseSUT := mcTotSUT
 		mcBaseMUT := mcTotMUT
 	end
@@ -1770,7 +1770,7 @@ SetDataVectors(cvpavw + "|", {{"ID",tazvec.ID},
 	mccvbase = RunMacro("CheckMatrixCore", cvseedmat, "CV_Base", null, null)
 	mcPivotCV = RunMacro("CheckMatrixCore", cvOD, "CV_Pivot", null, null)
 
-	if info.scenname = "Base" and info.modyear = 2014 then do
+	if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS
 		mccvbase := mcCV
 	end
 
