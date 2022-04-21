@@ -15,7 +15,7 @@ import os
 import csv
 import datetime
 
-workspace = r"E:\Model\1_Model-Files\3_PopSyn3\PopSyn\outputs"
+workspace = r"C:\Users\USYS671257\Desktop\PopSyn2019\outputs"
 
 #PopsynIndFileName="taz_posynid.csv"
 personFileName = "persons.csv"
@@ -59,7 +59,7 @@ def ReadPopsynToTaz(filename):
 '''
 def ReadCorresponenceFile(filename):
     currenttime = datetime.datetime.now()
-    #print ' --> ' + str(currenttime.hour) + ':' + str(currenttime.minute)
+    print ' --> ' + str(currenttime.hour) + ':' + str(currenttime.minute)
 
     infile = os.path.join(data_folder,filename)
 
@@ -78,7 +78,7 @@ def ReadCorresponenceFile(filename):
 def FormatPersonFile(filename):
 
     currenttime = datetime.datetime.now()
-    #print ' --> ' + str(currenttime.hour) + ':' + str(currenttime.minute)
+    print ' --> ' + str(currenttime.hour) + ':' + str(currenttime.minute)
 
     infile = os.path.join(data_folder,filename)
 
@@ -215,7 +215,7 @@ def FormatPersonFile(filename):
 def FormatHouseholdFile(filename):
 
     currenttime = datetime.datetime.now()
-    #print ' --> ' + str(currenttime.hour) + ':' + str(currenttime.minute)
+    print ' --> ' + str(currenttime.hour) + ':' + str(currenttime.minute)
 
     infile = os.path.join(data_folder,filename)
 
@@ -227,9 +227,12 @@ def FormatHouseholdFile(filename):
     writefile = open(outfile, 'wb')
     writer = csv.writer(writefile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
  
+    # header=["hhno","hhsize","hhvehs","hhwkrs","hhftw","hhptw","hhret","hhoad","hhuni","hhhsc","hh515","hhcu5",
+    #         "hhincome","hownrent","hrestype","hhparcel","hhparcellong","hhtaz","hhtract","hhtractlong","hhexpfac","samptype"]
+    
     header=["hhno","hhsize","hhvehs","hhwkrs","hhftw","hhptw","hhret","hhoad","hhuni","hhhsc","hh515","hhcu5",
             "hhincome","hownrent","hrestype","hhparcel","hhtaz","hhexpfac","samptype"]
-    
+
     writer.writerow(header)
     
     i=0
@@ -316,15 +319,17 @@ def FormatHouseholdFile(filename):
             hownrent=hownrent
             hrestype=hrestyp
             hhparcel=maz
-            hhparcellong=MZ_ID
+            # hhparcellong=MZ_ID
             #hhtaz=taz_newtaz_dictionary[popsyn_taz_dictionary[taz]] # convert to old tazid first and then to new tazid
             hhtaz=TZ_ID
-            hhtract=taz
-            hhtractlong=GeoID10_tract
+            # hhtract=taz
+            # hhtractlong=GeoID10_tract
             hhexpfac=1 #-1
             samptype=11 #-1
             
-            output = [hhno,hhsize,hhvehs,hhwkrs,hhftw,hhptw,hhret,hhoad,hhuni,
+            # output = [hhno,hhsize,hhvehs,hhwkrs,hhftw,hhptw,hhret,hhoad,hhuni,
+            #           hhhsc,hh515,hhcu5,hhincome,hownrent,hrestype,hhparcel,hhparcellong,hhtaz,hhtract,hhtractlong,hhexpfac,samptype]
+            output = [hhno,hhsize,hhvehs,hhwkrs,hhftw,hhptw,hhret,hhoad,hhuni,    
                       hhhsc,hh515,hhcu5,hhincome,hownrent,hrestype,hhparcel,hhtaz,hhexpfac,samptype]
             writer.writerow(output)         
             
@@ -340,4 +345,4 @@ def FormatHouseholdFile(filename):
 FormatPersonFile(personFileName)
 FormatHouseholdFile(householdFileName)
 
-#print "Finished"
+print "Finished"

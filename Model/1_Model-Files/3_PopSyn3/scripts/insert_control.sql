@@ -1,5 +1,5 @@
-﻿--Setting up control tables for Chattanooga MPO PopSynIII 2045
---Binny M paul, binny.paul@rsginc.com, July 2016
+﻿--Setting up control tables for Chattanooga MPO PopSynIII
+--Binny M paul, binny.paul@rsginc.com, 042015
 -----------------------------------------------------------------------------------
 
 SET NOCOUNT ON;
@@ -43,12 +43,10 @@ SET @geographicCWalk_File = (SELECT filename FROM csv_filenames WHERE dsc = 'geo
 
 --MAZ Controls
 CREATE TABLE [dbo].[control_totals_maz] ( [MZ_ID] BIGINT
-	,[MZ_ID2] BIGINT
 	,[HH] INT
-	,[POP] INT
 	,[POPGQ] INT
 	,[POPNGQ] INT NULL
-	
+	,[POP] INT
 	
 	--CONSTRAINT [PK dbo.control_totals_maz MAZ] PRIMARY KEY CLUSTERED (MAZ)
 
@@ -63,9 +61,6 @@ PRINT 'BULK INSERT control_totals_maz FROM ' + '''' + @infile_maz + '''' + ' WIT
 
 --TAZ Controls
 CREATE TABLE [dbo].[control_totals_taz] ( [GEOID10_tract] BIGINT
-	,[HH] INT
-	,[POP_GQ] INT
-	,[POP_NGQ] INT
 	,[HHSIZE1] INT
 	,[HHSIZE2] INT
 	,[HHSIZE3] INT
@@ -85,8 +80,8 @@ CREATE TABLE [dbo].[control_totals_taz] ( [GEOID10_tract] BIGINT
 	,[NGQ18TO34] INT
 	,[NGQ35TO64] INT
 	,[NGQ65PLUS] INT
-	,[MaleNGQ] INT
 	,[FemaleNGQ] INT
+	,[MaleNGQ] INT
 	
 		
 	--CONSTRAINT [PK dbo.control_totals_taz TAZ] PRIMARY KEY CLUSTERED (TAZ)
@@ -94,8 +89,6 @@ CREATE TABLE [dbo].[control_totals_taz] ( [GEOID10_tract] BIGINT
 )
 SET @query = ('BULK INSERT control_totals_taz FROM ' + '''' + @infile_taz + '''' + ' WITH (FIELDTERMINATOR = ' + 
 				''',''' + ', ROWTERMINATOR = ' + '''\n''' + ', FIRSTROW = 2, MAXERRORS = 0, TABLOCK);');
-PRINT 'BULK INSERT control_totals_taz FROM ' + '''' + @infile_taz + '''' + ' WITH (FIELDTERMINATOR = ' + 
-				''',''' + ', ROWTERMINATOR = ' + '''\n''' + ', FIRSTROW = 2, MAXERRORS = 0, TABLOCK);';
 EXEC sp_executesql @query;
 
 --META Controls
@@ -129,7 +122,7 @@ CREATE TABLE geographicCWalk( [MZ_ID] BIGINT
 	--CONSTRAINT [PK tempdb.geographicCWalk MAZ, TAZ, PUMA, REGION] PRIMARY KEY CLUSTERED (MAZ, TAZ, PUMA, REGION)
 )
 SET @query = ('BULK INSERT geographicCWalk FROM ' + '''' + @geographicCWalk_File + '''' + ' WITH (FIELDTERMINATOR = ' + 
-				''',''' + ', ROWTERMINATOR = ' + '''\n''' + ', FIRSTROW = 2, MAXERRORS = 0, TABLOCK, KEEPNULLS);');
+				''',''' + ', ROWTERMINATOR = ' + '''\n''' + ', FIRSTROW = 2, MAXERRORS = 0, TABLOCK);');
 EXEC sp_executesql @query;
 
 --UPDATE GEOGRAPHIC CROSSWALK FILE 
