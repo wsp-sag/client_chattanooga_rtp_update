@@ -2,24 +2,24 @@
 TITLE Chattanooga MPO PopSynIII
 cls
 
-REM # Batch file to run Chattanooga MPO PopSynIII for future year 2045
-REM # Binny M Paul, binny.paul@rsginc.com, July 2016
+REM # Batch file to run Chattanooga MPO PopSynIII
+REM # Binny M Paul, binny.paul@rsginc.com, 2015-07-22
 REM ###########################################################################
 
-SET SCENARIO=FY2045
-SET SQLSERVER=EVAMDLPPW01
+SET SCENARIO=BASEYEAR
+SET SQLSERVER=L19US-D9295PD2\USYS671257
 SET DATABASE=Chattanooga
 SET MY_PATH=%CD%
 
-SET pumsHH_File1='E:\Model\1_Model-Files\3_PopSyn3\PopSyn\data\ss11htn.csv'
-SET pumsPersons_File1='E:\Model\1_Model-Files\3_PopSyn3\PopSyn\data\ss11ptn.csv'
-SET pumsHH_File2='E:\Model\1_Model-Files\3_PopSyn3\PopSyn\data\ss11hga.csv'
-SET pumsPersons_File2='E:\Model\1_Model-Files\3_PopSyn3\PopSyn\data\ss11pga.csv'
+SET pumsHH_File1='C:\Users\USYS671257\Desktop\PopSyn2019\data\ss19htn.csv'
+SET pumsPersons_File1='C:\Users\USYS671257\Desktop\PopSyn2019\data\ss19ptn.csv'
+SET pumsHH_File2='C:\Users\USYS671257\Desktop\PopSyn2019\data\ss19hga.csv'
+SET pumsPersons_File2='C:\Users\USYS671257\Desktop\PopSyn2019\data\ss19pga.csv'
 
-SET mazData_File='E:\Model\1_Model-Files\3_PopSyn3\PopSyn\data\mazData.csv'
-SET tractData_File='E:\Model\1_Model-Files\3_PopSyn3\PopSyn\data\tractData.csv'
-SET metaData_File='E:\Model\1_Model-Files\3_PopSyn3\PopSyn\data\metaData.csv'
-SET geographicCWalk_File='E:\Model\1_Model-Files\3_PopSyn3\PopSyn\data\MZ_geo_crosswalk.csv'
+SET mazData_File='C:\Users\USYS671257\Desktop\PopSyn2019\data\mazData.csv'
+SET tractData_File='C:\Users\USYS671257\Desktop\PopSyn2019\data\tractData.csv'
+SET metaData_File='C:\Users\USYS671257\Desktop\PopSyn2019\data\metaData.csv'
+SET geographicCWalk_File='C:\Users\USYS671257\Desktop\PopSyn2019\data\MZ_geo_crosswalk.csv'
 
 SET settingsFile=settings.xml
 SET settingsFileGQ=settingsGQ.xml
@@ -48,14 +48,14 @@ ECHO %startTime%%Time%: Completed processing input tables...
 REM ###########################################################################
 
 ECHO %startTime%%Time%: Running population synthesizer...
-SET JAVA_64_PATH="C:\Program Files\Java\jre1.8.0_141"
+SET JAVA_64_PATH="C:\Program Files\Java\jdk1.7.0_80"
 SET CLASSPATH=runtime\config
 SET CLASSPATH=%CLASSPATH%;runtime\*
 SET CLASSPATH=%CLASSPATH%;runtime\lib\*
 SET CLASSPATH=%CLASSPATH%;runtime\lib\JPFF-3.2.2\JPPF-3.2.2-admin-ui\lib\*
 SET LIBPATH=runtime\lib
 
-%JAVA_64_PATH%\bin\java -showversion -server -Xms25000m -Xmx25000m -cp "%CLASSPATH%" -Djppf.config=jppf-clientLocal.properties -Djava.library.path=%LIBPATH% popGenerator.PopGenerator runtime/config/%settingsFile% 
+%JAVA_64_PATH%\bin\java -showversion -server -Xms25000m -Xmx25000m -cp "%CLASSPATH%" -Djppf.config=jppf-clientLocal.properties -Djava.library.path=%LIBPATH% popGenerator.PopGenerator runtime/config/%settingsFile%
 ECHO %startTime%%Time%: Population synthesis complete...
 
 %JAVA_64_PATH%\bin\java -showversion -server -Xms15000m -Xmx15000m -cp "%CLASSPATH%" -Djppf.config=jppf-clientLocal.properties -Djava.library.path=%LIBPATH% popGenerator.PopGenerator runtime/config/%settingsFileGQ%
@@ -82,7 +82,7 @@ SQLCMD -S %SQLSERVER% -d %DATABASE% -E -Q "SELECT * INTO %SCENARIO%.persons FROM
 
 REM # remove row with ----- in SQL tables
 SQLCMD -S %SQLSERVER% -d %DATABASE% -E -s, -W -Q "SET NOCOUNT ON; SELECT * FROM dbo.persons ORDER BY HHID, SPORDER" >  "%MY_PATH%\outputs\persons.tmp"
-TYPE %MY_PATH%\outputs\persons.tmp | findstr /r /v ^\-[,\-]*$ > %MY_PATH%\outputs\persons2.tmp 
+TYPE %MY_PATH%\outputs\persons.tmp | findstr /r /v ^\-[,\-]*$ > %MY_PATH%\outputs\persons2.tmp
 REM # Replace NULL with -9 and N.A. with -8
 @ECHO OFF
 SETLOCAL
