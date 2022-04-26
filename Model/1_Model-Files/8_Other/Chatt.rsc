@@ -351,7 +351,7 @@ Macro "spdcap" (linearr)
      // ab_pkhrlncap = nz(pkhrlncap) * ab_f_delay
      // ba_pkhrlncap = nz(pkhrlncap) * ba_f_delay
 
-     // peak hour capacities  Ajust capacity on I24 --YS
+     // peak hour capacities  Ajust capacity on I24 --YS  11/15/2021
      ab_pkhrlncap = if (I24_Cal = 1) then 1.3*nz(pkhrlncap)*ab_f_delay else
                     if (I24_Cal = 2) then 1.6*nz(pkhrlncap)*ab_f_delay else nz(pkhrlncap)*ab_f_delay
      ba_pkhrlncap = if (I24_Cal = 1) then 1.3*nz(pkhrlncap)*ba_f_delay else
@@ -1165,7 +1165,7 @@ status = RunProgram("cmd /c robocopy "+root.daysim+"Inputs\\ "+indir.daysim+" /S
 
 //Shadow Prices - Copy user selected shadow_price.txt or converge baseyear_SP 10x
 	status = RunProgram("cmd /c robocopy "+info.spdir+" "+outdir.dswrk+" *shadow*.txt /is /R:0 /W:0 /NP /NS /NC /NDL /NJH /TEE /LOG+:"+logfile,)
-	if info.spbutton = 1 and info.modyear <> 2019 then do  // update 2014 to 2019 --YS
+	if info.spbutton = 1 and info.modyear <> 2019 then do  // update 2014 to 2019 --YS  3/15/2022
 		for SPiter = 1 to 5 do
 			command_line = "cmd /c " + root.daysim + "Daysim.exe -c " + daysim.sp_out
 			//>Daysim.exe -c C:\Model\2_Scenarios\Base\Outputs\3_DaySim\Config_SP.properties
@@ -1357,7 +1357,7 @@ jnvw = JoinViews(mvw.taz + eivw, mvw.taz+".ID", eivw+".ID1", null)
 EI_Gen = if tazvec.ID < 1000 then max(337.826 - 28.8085*tazvec.GenAccess + 3.3727*Pow(tazvec.TOTEMP,0.5) + 0.6764*tazvec.FDL, 0) else 0
 SCEN_A = EI_Gen
 
-if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS
+if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS  3/15/2022
 	SetDataVectors(jnvw + "|", {{"BASE_ATR",SCEN_A} }, {{"Sort Order",{{"ID","Ascending"}}}})
 end
 
@@ -1609,7 +1609,7 @@ SetDataVectors(trkpavw + "|", {{"ID",tazvec.ID}, {"SU_Trks",SUT_Gen}, {"MU_Trks"
 		mcBaseSUT = RunMacro("CheckMatrixCore", SeedMtx, "SUT_Base", null, null)
 		mcBaseMUT = RunMacro("CheckMatrixCore", SeedMtx, "MUT_Base", null, null)
 
-	if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS
+	if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS  3/15/2022
 		mcBaseSUT := mcTotSUT
 		mcBaseMUT := mcTotMUT
 	end
@@ -1770,7 +1770,7 @@ SetDataVectors(cvpavw + "|", {{"ID",tazvec.ID},
 	mccvbase = RunMacro("CheckMatrixCore", cvseedmat, "CV_Base", null, null)
 	mcPivotCV = RunMacro("CheckMatrixCore", cvOD, "CV_Pivot", null, null)
 
-	if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS
+	if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS  3/15/2022
 		mccvbase := mcCV
 	end
 

@@ -207,7 +207,7 @@ endClass
 //=========================================================================================================
 // ----- MODEL USER INTERFACE -----
 
-Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
+Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V2.0"
 	init do
 		shared root, info, indir, outdir, mvw
 		shared net, skim, od, flow, post
@@ -250,7 +250,15 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
 		msg.ge= "VT 05001"
 		msg.gf= "802.299.4999"
 		msg.gg= "www.rsginc.com"
-		msg.h = "May 2016"
+		msg.h = "April 2022"
+		msg.i = "Updated by:"
+		msg.ja= "WSP USA"
+		msg.jb= "Systems Analysis Group"
+		msg.jc= "1100 Market Street"
+		msg.jd= "Suite 700"
+		msg.je= "Chattanooga, TN 37402"
+		msg.jf= "804.397.9279"
+		msg.jg= "https://www.wsp.com/en-US"
     enditem
 
 		Sample "clientbutton" .5, .5, 50, 8 Transparent contents: SamplePoint("Color Bitmap", root.images+"CHCRPA.bmp", -1, , )
@@ -265,7 +273,7 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
     text same, 16.5 variable: msg.ec
     text same, 17.5 variable: msg.ed
 
-    text 32, 10.5 variable: msg.f
+    text 28, 10.5 variable: msg.f
     text same, 12 variable: msg.ga
     text same, 13 variable: msg.gb
     text same, 14.5 variable: msg.gc
@@ -274,8 +282,18 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V1"
     text same, 17.5 variable: msg.gf
 	text same, 18.5 variable: msg.gg
 
+    text 28, 25 variable: msg.i
+    text same, 26.5 variable: msg.ja
+    text same, 27.5 variable: msg.jb
+    text same, 29 variable: msg.jc
+    text same, 30 variable: msg.jd
+    text same, 31 variable: msg.je
+    text same, 32 variable: msg.jf
+		text same, 33 variable: msg.jg
+
 	Sample "clientlogo" 1, 20, 18, 5 Transparent contents: SamplePoint("Color Bitmap", root.images+"CHCRPAlogo.bmp", -1, null, null)
-    Sample "rsglogo" 32, 20, 10, 5 Transparent contents: SamplePoint("Color Bitmap", root.images+"RSGlogo.bmp", -1, null, null)
+    Sample "rsglogo" 28, 20, 8, 4 Transparent contents: SamplePoint("Color Bitmap", root.images+"RSGlogo.bmp", -1, null, null)
+  Sample "wsplogo" 28, 34.5, 18, 4 Transparent contents: SamplePoint("Color Bitmap", root.images+"WSPlogo.bmp", -1, null, null)
 
     text 21, 9 variable: msg.h
 //-------------------------------------------------------------------------------------------//
@@ -434,7 +452,8 @@ frame "IndSteps"  1, 12.5, 51.5, 17 prompt: "Single Modules"
 
    Button "step3" 5, 22, 45, 2  Prompt: "03 Run Transit" do on escape goto endhere
 	controller.loadpaths(null)
-   RunMacro("Initialize")
+  RunMacro("Initialize")
+  RunMacro("Network_Process")
 	RunMacro("CloseAll")
 	CopyFile(root.net + "MODES.dbf"        , indir.hwy + "MODES.dbf")
 	CopyFile(root.net + "MODEXFER.dbf"     , indir.hwy + "MODEXFER.dbf")
@@ -503,8 +522,8 @@ text "Scenario Year" 3, 2.5
 	text "tripfile"   2.5, 20.5, 48 framed variable: Substitute(ptripmtx, pscendir, "..", null)
 
    Button "post" 5, 30, 45, 3  Prompt: "Run Post Processor" do on escape goto endhere
-   		if pyear < 2019 then pyear = 2019
-		if pyear > 2050 then pyear = 2050
+   		if pyear < 2014 then pyear = 2014
+		if pyear > 2045 then pyear = 2045
 		if pyear < 2020 then info.domoves = 0
 		if plinefile = null then throw("No Network Selected!")
 		if ptazfile = null then throw("No TAZ Selected!")
