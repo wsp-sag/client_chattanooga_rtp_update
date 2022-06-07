@@ -77,11 +77,11 @@ RunMacro("MultiClassAssignSetup")
 //Reporting
 calrep.info = root.paramoth + "CHCRPA_calrepinfo.bin"
 
-{calSUT.type , calSUT.vol , calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
-RunMacro("CalRep", 0, calSUT)
+// {calSUT.type , calSUT.vol , calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
+// RunMacro("CalRep", 0, calSUT)
 
-{calMUT.type , calMUT.vol , calMUT.cnt} = {"MUT", "Tot_MUT", "AADT_MUT"}
-RunMacro("CalRep", 0, calMUT)
+// {calMUT.type , calMUT.vol , calMUT.cnt} = {"MUT", "Tot_MUT", "AADT_MUT"}
+// RunMacro("CalRep", 0, calMUT)
 
 {calALL.type, calALL.vol, calALL.cnt} = {"All", "TotFlow", "AADT"}
 RunMacro("CalRep", 1, calALL)
@@ -176,10 +176,10 @@ shared od, odmemtx, flow
 		info.runname  = "ODME_"+MDY
 		info.timestamp = FormatDateTime(dt,"MMMddyyyy_HHmmss")
 
-		{calSUT.type, calSUT.vol, calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
-		RunMacro("CalRep", 0, calSUT)
-		{calMUT.type, calMUT.vol, calMUT.cnt} = {"MUT", "Tot_MUT", "AADT_MUT"}
-		RunMacro("CalRep", 0, calMUT)
+		// {calSUT.type, calSUT.vol, calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
+		// RunMacro("CalRep", 0, calSUT)
+		// {calMUT.type, calMUT.vol, calMUT.cnt} = {"MUT", "Tot_MUT", "AADT_MUT"}
+		// RunMacro("CalRep", 0, calMUT)
 		{calALL.type, calALL.vol, calALL.cnt} = {"All", "TotFlow", "AADT"}
 		RunMacro("CalRep", 0, calALL)
 

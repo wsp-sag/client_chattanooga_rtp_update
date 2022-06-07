@@ -69,7 +69,7 @@ Class "CHCRPA.GUIController"
 		info.timestamp = FormatDateTime(dt,"MMMddyyyy_HHmm")
 
 	//Static Files
-		root.mod   = "C:\\Model"
+		root.mod   = "C:\\ChattaModel"
 
      Enditem
 
@@ -335,7 +335,7 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V2.0"
 
 	text "TAZ Layer"             3, 11
 	text "Master Network Layer"  3, 15
-	text "RTS File"              3, 19
+	text "Transit Route System"  3, 19
 	text "Network Scenario"      3, 23
 	text "Buffer Microzone"      3, 27
 	text "PopSyn Household"      3, 31
@@ -343,7 +343,7 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V2.0"
 
 	button "TAZBrowse"  44, 11, 6.5 Prompt:"Browse" do on escape goto endhere mvw.tazfile = ChooseFile({{"TAZ Layer (*.dbd)", "*.dbd"},{"Standard (*.dbd)","*.dbd"}}, "Choose a TAZ Layer", {,{"Initial Directory", root.taz},}) endhere: endItem
 	button "MNetBrowse" 44, 15, 6.5 Prompt:"Browse" do on escape goto endhere mvw.masternet = ChooseFile({{"Master Network", "*.dbd"}}, "Choose the masternet layer", {,{"Initial Directory", root.net},}) endhere: endItem
-	button "RTS File"   44, 19, 6.5 Prompt:"Browse" do on escape goto endhere mvw.rtsfile = ChooseFile({{"RTS File", "*.rts"}}, "Choose the RTS layer", {,{"Initial Directory", root.net},}) endhere: endItem
+	button "Transit Route System"   44, 19, 6.5 Prompt:"Browse" do on escape goto endhere mvw.rtsfile = ChooseFile({{"RTS File", "*.rts"}}, "Choose the RTS layer", {,{"Initial Directory", root.net},}) endhere: endItem
 
     button "ScenBrowse" 44, 23, 6.5 Prompt:"Browse" do
 		on escape goto endhere
@@ -1016,17 +1016,17 @@ SetRecordsValues(null, {{"AB_TRKFlow","BA_TRKFlow","Tot_TRKFlow"}, null}, "Formu
 
 //Reporting
 if info.modyear = 2019 then do // update 2014 to 2019 --YS
-	{calSUT.type , calSUT.vol , calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
-	RunMacro("CalRep", 0, calSUT)
+	// {calSUT.type , calSUT.vol , calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
+	// RunMacro("CalRep", 0, calSUT)
 
-	{calMUT.type , calMUT.vol , calMUT.cnt} = {"MUT", "Tot_MUT", "AADT_MUT"}
-	RunMacro("CalRep", 0, calMUT)
+	// {calMUT.type , calMUT.vol , calMUT.cnt} = {"MUT", "Tot_MUT", "AADT_MUT"}
+	// RunMacro("CalRep", 0, calMUT)
 
 	{calALL.type, calALL.vol, calALL.cnt} = {"All", "TotFlow", "AADT"}
 	RunMacro("CalRep", 1, calALL)
 
-	{calTRK.type, calTRK.vol, calTRK.cnt} = {"Trk", "Tot_TRKFlow", "AADT_TRK"}
-	RunMacro("CalRep", 0, calTRK)
+	// {calTRK.type, calTRK.vol, calTRK.cnt} = {"Trk", "Tot_TRKFlow", "AADT_TRK"}
+	// RunMacro("CalRep", 0, calTRK)
 end
 endMacro
 
