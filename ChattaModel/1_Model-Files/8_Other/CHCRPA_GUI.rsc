@@ -60,7 +60,7 @@ Class "CHCRPA.GUIController"
 		info.baseyear = 2019
 		info.modyear = 2019
 		info.cores = 16
-		info.pyear = 2045
+		info.pyear = 2019
 		info.domoves = 1
 		mvw.scnfile = null
 		dt = CreateDateTime()
@@ -250,7 +250,7 @@ Dbox "CHCRPA" (controller) title: "CHCRPA Travel Demand Model V2.0"
 		msg.ge= "VT 05001"
 		msg.gf= "802.299.4999"
 		msg.gg= "www.rsginc.com"
-		msg.h = "June 2022"
+		msg.h = "August 2022"
 		msg.i = "Updated by:"
 		msg.ja= "WSP USA"
 		msg.jb= "Systems Analysis Group"
@@ -521,9 +521,13 @@ text "Scenario Year" 3, 2.5
 	button "ScenMtx" 44, 19, 6.5 Prompt:"Browse" do on escape goto endhere ptripmtx = ChooseFile({{"Trip Matrix", "Trip*.mtx"}}, "Choose the TripTable", {,{"Initial Directory", pscendir+"\\Outputs\\6_TripTables"},}) endhere: endItem
 	text "tripfile"   2.5, 20.5, 48 framed variable: Substitute(ptripmtx, pscendir, "..", null)
 
+	text "Time of Day Factor Table"  3, 23
+	button "ScenTOD" 44, 23, 6.5 Prompt:"Browse" do on escape goto endhere todfactor = ChooseFile({{"dBASE file(*.dbf)", "*.dbf"}}, "Choose the TOD Factor", {,{"Initial Directory", root.paramoth},}) endhere: endItem
+	text "todfile"   2.5, 24.5, 48 framed variable: Substitute(todfactor, pscendir, "..", null)
+
    Button "post" 5, 30, 45, 3  Prompt: "Run Post Processor" do on escape goto endhere
-   		if pyear < 2014 then pyear = 2014
-		if pyear > 2045 then pyear = 2045
+   	if pyear < 2019 then pyear = 2019   // update 2014 to 2019 --YS
+		if pyear > 2050 then pyear = 2050
 		if pyear < 2020 then info.domoves = 0
 		if plinefile = null then throw("No Network Selected!")
 		if ptazfile = null then throw("No TAZ Selected!")
@@ -534,7 +538,7 @@ text "Scenario Year" 3, 2.5
 		parampath = root.paramoth
 		reppath = pscendir+"\\Outputs\\7_Reports\\"
 		if info.domoves = 1 then status = RunProgram("cmd /c mkdir " + pscendir + "\\Outputs\\7_Reports\\MOVES",)
-		RunMacro("Post_Process", ptazvw, plinevw, netparam, parampath, reppath, pyear, info.domoves)
+		RunMacro("Post_Process", ptazvw, plinevw, netparam, parampath, reppath, pyear, todfactor, info.domoves)
 		if info.domoves = 1 then RunMacro("Post_MOVES", modeldir, pscendir, ptazvw, plinevw, pyear, ptripmtx)
 		ShowMessage("Post Processor Complete!")
 	endhere: endItem
@@ -839,7 +843,7 @@ shared tazvec, linevec
 	{linevec.ID, linevec.Leng, linevec.Dir, linevec.FCCLASS , linevec.FCAREA, linevec.Access, linevec.AB_Lanes, linevec.BA_Lanes, linevec.Ramp, linevec.Median, linevec.Divided, linevec.TAZID, linevec.TurnLane, linevec.LnWidth, linevec.RsWidth, linevec.PSpeed, linevec.PSpeed_Adj, linevec.auxlane, linevec.weavelane, linevec.truckclimb, linevec.ab_basevol, linevec.ba_basevol} = GetDataVectors(mvw.line + "|",
 	{"ID"      , "Length"    ,"Dir"       , "FUNCCLASS",      "DOT_FCAREA",   "Access"       , "AB_LANES"      , "BA_LANES"      , "RAMP"      , "MEDIAN"      , "DIVIDED"      , "TAZID"      ,"TWOTURNLN"      ,"LN_Width"      ,"RS_Width"      ,"SPD_LMT"      , "PSpeed_Adj"      , "AUXLANE"      , "WEAVELANE"      , "MTN_TERRA"       , "AB_BaseVol"      , "BA_BaseVol"}, {{"Sort Order",{{mvw.line+".ID","Ascending"}}}} )
 
-  // Calculate NEW funcclass(FUNCNEW) based on FHWA rewised functional class code and TPO designated urbanized areas--YS 2/17/2021
+  // Calculate NEW funcclass(FUNCNEW) based on FHWA rewised functional class code (FUNCCLASS) and TPO designated urbanized areas (DOT_FCAREA)--YS 2/17/2021
 	RunMacro("addfields", mvw.line, {"FUNCNEW"}, {"i"})
 
    FCCLASS = linevec.FCCLASS
@@ -890,7 +894,7 @@ shared tazvec, linevec
 
 		if info.iter > 0 then RunMacro("update_hnet", 1)
 
-	// RunMacro("dropfields", mvw.line, {"FUNCNEW"})
+	// RunMacro("dropfields", mvw.line, {"FUNCNEW"}) // don't drop it since it will be used in the post-processor tool --YS 2/17/2021
 
 endMacro
 
