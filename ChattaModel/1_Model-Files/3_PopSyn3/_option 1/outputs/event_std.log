@@ -1,0 +1,270 @@
+21-Jun-2022 15:19:58:602, INFO, JPPF client starting with sslEnabled = false
+21-Jun-2022 15:19:58:612, INFO, start of runPopulationGenerator: parsing xml file
+21-Jun-2022 15:19:58:668, INFO, connection [driver1] created
+21-Jun-2022 15:19:58:778, INFO, running 1 processing thread
+21-Jun-2022 15:19:58:779, INFO, Using default thread manager
+21-Jun-2022 15:19:59:233, INFO, creating the controls arrays.
+21-Jun-2022 15:19:59:705, INFO, balancing household weights over initial PUMA controls ...
+21-Jun-2022 15:19:59:705, INFO, getting incidence table data for pums ...
+21-Jun-2022 15:19:59:755, INFO, getting MAZ Level Control: Total Number of Households simple incidence table.
+21-Jun-2022 15:19:59:918, INFO, getting MAZ Level Control: Total Number of persons not in GQs count incidence table.
+21-Jun-2022 15:20:00:082, INFO, getting TAZ Level Control: Number of Households by Persons per Households simple incidence table.
+21-Jun-2022 15:20:00:202, INFO, getting TAZ Level Control: Number of Households by Household Income simple incidence table.
+21-Jun-2022 15:20:00:293, INFO, getting TAZ Level Control: Number of Households by number of workers simple incidence table.
+21-Jun-2022 15:20:00:393, INFO, getting TAZ Control: Number of Households by presence of children simple incidence table.
+21-Jun-2022 15:20:00:487, INFO, getting TAZ Control: Number of persons by gender count incidence table.
+21-Jun-2022 15:20:00:602, INFO, getting TAZ Control: Number of persons by age group count incidence table.
+21-Jun-2022 15:20:00:722, INFO, getting Regional META Control: Total Regional Population count incidence table.
+21-Jun-2022 15:20:00:835, INFO, combining final incidence tables.
+21-Jun-2022 15:20:00:835, INFO, balancing incidence table 0 has 2957 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:00:842, INFO, balancing incidence table 1 has 2957 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:00:844, INFO, balancing incidence table 2 has 2957 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:00:844, INFO, balancing incidence table 3 has 2957 rows and 5 columns.  Input table columns [ 0 1 2 3 4 ] were added to final incidence.
+21-Jun-2022 15:20:00:844, INFO, balancing incidence table 4 has 2957 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:00:844, INFO, balancing incidence table 5 has 2957 rows and 2 columns.  Input table columns [ 0 1 ] were added to final incidence.
+21-Jun-2022 15:20:00:844, INFO, balancing incidence table 6 has 2957 rows and 2 columns.  Input table columns [ 0 1 ] were added to final incidence.
+21-Jun-2022 15:20:00:844, INFO, balancing incidence table 7 has 2957 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:00:844, INFO, balancing incidence table 8 has 2957 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:00:852, INFO, balancing incidence table total households control index = 0.
+21-Jun-2022 15:20:00:885, INFO, getting MAZ Level Control: Total Number of Households simple incidence table.
+21-Jun-2022 15:20:00:993, INFO, getting MAZ Level Control: Total Number of persons not in GQs count incidence table.
+21-Jun-2022 15:20:01:128, INFO, getting TAZ Level Control: Number of Households by Persons per Households simple incidence table.
+21-Jun-2022 15:20:01:245, INFO, getting TAZ Level Control: Number of Households by Household Income simple incidence table.
+21-Jun-2022 15:20:01:352, INFO, getting TAZ Level Control: Number of Households by number of workers simple incidence table.
+21-Jun-2022 15:20:01:469, INFO, getting TAZ Control: Number of Households by presence of children simple incidence table.
+21-Jun-2022 15:20:01:569, INFO, getting TAZ Control: Number of persons by gender count incidence table.
+21-Jun-2022 15:20:01:707, INFO, getting TAZ Control: Number of persons by age group count incidence table.
+21-Jun-2022 15:20:01:826, INFO, getting Regional META Control: Total Regional Population count incidence table.
+21-Jun-2022 15:20:01:937, INFO, combining final incidence tables.
+21-Jun-2022 15:20:01:937, INFO, balancing incidence table 0 has 3691 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:01:937, INFO, balancing incidence table 1 has 3691 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:01:937, INFO, balancing incidence table 2 has 3691 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:01:937, INFO, balancing incidence table 3 has 3691 rows and 5 columns.  Input table columns [ 0 1 2 3 4 ] were added to final incidence.
+21-Jun-2022 15:20:01:937, INFO, balancing incidence table 4 has 3691 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:01:937, INFO, balancing incidence table 5 has 3691 rows and 2 columns.  Input table columns [ 0 1 ] were added to final incidence.
+21-Jun-2022 15:20:01:937, INFO, balancing incidence table 6 has 3691 rows and 2 columns.  Input table columns [ 0 1 ] were added to final incidence.
+21-Jun-2022 15:20:01:937, INFO, balancing incidence table 7 has 3691 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:01:952, INFO, balancing incidence table 8 has 3691 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:01:952, INFO, balancing incidence table total households control index = 0.
+21-Jun-2022 15:20:01:985, INFO, getting MAZ Level Control: Total Number of Households simple incidence table.
+21-Jun-2022 15:20:02:085, INFO, getting MAZ Level Control: Total Number of persons not in GQs count incidence table.
+21-Jun-2022 15:20:02:200, INFO, getting TAZ Level Control: Number of Households by Persons per Households simple incidence table.
+21-Jun-2022 15:20:02:292, INFO, getting TAZ Level Control: Number of Households by Household Income simple incidence table.
+21-Jun-2022 15:20:02:385, INFO, getting TAZ Level Control: Number of Households by number of workers simple incidence table.
+21-Jun-2022 15:20:02:473, INFO, getting TAZ Control: Number of Households by presence of children simple incidence table.
+21-Jun-2022 15:20:02:583, INFO, getting TAZ Control: Number of persons by gender count incidence table.
+21-Jun-2022 15:20:02:687, INFO, getting TAZ Control: Number of persons by age group count incidence table.
+21-Jun-2022 15:20:02:789, INFO, getting Regional META Control: Total Regional Population count incidence table.
+21-Jun-2022 15:20:02:902, INFO, combining final incidence tables.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 0 has 2832 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 1 has 2832 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 2 has 2832 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 3 has 2832 rows and 5 columns.  Input table columns [ 0 1 2 3 4 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 4 has 2832 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 5 has 2832 rows and 2 columns.  Input table columns [ 0 1 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 6 has 2832 rows and 2 columns.  Input table columns [ 0 1 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 7 has 2832 rows and 4 columns.  Input table columns [ 0 1 2 3 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table 8 has 2832 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:20:02:902, INFO, balancing incidence table total households control index = 0.
+21-Jun-2022 15:20:02:912, INFO, balancing household weights over initial PUMA controls ...
+21-Jun-2022 15:20:04:743, INFO,  Summary Report for Iteration 1626, Delta=9.964379135445356E-10
+21-Jun-2022 15:20:04:743, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:20:04:743, INFO,          1      93728     93728.000022     9.372800e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:04:743, INFO,          2     212988    212986.718503     2.129880e+05     9.999940e-01     1.000000e+00
+21-Jun-2022 15:20:04:743, INFO,          3      38219     38218.957515     3.821900e+04     9.999989e-01     1.000000e+00
+21-Jun-2022 15:20:04:743, INFO,          4      31382     31382.005185     3.138200e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:04:752, INFO,          5      12005     12005.010093     1.200500e+04     1.000001e+00     1.000000e+00
+21-Jun-2022 15:20:04:752, INFO,          6      12122     12122.027230     1.212200e+04     1.000002e+00     1.000000e+00
+21-Jun-2022 15:20:04:752, INFO,          7      23732     23733.159342     2.373200e+04     1.000049e+00     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,          8      24885     24885.878903     2.488500e+04     1.000035e+00     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,          9      15678     15679.824161     1.567800e+04     1.000116e+00     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         10       9971      9973.353115     9.971000e+03     1.000236e+00     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         11      19462     19455.784501     1.946200e+04     9.996806e-01     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         12      29225     29234.364984     2.922500e+04     1.000320e+00     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         13      38057     38047.789477     3.805700e+04     9.997580e-01     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         14      22624     22620.459679     2.262400e+04     9.998435e-01     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         15       3822      3825.385882     3.822000e+03     1.000886e+00     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         16      19072     19078.115162     1.907200e+04     1.000321e+00     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         17      74656     74649.884861     7.465600e+04     9.999181e-01     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         18     100100    100112.123464     1.001000e+05     1.000121e+00     1.000000e+00
+21-Jun-2022 15:20:04:753, INFO,         19     112881    112874.595039     1.128810e+05     9.999433e-01     1.000000e+00
+21-Jun-2022 15:20:04:761, INFO,         20      41858     41859.720421     4.185800e+04     1.000041e+00     1.000000e+00
+21-Jun-2022 15:20:04:761, INFO,         21      54889     54868.762774     5.488900e+04     9.996313e-01     1.000000e+00
+21-Jun-2022 15:20:04:761, INFO,         22      78950     78959.449513     7.895000e+04     1.000120e+00     1.000000e+00
+21-Jun-2022 15:20:04:761, INFO,         23      37291     37298.785795     3.729100e+04     1.000209e+00     1.000000e+00
+21-Jun-2022 15:20:04:763, INFO, 
+21-Jun-2022 15:20:04:763, INFO, 
+21-Jun-2022 15:20:04:763, INFO, 
+21-Jun-2022 15:20:04:804, INFO,  Summary Report for Iteration 1629, Delta=9.876751367879583E-10
+21-Jun-2022 15:20:04:804, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:20:04:812, INFO,          1      49320     49320.000079     4.932000e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:04:812, INFO,          2     129523    129521.587978     1.295230e+05     9.999891e-01     1.000000e+00
+21-Jun-2022 15:20:04:812, INFO,          3      12175     12174.981705     1.217500e+04     9.999985e-01     1.000000e+00
+21-Jun-2022 15:20:04:814, INFO,          4      18862     18861.992302     1.886200e+04     9.999996e-01     1.000000e+00
+21-Jun-2022 15:20:04:814, INFO,          5       8508      8508.004177     8.508000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:04:814, INFO,          6       9775      9775.021895     9.775000e+03     1.000002e+00     1.000000e+00
+21-Jun-2022 15:20:04:814, INFO,          7      10513     10512.537205     1.051300e+04     9.999560e-01     1.000000e+00
+21-Jun-2022 15:20:04:814, INFO,          8      12623     12621.674971     1.262300e+04     9.998950e-01     1.000000e+00
+21-Jun-2022 15:20:04:814, INFO,          9       9907      9905.643308     9.907000e+03     9.998631e-01     1.000000e+00
+21-Jun-2022 15:20:04:819, INFO,         10       6339      6339.106780     6.339000e+03     1.000017e+00     1.000000e+00
+21-Jun-2022 15:20:04:819, INFO,         11       9938      9941.037815     9.938000e+03     1.000306e+00     1.000000e+00
+21-Jun-2022 15:20:04:819, INFO,         12      14376     14376.620695     1.437600e+04     1.000043e+00     1.000000e+00
+21-Jun-2022 15:20:04:819, INFO,         13      17805     17805.860460     1.780500e+04     1.000048e+00     1.000000e+00
+21-Jun-2022 15:20:04:819, INFO,         14      14354     14351.410207     1.435400e+04     9.998196e-01     1.000000e+00
+21-Jun-2022 15:20:04:819, INFO,         15       2785      2786.108718     2.785000e+03     1.000398e+00     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO,         16      13607     13606.771002     1.360700e+04     9.999832e-01     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO,         17      35713     35713.229077     3.571300e+04     1.000006e+00     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO,         18      62301     62303.286192     6.230100e+04     1.000037e+00     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO,         19      67221     67218.301786     6.722100e+04     9.999599e-01     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO,         20      28856     28867.202749     2.885600e+04     1.000388e+00     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO,         21      25752     25750.238230     2.575200e+04     9.999316e-01     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO,         22      51650     51641.614386     5.165000e+04     9.998376e-01     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO,         23      23266     23262.532613     2.326600e+04     9.998510e-01     1.000000e+00
+21-Jun-2022 15:20:04:822, INFO, 
+21-Jun-2022 15:20:04:822, INFO, 
+21-Jun-2022 15:20:04:822, INFO, 
+21-Jun-2022 15:20:04:822, INFO, Task 1: initial PUMA 10013[ L19US-D9295PD2_pool-2-thread-1_10013 ] completed.
+21-Jun-2022 15:20:05:124, INFO,  Summary Report for Iteration 1592, Delta=8.10940823508335E-10
+21-Jun-2022 15:20:05:124, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:20:05:132, INFO,          1      83025     83025.000008     8.302500e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:05:132, INFO,          2     211368    211367.556119     2.113680e+05     9.999979e-01     1.000000e+00
+21-Jun-2022 15:20:05:134, INFO,          3      20719     20718.991898     2.071900e+04     9.999996e-01     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,          4      32434     32433.997188     3.243400e+04     9.999999e-01     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,          5      13029     13029.001497     1.302900e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,          6      16843     16843.009424     1.684300e+04     1.000001e+00     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,          7      13046     13055.552304     1.304600e+04     1.000732e+00     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,          8      17350     17357.575841     1.735000e+04     1.000437e+00     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,          9      15347     15347.438315     1.534700e+04     1.000029e+00     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,         10      11502     11499.791273     1.150200e+04     9.998080e-01     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,         11      25780     25764.642275     2.578000e+04     9.994043e-01     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,         12      22973     22967.366763     2.297300e+04     9.997548e-01     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,         13      29565     29564.602351     2.956500e+04     9.999866e-01     1.000000e+00
+21-Jun-2022 15:20:05:135, INFO,         14      25619     25622.043243     2.561900e+04     1.000119e+00     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         15       4868      4870.987651     4.868000e+03     1.000614e+00     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         16      22432     22434.755413     2.243200e+04     1.000123e+00     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         17      60593     60590.244595     6.059300e+04     9.999545e-01     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         18     105130    105129.208675     1.051300e+05     9.999925e-01     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         19     106240    106238.347444     1.062400e+05     9.999844e-01     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         20      46493     46494.663398     4.649300e+04     1.000036e+00     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         21      40927     40922.745536     4.092700e+04     9.998960e-01     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         22      86767     86767.009366     8.676700e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:05:142, INFO,         23      37181     37183.137819     3.718100e+04     1.000057e+00     1.000000e+00
+21-Jun-2022 15:20:05:152, INFO, 
+21-Jun-2022 15:20:05:152, INFO, 
+21-Jun-2022 15:20:05:152, INFO, 
+21-Jun-2022 15:20:05:152, INFO, Task 2: initial PUMA 190047[ L19US-D9295PD2_pool-2-thread-2_190047 ] completed.
+21-Jun-2022 15:20:05:152, INFO, Task 3: initial PUMA 180047[ L19US-D9295PD2_pool-2-thread-3_180047 ] completed.
+21-Jun-2022 15:20:05:154, INFO, Time for initial PUMA balancing for all pumas = 2242.36 millisecs.
+21-Jun-2022 15:20:05:154, INFO, calculating new PUMA meta controls ...
+21-Jun-2022 15:20:05:154, INFO, appending new PUMA meta controls to original PUMA controls ...
+21-Jun-2022 15:20:05:154, INFO, balancing household weights over final PUMA controls ...
+21-Jun-2022 15:20:06:035, INFO, [client: driver1 - ClassServer] Attempting connection to the class server at localhost:11111
+21-Jun-2022 15:20:07:075, INFO,  Summary Report for Iteration 1626, Delta=9.59738373676388E-10
+21-Jun-2022 15:20:07:075, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:20:07:075, INFO,          1      93728     93728.000023     9.372800e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:07:075, INFO,          2     212988    212986.742985     2.129880e+05     9.999941e-01     1.000000e+00
+21-Jun-2022 15:20:07:075, INFO,          3      38219     38218.957497     3.821900e+04     9.999989e-01     1.000000e+00
+21-Jun-2022 15:20:07:075, INFO,          4      31382     31382.005153     3.138200e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:07:083, INFO,          5      12005     12005.010092     1.200500e+04     1.000001e+00     1.000000e+00
+21-Jun-2022 15:20:07:083, INFO,          6      12122     12122.027281     1.212200e+04     1.000002e+00     1.000000e+00
+21-Jun-2022 15:20:07:083, INFO,          7      23732     23733.172700     2.373200e+04     1.000049e+00     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,          8      24885     24885.883312     2.488500e+04     1.000035e+00     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,          9      15678     15679.825680     1.567800e+04     1.000116e+00     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         10       9971      9973.336637     9.971000e+03     1.000234e+00     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         11      19462     19455.781693     1.946200e+04     9.996805e-01     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         12      29225     29234.353140     2.922500e+04     1.000320e+00     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         13      38057     38047.809171     3.805700e+04     9.997585e-01     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         14      22624     22620.481374     2.262400e+04     9.998445e-01     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         15       3822      3825.356337     3.822000e+03     1.000878e+00     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         16      19072     19078.126812     1.907200e+04     1.000321e+00     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         17      74656     74649.873210     7.465600e+04     9.999179e-01     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         18     100100    100112.147190     1.001000e+05     1.000121e+00     1.000000e+00
+21-Jun-2022 15:20:07:085, INFO,         19     112881    112874.595795     1.128810e+05     9.999433e-01     1.000000e+00
+21-Jun-2022 15:20:07:093, INFO,         20      41858     41859.640771     4.185800e+04     1.000039e+00     1.000000e+00
+21-Jun-2022 15:20:07:095, INFO,         21      54889     54868.758026     5.488900e+04     9.996312e-01     1.000000e+00
+21-Jun-2022 15:20:07:095, INFO,         22      78950     78959.509164     7.895000e+04     1.000120e+00     1.000000e+00
+21-Jun-2022 15:20:07:095, INFO,         23      37291     37298.835023     3.729100e+04     1.000210e+00     1.000000e+00
+21-Jun-2022 15:20:07:095, INFO,         24     212988    212986.742985     2.129880e+05     9.999941e-01     1.000000e+00
+21-Jun-2022 15:20:07:095, INFO, 
+21-Jun-2022 15:20:07:095, INFO, 
+21-Jun-2022 15:20:07:095, INFO, 
+21-Jun-2022 15:20:07:145, INFO,  Summary Report for Iteration 1630, Delta=9.345834523367072E-10
+21-Jun-2022 15:20:07:145, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:20:07:145, INFO,          1      49320     49320.000078     4.932000e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:07:145, INFO,          2     129523    129521.609822     1.295230e+05     9.999893e-01     1.000000e+00
+21-Jun-2022 15:20:07:145, INFO,          3      12175     12174.981730     1.217500e+04     9.999985e-01     1.000000e+00
+21-Jun-2022 15:20:07:152, INFO,          4      18862     18861.992295     1.886200e+04     9.999996e-01     1.000000e+00
+21-Jun-2022 15:20:07:152, INFO,          5       8508      8508.004155     8.508000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:07:152, INFO,          6       9775      9775.021898     9.775000e+03     1.000002e+00     1.000000e+00
+21-Jun-2022 15:20:07:154, INFO,          7      10513     10512.543758     1.051300e+04     9.999566e-01     1.000000e+00
+21-Jun-2022 15:20:07:154, INFO,          8      12623     12621.673242     1.262300e+04     9.998949e-01     1.000000e+00
+21-Jun-2022 15:20:07:154, INFO,          9       9907      9905.648600     9.907000e+03     9.998636e-01     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         10       6339      6339.102324     6.339000e+03     1.000016e+00     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         11       9938      9941.032154     9.938000e+03     1.000305e+00     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         12      14376     14376.608486     1.437600e+04     1.000042e+00     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         13      17805     17805.861418     1.780500e+04     1.000048e+00     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         14      14354     14351.434843     1.435400e+04     9.998213e-01     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         15       2785      2786.095332     2.785000e+03     1.000393e+00     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         16      13607     13606.858549     1.360700e+04     9.999896e-01     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         17      35713     35713.141529     3.571300e+04     1.000004e+00     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         18      62301     62303.270412     6.230100e+04     1.000036e+00     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         19      67221     67218.339410     6.722100e+04     9.999604e-01     1.000000e+00
+21-Jun-2022 15:20:07:156, INFO,         20      28856     28867.051723     2.885600e+04     1.000383e+00     1.000000e+00
+21-Jun-2022 15:20:07:164, INFO,         21      25752     25750.271628     2.575200e+04     9.999329e-01     1.000000e+00
+21-Jun-2022 15:20:07:166, INFO,         22      51650     51641.688098     5.165000e+04     9.998391e-01     1.000000e+00
+21-Jun-2022 15:20:07:168, INFO,         23      23266     23262.598373     2.326600e+04     9.998538e-01     1.000000e+00
+21-Jun-2022 15:20:07:168, INFO,         24     129522    129521.609822     1.295220e+05     9.999970e-01     1.000000e+00
+21-Jun-2022 15:20:07:168, INFO, 
+21-Jun-2022 15:20:07:168, INFO, 
+21-Jun-2022 15:20:07:168, INFO, 
+21-Jun-2022 15:20:07:168, INFO, Task 1: final PUMA 10013[ L19US-D9295PD2_pool-3-thread-1_10013 ] completed.
+21-Jun-2022 15:20:07:548, INFO,  Summary Report for Iteration 1588, Delta=8.765185514998785E-10
+21-Jun-2022 15:20:07:548, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:20:07:556, INFO,          1      83025     83025.000008     8.302500e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,          2     211368    211367.575932     2.113680e+05     9.999980e-01     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,          3      20719     20718.991917     2.071900e+04     9.999996e-01     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,          4      32434     32433.997185     3.243400e+04     9.999999e-01     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,          5      13029     13029.001488     1.302900e+04     1.000000e+00     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,          6      16843     16843.009418     1.684300e+04     1.000001e+00     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,          7      13046     13055.556673     1.304600e+04     1.000733e+00     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,          8      17350     17357.577948     1.735000e+04     1.000437e+00     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,          9      15347     15347.439028     1.534700e+04     1.000029e+00     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,         10      11502     11499.790869     1.150200e+04     9.998079e-01     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,         11      25780     25764.635490     2.578000e+04     9.994040e-01     1.000000e+00
+21-Jun-2022 15:20:07:558, INFO,         12      22973     22967.365584     2.297300e+04     9.997547e-01     1.000000e+00
+21-Jun-2022 15:20:07:566, INFO,         13      29565     29564.606683     2.956500e+04     9.999867e-01     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         14      25619     25622.049547     2.561900e+04     1.000119e+00     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         15       4868      4870.978194     4.868000e+03     1.000612e+00     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         16      22432     22434.782370     2.243200e+04     1.000124e+00     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         17      60593     60590.217638     6.059300e+04     9.999541e-01     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         18     105130    105129.225114     1.051300e+05     9.999926e-01     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         19     106240    106238.350818     1.062400e+05     9.999845e-01     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         20      46493     46494.596872     4.649300e+04     1.000034e+00     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         21      40927     40922.752676     4.092700e+04     9.998962e-01     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         22      86767     86767.066947     8.676700e+04     1.000001e+00     1.000000e+00
+21-Jun-2022 15:20:07:569, INFO,         23      37181     37183.159437     3.718100e+04     1.000058e+00     1.000000e+00
+21-Jun-2022 15:20:07:577, INFO,         24     211369    211367.575932     2.113690e+05     9.999933e-01     1.000000e+00
+21-Jun-2022 15:20:07:577, INFO, 
+21-Jun-2022 15:20:07:577, INFO, 
+21-Jun-2022 15:20:07:577, INFO, 
+21-Jun-2022 15:20:07:579, INFO, Task 2: final PUMA 190047[ L19US-D9295PD2_pool-3-thread-2_190047 ] completed.
+21-Jun-2022 15:20:07:579, INFO, Task 3: final PUMA 180047[ L19US-D9295PD2_pool-3-thread-3_180047 ] completed.
+21-Jun-2022 15:20:07:579, INFO, Time for final PUMA balancing for all pumas = 2424.28 millisecs.
+21-Jun-2022 15:20:07:579, INFO, finished with PUMA balancing
+21-Jun-2022 15:20:07:579, INFO, Allocating household records to TAZs and MAZs ...
+21-Jun-2022 15:20:19:877, INFO, user.dir = C:\Users\USYS671257\Desktop\PopSyn2019
+21-Jun-2022 15:20:19:877, INFO, java.library.path = runtime\lib
+21-Jun-2022 15:20:19:879, INFO, java.class.path = runtime\config;runtime\popsyn3Unsigned.zip
+21-Jun-2022 15:20:19:879, INFO, loading jnilinearsolver.dll 
+21-Jun-2022 15:21:06:919, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_0_10013 ]
+21-Jun-2022 15:22:38:765, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_1_190047 ]
+21-Jun-2022 15:24:18:976, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_2_180047 ]
+21-Jun-2022 15:24:18:978, INFO, TAZ[ L19US-D9295PD2_node processing-1_0_10013 ], 1 of 3 completed.
+21-Jun-2022 15:24:18:978, INFO, TAZ[ L19US-D9295PD2_node processing-1_1_190047 ], 2 of 3 completed.
+21-Jun-2022 15:24:18:979, INFO, TAZ[ L19US-D9295PD2_node processing-1_2_180047 ], 3 of 3 completed.
+21-Jun-2022 15:24:42:391, INFO, done allocating TAZs and MAZs.
+21-Jun-2022 15:24:42:976, INFO, query for creating output synthetic households table = SELECT hhIds.*, t1.serialno, t1.np, t1.hincp, t1.ten, t1.bld, t1.nwrkrs_esr, t1.hhincAdj, t1.adjinc, t1.veh, t1.hht, t1.type, t1.npf, t1.hupac, t1.hhchild, t1.GQFLAG, t1.GQTYPE INTO synpop_hh FROM hhIds LEFT JOIN temphh t1 ON hhIds.finalPumsId=t1.hhnum
+21-Jun-2022 15:24:42:982, INFO, Time for creating output synthetic households table = 0.009733333333333333 minutes.
+21-Jun-2022 15:24:43:556, INFO, query for creating output synthetic persons table = SELECT hhIds.*, t1.sporder, t1.agep, t1.sex, t1.wkhp, t1.esr, t1.schg, t1.employed, t1.wkw, t1.mil, t1.schl, t1.indp02, t1.indp07, t1.occp02, t1.occp10, t1.GQFLAG, t1.GQTYPE INTO synpop_person FROM hhIds LEFT JOIN temppers t1 ON hhIds.finalPumsId=t1.hhnum
+21-Jun-2022 15:24:43:556, INFO, Time for creating output synthetic persons table = 0.009566666666666666 minutes.
+21-Jun-2022 15:24:43:563, INFO, Time for full model run = 4.75 minutes.

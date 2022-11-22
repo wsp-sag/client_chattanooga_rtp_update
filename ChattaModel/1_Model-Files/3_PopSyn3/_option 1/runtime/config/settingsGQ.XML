@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<targets>
+  <database>
+    <server>L19US-D9295PD2\USYS671257:64052</server>
+    <type>MS_SQL</type>
+    <!--<user></user>-->
+    <password></password>
+    <dbName>Chattanooga</dbName>
+  </database>
+
+  <!-- Specify the PUMS data table names from which PUMA incidence tables are generated, as well as the field name for a unique identifier and the PUMS weight field name -->
+  <pumsData>
+    <idField>hhnum</idField>
+    <pumaFieldName>PUMA</pumaFieldName>
+    <metaFieldName>REGION</metaFieldName>
+    <tazFieldName>TAZ</tazFieldName>
+    <mazFieldName>MAZ</mazFieldName>
+    <weightField>GQWGTP</weightField>
+    <hhTable>hhtable</hhTable>
+    <persTable>perstable</persTable>
+    <pumsHhTable>hhtable</pumsHhTable>
+    <pumsHhIdField>hhnum</pumsHhIdField>
+    <pumsPersTable>perstable</pumsPersTable>
+    <maxExpansionFactor>25</maxExpansionFactor>
+    <synpopOutputHhTableName>synpop_hh_gq</synpopOutputHhTableName>
+    <synpopOutputPersTableName>synpop_person_gq</synpopOutputPersTableName>
+    <outputHhAttributes>serialno, np, hincp, ten, bld, nwrkrs_esr, hhincAdj, adjinc, veh, hht, type, npf, hupac, hhchild, GQFLAG, GQTYPE</outputHhAttributes>
+    <outputPersAttributes>sporder, agep, sex, wkhp, esr, schg, employed, wkw, mil, schl, indp02, indp07, occp02, occp10, GQFLAG, GQTYPE</outputPersAttributes>
+  </pumsData>
+
+  <!-- Specify the table name and name of id field for the MAZ control totals table -->
+  <mazControlsTable>
+    <mazTable id="1">
+      <table_name>control_totals_maz</table_name>
+      <id_field_name>MAZ</id_field_name>
+      <aggregation_level>MAZ</aggregation_level>
+    </mazTable>
+  </mazControlsTable>
+
+  <!-- Specify the table name and name of id field for the table of TAZ control totals that are not fields in the MAZ control total table -->
+  <tazControlsTable>
+  </tazControlsTable>
+
+  <!-- Specify the table name, id field name, and aggregation level for each table of META control totals -->
+  <metaControlsTables>
+    <metaTable id="1">
+      <table_name>control_totals_meta</table_name>
+      <id_field_name>REGION</id_field_name>
+      <aggregation_level>PUMA</aggregation_level>
+    </metaTable>
+  </metaControlsTables>
+
+  <target>
+    <!-- Total GQ population in each TAZ Control#0 -->
+    <marginals>
+      <id>0</id>
+      <description>MAZ Level Control: Total GQ Population</description>
+      <totalHouseholdsControl>true</totalHouseholdsControl>
+      <controlType>count</controlType>
+      <geographyType>MAZ</geographyType>
+      <table>perstable</table>
+      <constraint id="1">
+        <importance>1000000000</importance>
+        <field>GQFLAG</field>
+        <controlField>POPGQ</controlField>
+        <type>equality</type>
+        <value>1</value>
+      </constraint>
+    </marginals>
+  </target>
+
+  <target>
+    <!-- Define conditions for reginoal GQ population Control#2 -->
+    <marginals>
+      <id>1</id>
+      <description>Regional META Control: Total Regional GQ Population</description>
+      <geographyType>META</geographyType>
+      <controlType>count</controlType>
+      <table>perstable</table>
+      <constraint id="1">
+        <importance>1000</importance>
+        <field>GQFLAG</field>
+        <controlField>POPGQ</controlField>
+        <type>equality</type>
+        <value>1</value>
+      </constraint>
+    </marginals>
+  </target>
+
+</targets>

@@ -1,0 +1,96 @@
+21-Jun-2022 15:24:45:743, INFO, JPPF client starting with sslEnabled = false
+21-Jun-2022 15:24:45:743, INFO, start of runPopulationGenerator: parsing xml file
+21-Jun-2022 15:24:45:794, INFO, connection [driver1] created
+21-Jun-2022 15:24:45:909, INFO, running 1 processing thread
+21-Jun-2022 15:24:45:910, INFO, Using default thread manager
+21-Jun-2022 15:24:46:312, INFO, creating the controls arrays.
+21-Jun-2022 15:24:46:426, INFO, balancing household weights over initial PUMA controls ...
+21-Jun-2022 15:24:46:426, INFO, getting incidence table data for pums ...
+21-Jun-2022 15:24:46:484, INFO, getting MAZ Level Control: Total GQ Population count incidence table.
+21-Jun-2022 15:24:46:633, INFO, getting Regional META Control: Total Regional GQ Population count incidence table.
+21-Jun-2022 15:24:46:782, INFO, combining final incidence tables.
+21-Jun-2022 15:24:46:782, INFO, balancing incidence table 0 has 2957 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:24:46:782, INFO, balancing incidence table 1 has 2957 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:24:46:782, INFO, balancing incidence table total households control index = 0.
+21-Jun-2022 15:24:46:824, INFO, getting MAZ Level Control: Total GQ Population count incidence table.
+21-Jun-2022 15:24:46:959, INFO, getting Regional META Control: Total Regional GQ Population count incidence table.
+21-Jun-2022 15:24:47:082, INFO, combining final incidence tables.
+21-Jun-2022 15:24:47:082, INFO, balancing incidence table 0 has 3691 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:24:47:082, INFO, balancing incidence table 1 has 3691 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:24:47:082, INFO, balancing incidence table total households control index = 0.
+21-Jun-2022 15:24:47:132, INFO, getting MAZ Level Control: Total GQ Population count incidence table.
+21-Jun-2022 15:24:47:243, INFO, getting Regional META Control: Total Regional GQ Population count incidence table.
+21-Jun-2022 15:24:47:359, INFO, combining final incidence tables.
+21-Jun-2022 15:24:47:365, INFO, balancing incidence table 0 has 2832 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:24:47:365, INFO, balancing incidence table 1 has 2832 rows and 1 columns.  Input table columns [ 0 ] were added to final incidence.
+21-Jun-2022 15:24:47:365, INFO, balancing incidence table total households control index = 0.
+21-Jun-2022 15:24:47:365, INFO, balancing household weights over initial PUMA controls ...
+21-Jun-2022 15:24:47:373, INFO,  Summary Report for Iteration 3, Delta=0.0
+21-Jun-2022 15:24:47:373, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:24:47:373, INFO,  Summary Report for Iteration 2, Delta=6.612117689222274E-10
+21-Jun-2022 15:24:47:377, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:24:47:377, INFO,          1       9587      9586.999964     9.587000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:379, INFO, 
+21-Jun-2022 15:24:47:379, INFO, 
+21-Jun-2022 15:24:47:379, INFO, 
+21-Jun-2022 15:24:47:379, INFO,          1       5596      5595.999995     5.596000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:382, INFO, 
+21-Jun-2022 15:24:47:382, INFO, 
+21-Jun-2022 15:24:47:382, INFO, 
+21-Jun-2022 15:24:47:379, INFO,  Summary Report for Iteration 2, Delta=8.197217000549799E-13
+21-Jun-2022 15:24:47:382, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:24:47:382, INFO,          1       1948      1948.000000     1.948000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:382, INFO, 
+21-Jun-2022 15:24:47:382, INFO, 
+21-Jun-2022 15:24:47:382, INFO, 
+21-Jun-2022 15:24:47:382, INFO, Task 1: initial PUMA 10013[ L19US-D9295PD2_pool-2-thread-1_10013 ] completed.
+21-Jun-2022 15:24:47:382, INFO, Task 2: initial PUMA 190047[ L19US-D9295PD2_pool-2-thread-2_190047 ] completed.
+21-Jun-2022 15:24:47:382, INFO, Task 3: initial PUMA 180047[ L19US-D9295PD2_pool-2-thread-3_180047 ] completed.
+21-Jun-2022 15:24:47:382, INFO, Time for initial PUMA balancing for all pumas = 21.49 millisecs.
+21-Jun-2022 15:24:47:382, INFO, calculating new PUMA meta controls ...
+21-Jun-2022 15:24:47:382, INFO, appending new PUMA meta controls to original PUMA controls ...
+21-Jun-2022 15:24:47:382, INFO, balancing household weights over final PUMA controls ...
+21-Jun-2022 15:24:47:392, INFO,  Summary Report for Iteration 2, Delta=3.327109752173256E-14
+21-Jun-2022 15:24:47:392, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:24:47:392, INFO,          1       1948      1948.000000     1.948000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:392, INFO,  Summary Report for Iteration 2, Delta=1.2248177727172761E-12
+21-Jun-2022 15:24:47:392, INFO,          2       1948      1948.000000     1.948000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:397, INFO, 
+21-Jun-2022 15:24:47:397, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:24:47:397, INFO, 
+21-Jun-2022 15:24:47:399, INFO, 
+21-Jun-2022 15:24:47:399, INFO,          1       5596      5595.999995     5.596000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:400, INFO,          2       5596      5595.999995     5.596000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:401, INFO, 
+21-Jun-2022 15:24:47:400, INFO, Task 1: final PUMA 10013[ L19US-D9295PD2_pool-3-thread-1_10013 ] completed.
+21-Jun-2022 15:24:47:402, INFO, 
+21-Jun-2022 15:24:47:403, INFO, 
+21-Jun-2022 15:24:47:403, INFO, Task 2: final PUMA 190047[ L19US-D9295PD2_pool-3-thread-2_190047 ] completed.
+21-Jun-2022 15:24:47:425, INFO,  Summary Report for Iteration 380, Delta=2.6680648901761783E-11
+21-Jun-2022 15:24:47:425, INFO,    control     target    current       currentWtd         relaxWts            gamma
+21-Jun-2022 15:24:47:425, INFO,          1       9587      9586.999964     9.587000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:425, INFO,          2       9587      9586.999964     9.587000e+03     1.000000e+00     1.000000e+00
+21-Jun-2022 15:24:47:425, INFO, 
+21-Jun-2022 15:24:47:425, INFO, 
+21-Jun-2022 15:24:47:425, INFO, 
+21-Jun-2022 15:24:47:425, INFO, Task 3: final PUMA 180047[ L19US-D9295PD2_pool-3-thread-3_180047 ] completed.
+21-Jun-2022 15:24:47:425, INFO, Time for final PUMA balancing for all pumas = 39.64 millisecs.
+21-Jun-2022 15:24:47:425, INFO, finished with PUMA balancing
+21-Jun-2022 15:24:47:425, INFO, Allocating household records to TAZs and MAZs ...
+21-Jun-2022 15:24:53:045, INFO, [client: driver1 - ClassServer] Attempting connection to the class server at localhost:11111
+21-Jun-2022 15:25:06:185, INFO, user.dir = C:\Users\USYS671257\Desktop\PopSyn2019
+21-Jun-2022 15:25:06:185, INFO, java.library.path = runtime\lib
+21-Jun-2022 15:25:06:187, INFO, java.class.path = runtime\config;runtime\popsyn3Unsigned.zip
+21-Jun-2022 15:25:06:188, INFO, loading jnilinearsolver.dll 
+21-Jun-2022 15:25:06:260, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_0_10013 ]
+21-Jun-2022 15:25:06:378, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_1_190047 ]
+21-Jun-2022 15:25:06:559, INFO, completed TAZ[ L19US-D9295PD2_node processing-1_2_180047 ]
+21-Jun-2022 15:25:06:561, INFO, TAZ[ L19US-D9295PD2_node processing-1_0_10013 ], 1 of 3 completed.
+21-Jun-2022 15:25:06:561, INFO, TAZ[ L19US-D9295PD2_node processing-1_1_190047 ], 2 of 3 completed.
+21-Jun-2022 15:25:06:562, INFO, TAZ[ L19US-D9295PD2_node processing-1_2_180047 ], 3 of 3 completed.
+21-Jun-2022 15:25:07:896, INFO, done allocating TAZs and MAZs.
+21-Jun-2022 15:25:08:026, INFO, query for creating output synthetic households table = SELECT hhIds.*, t1.serialno, t1.np, t1.hincp, t1.ten, t1.bld, t1.nwrkrs_esr, t1.hhincAdj, t1.adjinc, t1.veh, t1.hht, t1.type, t1.npf, t1.hupac, t1.hhchild, t1.GQFLAG, t1.GQTYPE INTO synpop_hh_gq FROM hhIds LEFT JOIN temphh t1 ON hhIds.finalPumsId=t1.hhnum
+21-Jun-2022 15:25:08:027, INFO, Time for creating output synthetic households table = 0.00215 minutes.
+21-Jun-2022 15:25:08:140, INFO, query for creating output synthetic persons table = SELECT hhIds.*, t1.sporder, t1.agep, t1.sex, t1.wkhp, t1.esr, t1.schg, t1.employed, t1.wkw, t1.mil, t1.schl, t1.indp02, t1.indp07, t1.occp02, t1.occp10, t1.GQFLAG, t1.GQTYPE INTO synpop_person_gq FROM hhIds LEFT JOIN temppers t1 ON hhIds.finalPumsId=t1.hhnum
+21-Jun-2022 15:25:08:141, INFO, Time for creating output synthetic persons table = 0.0018833333333333334 minutes.
+21-Jun-2022 15:25:08:142, INFO, Time for full model run = 0.38 minutes.
