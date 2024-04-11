@@ -1402,7 +1402,6 @@ SetDataVectors(eipassvw + "|", {{"ID",tazvec.ID}, {"EI_Gen",EI_Gen}, {"EI_Pivot"
 	 Opts.Input.[V2 Holding Sets] = {{eipassfile, "eipass", "Externals", "Select * where ID > 1000"}}
      Opts.Field.[Vector 1] = {eipassvw+".EI_O"}
      Opts.Field.[Vector 2] = {eipassvw+".EI_D"}
-     Opts.Global.[Output Type] = "FILL"
 	 ok = RunMacro("TCB Run Procedure", "Balance", Opts, null)
 	 if !ok then Return( RunMacro("TCB Closing", ok, True ) )
 
@@ -1513,7 +1512,6 @@ SetDataVectors(trkpavw + "|", {{"ID",tazvec.ID}, {"SU_Trks",SUT_Gen}, {"MU_Trks"
 	 Opts.Input.[V2 Holding Sets] = {{trkpafile, "trkpa", "Externals", "Select * where ID > 1000"}, {trkpafile, "trkpa", "Externals"}, {trkpafile, "trkpa", "Externals"}, {trkpafile, "trkpa", "Externals"}}
      Opts.Field.[Vector 1] = {trkpavw+".II_SUT_O", trkpavw+".II_MUT_O", trkpavw+".EI_SUT_P", trkpavw+".EI_MUT_P"}
      Opts.Field.[Vector 2] = {trkpavw+".II_SUT_D", trkpavw+".II_MUT_D", trkpavw+".EI_SUT_A", trkpavw+".EI_MUT_A"}
-     Opts.Global.[Output Type] = "FILL"
      if !RunMacro("TCB Run Procedure", 1, "Balance", Opts) then Return(RunMacro("TCB Closing", 0))
 
 
@@ -1699,7 +1697,6 @@ SetDataVectors(cvpavw + "|", {{"ID",tazvec.ID},
 	 Opts.Global.[Holding Method] = {"Weighted Sum"}
 	 Opts.Global.[Percent Weight] = {50}
 	 Opts.Global.[Store Type] = "Real"
-   Opts.Global.[Output Type] = "FILL"
      if !RunMacro("TCB Run Procedure", 1, "Balance", Opts) then Return(RunMacro("TCB Closing", 0))
 
 // ----- CV TRIP DISTRIBUTION ------
