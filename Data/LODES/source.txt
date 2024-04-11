@@ -1,5 +1,0 @@
-Website: "https://lehd.ces.census.gov/data/"
-Also here: "https://lehd.ces.census.gov/data/lodes/LODES7/"
-
-Dataset Title: "LEHD Origin-Destination Employment Statistics (LODES)"
-Dataset version: "LODES7"
