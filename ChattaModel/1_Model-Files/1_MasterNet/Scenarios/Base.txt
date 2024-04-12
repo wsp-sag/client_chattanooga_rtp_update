@@ -1,6 +1,1 @@
-Base ; 2010 Network
-US27 ; complete
-SR151AlabamaHwy5 ; complete
-SR317ApisonPk17a ; complete
-EntPkwyFerdinandPeich21e ; complete
-US27_OlgiatiBridge178 ; complete
+Base ; 2019 Network
