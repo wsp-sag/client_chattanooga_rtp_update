@@ -22,3 +22,7 @@ report.xsl
 Log_*.txt
 
 **/2_Scenarios/*/Outputs
+
+Scripts/build
+*312.pyc
+*.spec
