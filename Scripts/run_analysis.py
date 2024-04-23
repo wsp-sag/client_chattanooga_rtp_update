@@ -94,6 +94,7 @@ def get_config():
         "MAP_OUTPUT",
         "SUMMARY_OUTPUT",
         "BRIDGE_REPORT_LOCATION",
+        "MODEL_DATA",
     ]
     config_bools = [
         "CREATE_MAP_OUTPUT",
@@ -157,8 +158,10 @@ if __name__ == "__main__":
 
     if config["CREATE_MAP_OUTPUT"]:
         ...
-        print("Creating map outputs...")
-        # build_map_files.build_map_files(config["MODEL_RESULTS"], config["MAP_OUTPUT"])
+        print("Creating map outputs, this will take 5-10 minte...")
+        build_map_files.build_map_files(
+            config["MODEL_RESULTS"], config["MODEL_DATA"], config["MAP_OUTPUT"]
+        )
 
     if config["CREATE_CSV_OUTPUT"]:
         print("Creating CSVs this will take 5-10 min...")

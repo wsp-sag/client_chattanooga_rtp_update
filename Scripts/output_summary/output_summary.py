@@ -94,6 +94,7 @@ def summaries_trip_table(
 
 def summaries_model_outputs(model_path, summary_path):
     logging.info("Reading the network, this could take a while...")
+    model_path = model_path / "Model_Output"
     network = gpd.read_file(model_path / "loaded_network.shp")
     logging.info("done")
 

@@ -1,7 +1,8 @@
-BRIDGE_REPORT_LOCATION: C:\Users\USLP095001\Desktop\temp_files\3_Model_Output
+BRIDGE_REPORT_LOCATION: C:\Users\USLP095001\Desktop\temp_files\chatt_outputs
 CREATE_BRIDGE_REPORT: true
 CREATE_CSV_OUTPUT: false
 CREATE_MAP_OUTPUT: false
 MAP_OUTPUT: C:\Users\USLP095001\Desktop\temp_files\chatt_outputs\map_save_dir
-MODEL_RESULTS: C:\Users\USLP095001\Desktop\temp_files\3_Model_Output
+MODEL_RESULTS: C:\Users\USLP095001\Desktop\temp_files\Source_Data
+MODEL_DATA: C:\Users\USLP095001\Desktop\temp_files\Data
 SUMMARY_OUTPUT: C:\Users\USLP095001\Desktop\temp_files\chatt_outputs

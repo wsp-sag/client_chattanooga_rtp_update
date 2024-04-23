@@ -27,43 +27,10 @@ from pathlib import Path
 # %%
 # routes_load_path = os.path.join(routes_path, "ChattaTransit_2019_route.shp")
 # routes_save_path = os.path.join("..", "Data", "Model_Output", "ridership.shp")
-model_outputs_path = Path(r"C:\Users\USLP095001\Desktop\temp_files\3_Model_Output")
-maps_save_dir = Path(
-    r"C:\Users\USLP095001\Desktop\temp_files\chatt_outputs\map_save_dir"
-)
-
-network_load_path = model_outputs_path / "loaded_network.shp"
-network_save_path = maps_save_dir / "loaded_network.shp"
-
-# #### Ridership
-routes_path = model_outputs_path / "Transit_network"
-
-boards_load_path = routes_path / "ALL_BOARDINGS.DBF"
-ref_load_path = routes_path / "route_ref_new.csv"
-
-routes_load_path = routes_path / "ChattaTransit_2019_route.shp"
-routes_save_path = maps_save_dir / "ridership.shp"
-
-dtypes = {"ROUTE_ID": "str"}
 
 
 # #### Trips
 
-
-taz_path = os.path.join(
-    "..", "Source_Data", "Districts_01252021", "TAZ_districts_Ext.shp"
-)
-xref_path = os.path.join("..", "Source_Data", "Districts_01252021", "xref_taz_ext.csv")
-
-triptables_list = [
-    "trip_tables",
-    "tranist_trip_tables_AM",
-    "tranist_trip_tables_PM",
-    "tranist_trip_tables_OP",
-    "Truck_OD",
-]
-triptable_load_path = os.path.join("..", "Source_Data", "Model_Output")
-trips_save_path = os.path.join("..", "Data", "Model_Output", "trips.shp")
 
 # %%
 
@@ -77,7 +44,42 @@ def load_trip_table(t, tloadpath):
     return tt
 
 
-def build_map_files():
+def build_map_files(
+    model_outputs_path: Path, model_data_path: Path, maps_save_dir: Path
+):
+
+    # model_outputs_path = Path(r"C:\Users\USLP095001\Desktop\temp_files\3_Model_Output")
+    # maps_save_dir = Path(
+    #     r"C:\Users\USLP095001\Desktop\temp_files\chatt_outputs\map_save_dir"
+    # )
+    network_load_path = model_outputs_path / "Model_Output" / "loaded_network.shp"
+    print(network_load_path)
+    network_save_path = maps_save_dir / "loaded_network.shp"
+
+    # #### Ridership
+    routes_path = model_outputs_path / "Model_Output" / "Transit_network"
+
+    boards_load_path = routes_path / "ALL_BOARDINGS.DBF"
+    ref_load_path = routes_path / "route_ref_new.csv"
+
+    routes_load_path = routes_path / "ChattaTransit_2019_route.shp"
+    routes_save_path = maps_save_dir / "ridership.shp"
+
+    taz_path = model_outputs_path / "Districts_01252021" / "TAZ_districts_Ext.shp"
+
+    xref_path = model_outputs_path / "Districts_01252021" / "xref_taz_ext.csv"
+
+    triptables_list = [
+        "trip_tables",
+        "tranist_trip_tables_AM",
+        "tranist_trip_tables_PM",
+        "tranist_trip_tables_OP",
+        "Truck_OD",
+    ]
+    triptable_load_path = model_outputs_path / "Model_Output"
+    trips_save_path = model_data_path / "Model_Output" / "trips.shp"
+
+    dtypes = {"ROUTE_ID": "str"}
     network = gpd.read_file(network_load_path)
 
     ##### Ridership
@@ -148,7 +150,7 @@ def build_map_files():
 
     ##  17. Map: Transit Route Ridership (graduated color and bandwidth)
     route_boards = (
-        boards.groupby(["ROUTE_ID", "ROUTE_NAME"])["AM_ON", "PM_ON", "OP_ON"]
+        boards.groupby(["ROUTE_ID", "ROUTE_NAME"])[["AM_ON", "PM_ON", "OP_ON"]]
         .sum()
         .reset_index()
     )
@@ -205,7 +207,10 @@ def build_map_files():
 
     ##  20. Map: Origin of Truck Trips by TAZ (graduated color)
     trips = (
-        tt["Truck_OD"].groupby("Row ID's")["Total_SUT", "Total_MUT"].sum().reset_index()
+        tt["Truck_OD"]
+        .groupby("Row ID's")[["Total_SUT", "Total_MUT"]]
+        .sum()
+        .reset_index()
     )
     trips["TRUCKS"] = trips["Total_SUT"] + trips["Total_MUT"]
     trips = trips[["Row ID's", "TRUCKS"]]
@@ -243,7 +248,10 @@ def build_map_files():
 
     ##  23. Map: Destination of Truck Trips by TAZ (graduated color)
     trips = (
-        tt["Truck_OD"].groupby("Col ID's")["Total_SUT", "Total_MUT"].sum().reset_index()
+        tt["Truck_OD"]
+        .groupby("Col ID's")[["Total_SUT", "Total_MUT"]]
+        .sum()
+        .reset_index()
     )
     trips["TRUCKS"] = trips["Total_SUT"] + trips["Total_MUT"]
     trips = trips[["Col ID's", "TRUCKS"]]
@@ -270,4 +278,10 @@ def build_map_files():
     taz_trips.to_file(trips_save_path, index=False)
 
 
+model_outputs_path = Path(r"C:\Users\USLP095001\Desktop\temp_files\Source_Data")
+maps_save_dir = Path(
+    r"C:\Users\USLP095001\Desktop\temp_files\chatt_outputs\map_save_dir"
+)
+a = Path(r"C:\Users\USLP095001\Desktop\temp_files\Data")
+build_map_files(model_outputs_path, a, maps_save_dir)
 # %%
