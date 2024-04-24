@@ -1,0 +1,18 @@
+# river bridge report
+CREATE_BRIDGE_REPORT: false
+scenarios = ['2019', '2050']
+
+# scenario impact report
+CREATE_IMPACT_REPORT: false
+scenarios = ['2019', '2050']
+link_query = 'link_id.csv'
+area_query = 'FUNCCLASS<=7'
+
+# project evaluation report
+CREATE_EVALUATION_REPORT: false
+scenarios = ['2019', '2050']
+
+# map automation
+CREATE_MAP_OUTPUT: true
+scenarios = ['2019']
+
