@@ -12,6 +12,7 @@ link_query = 'link_id.csv'
 # project evaluation report
 CREATE_EVALUATION_REPORT: false
 scenario = ['2019', '2050']
+link_query = 'cummings_hwy.csv'
 
 # map automation
 CREATE_MAP_OUTPUT: false
