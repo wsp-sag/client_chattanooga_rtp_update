@@ -31,62 +31,62 @@ def create_bridge_report(model_output_path, summary_output_path, scenario, count
 
         network_df = pd.concat([network_df, network])
 
-        vmt = (network_df.groupby(['FUNCCLASS', 'COUNTY', 'Scenario'])['VMT']
-            .sum()
-            .reset_index()
-            .pivot_table(index='FUNCCLASS', 
-                            columns=['COUNTY','Scenario'], 
-                            values='VMT', 
-                            aggfunc='sum', 
-                            fill_value=0)
-            )
+    vmt = (network_df.groupby(['FUNCCLASS', 'COUNTY', 'Scenario'])['VMT']
+        .sum()
+        .reset_index()
+        .pivot_table(index='FUNCCLASS', 
+                        columns=['COUNTY','Scenario'], 
+                        values='VMT', 
+                        aggfunc='sum', 
+                        fill_value=0)
+        )
 
-        vhd = (network_df.groupby(['FUNCCLASS', 'COUNTY', 'Scenario'])['VHD']
-            .sum()
-            .reset_index()
-            .pivot_table(index='FUNCCLASS', 
-                            columns=['COUNTY','Scenario'], 
-                            values='VHD', 
-                            aggfunc='sum', 
-                            fill_value=0)
-            )
+    vhd = (network_df.groupby(['FUNCCLASS', 'COUNTY', 'Scenario'])['VHD']
+        .sum()
+        .reset_index()
+        .pivot_table(index='FUNCCLASS', 
+                        columns=['COUNTY','Scenario'], 
+                        values='VHD', 
+                        aggfunc='sum', 
+                        fill_value=0)
+        )
 
 
-        c_speed_weighted = (network_df.groupby(['FUNCCLASS', 'COUNTY', 'Scenario'])
-            .apply(
-            lambda x: (x['C_SPEED'] * x['LENGTH']).sum() / x['LENGTH'].sum())
-            .reset_index(name='Weighted_C_SPEED')
-            .pivot_table(index='FUNCCLASS', 
-                            columns=['COUNTY','Scenario'], 
-                            values='Weighted_C_SPEED', 
-                            aggfunc='mean', 
-                            fill_value=0)
-            )
+    c_speed_weighted = (network_df.groupby(['FUNCCLASS', 'COUNTY', 'Scenario'])
+        .apply(
+        lambda x: (x['C_SPEED'] * x['LENGTH']).sum() / x['LENGTH'].sum())
+        .reset_index(name='Weighted_C_SPEED')
+        .pivot_table(index='FUNCCLASS', 
+                        columns=['COUNTY','Scenario'], 
+                        values='Weighted_C_SPEED', 
+                        aggfunc='mean', 
+                        fill_value=0)
+        )
 
-        c_speed = (network_df.groupby(['FUNCCLASS', 'COUNTY', 'Scenario'])['C_SPEED']
-            .mean()
-            .reset_index()
-            .pivot_table(index='FUNCCLASS', 
-                            columns=['COUNTY','Scenario'], 
-                            values='C_SPEED', 
-                            aggfunc='mean', 
-                            fill_value=0)
-            )
-        
-        vmt.round(2).to_csv(summary_output_path / 'RiverBridgeReport_VMT_by_FC_and_county.csv')
-        vhd.round(2).to_csv(summary_output_path / 'RiverBridgeReport_VHD_by_FC_and_county.csv')
-        c_speed_weighted.round(2).to_csv(summary_output_path / 'RiverBridgeReport_Weighted_CongSpeed_by_FC_and_county.csv')
-        c_speed.round(2).to_csv(summary_output_path / 'RiverBridgeReport_CongSpeed_by_FC_and_county.csv')
+    c_speed = (network_df.groupby(['FUNCCLASS', 'COUNTY', 'Scenario'])['C_SPEED']
+        .mean()
+        .reset_index()
+        .pivot_table(index='FUNCCLASS', 
+                        columns=['COUNTY','Scenario'], 
+                        values='C_SPEED', 
+                        aggfunc='mean', 
+                        fill_value=0)
+        )
+    
+    vmt.round(2).to_csv(summary_output_path / 'RiverBridgeReport_VMT_by_FC_and_county.csv')
+    vhd.round(2).to_csv(summary_output_path / 'RiverBridgeReport_VHD_by_FC_and_county.csv')
+    c_speed_weighted.round(2).to_csv(summary_output_path / 'RiverBridgeReport_Weighted_CongSpeed_by_FC_and_county.csv')
+    c_speed.round(2).to_csv(summary_output_path / 'RiverBridgeReport_CongSpeed_by_FC_and_county.csv')
 
 if __name__ == "__main__":
-    # these paths and inputs need to be coded as relative paths
+    # TODO: these paths and inputs need to be coded as relative paths
     MODEL_OUTPUT_PATH = Path(
         r"C:\Users\USYS671257\Documents\GitHub\client_chattanooga_rtp_update\summary_tool\model_output"
     )
     SUMMARY_OUTPUT_PATH = Path(
         r"C:\Users\USYS671257\Documents\GitHub\client_chattanooga_rtp_update\summary_tool\summary_output"
     )
-    # these inputs need to be read from config file
+    # TODO: these inputs need to be read from config file
     SCENARIO = ['2019','2050']
     COUNTY = ['Hamilton','Walker']
     create_bridge_report(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, SCENARIO, COUNTY)
