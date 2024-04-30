@@ -973,10 +973,11 @@ shared mvw, net, netparam
      Opts = null
      Opts.Input.Database = mvw.linefile
      Opts.Input.Network = net.assign
-	 Opts.Input.[Toll Set] = {mvw.linefile+"|"+mvw.line, mvw.line}
-	 Opts.Input.[Centroids Set] = {mvw.linefile+"|"+mvw.node, mvw.node, "Centroids", "Select * where Centroid = 1"}
-	 Opts.Global.[Link to Link Penalty Method] = "Table"
+	   Opts.Input.[Toll Set] = {mvw.linefile+"|"+mvw.line, mvw.line}
+	   Opts.Input.[Centroids Set] = {mvw.linefile+"|"+mvw.node, mvw.node, "Centroids", "Select * where Centroid = 1"}
+	   Opts.Global.[Link to Link Penalty Method] = "Table"
      Opts.Global.[Global Turn Penalties] = {left_tp, right_tp, 0, -1}
+     Opts.Global.[Use Centroid Turn Penalties] = "True"
 	 //Opts.Global.[Global Turn Penalties] = {0.999, 0.265734, 0, -1}
 	ok = RunMacro("TCB Run Operation", "Network Settings", Opts, &Ret)
     if !ok then Return( RunMacro("TCB Closing", ok, True ) )
