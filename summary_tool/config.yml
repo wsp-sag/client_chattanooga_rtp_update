@@ -1,20 +1,163 @@
-# river bridge report
-CREATE_BRIDGE_REPORT: true
-scenario = ['2019', '2050']
-county = ['Hamilton','Walker'] # four counties 'Hamilton','Walker','Dade','Catoosa'
+#######################
+# river bridge report #
+#######################
+bridge_report:
+  CREATE_BRIDGE_REPORT: true
+  scenario:
+    - 2019
+    - 2050
+  county:
+    - 'Hamilton'
+    - 'Walker'
+    # - 'Dade'
+    # - 'Catoosa'
 
-# scenario impact report
-CREATE_IMPACT_REPORT: false
-scenario = ['2019', '2050']
-link_query = 'link_id.csv'
-# area_query = 'FUNCCLASS<=7'
 
-# project evaluation report
-CREATE_EVALUATION_REPORT: false
-scenario = ['2019', '2050']
-link_query = 'cummings_hwy.csv'
+##########################
+# scenario impact report #
+##########################
+scenario_impact:
+  CREATE_IMPACT_REPORT: false
+  scenario:
+    - 2019
+    - 2050
+  link_query: 'link_id.csv'
 
-# map automation
-CREATE_MAP_OUTPUT: false
-scenario = ['2019']
+
+#############################
+# project evaluation report #
+#############################
+project_evaluation:
+  CREATE_EVALUATION_REPORT: false
+  scenario:
+    - 2019
+    - 2050
+  link_query: 'cummings_hwy.csv'
+
+
+###################
+# map automation  #
+###################
+map_automation:
+  CREATE_MAP_OUTPUT: false
+  scenario:
+    - 2019
+  filetype: 
+    - jpg
+    - pdf
+  simple_legend: True
+  ez_note: External Zones represent Key Areas for Traffic outside of the TPO Boundary.
+  base_network:
+      - 'TPO Boundary'
+      - 'TN/GA State Line'
+      - 'TPO GA Counties'
+      - 'TPO_TN_Counties' ## Placeholder
+      - 'thematic_layers' ## Thematic Layers Placeholder
+      - 'TPO Interstates'
+      - 'Controlled Access'
+      - 'Base Network'
+      - 'Water Bodies'
+      - 'TPO Municipalities'
+  base_taz:
+      - 'TPO Boundary'
+      - 'TN/GA State Line'
+      - 'TPO GA Counties'
+      - 'TPO_TN_Counties' ## Placeholder
+      - 'TPO Interstates'
+      - 'Controlled Access'
+      - 'Base Network'
+      - 'Water Bodies'
+      - 'thematic_layers' ## Thematic Layers Placeholder
+      - 'TPO Municipalities'
+  layers_off_legend:
+      - 'Base Network'
+      - 'TPO Municipalities'      
+  maps:
+      Map_12:
+          name: AM Peak LOS
+          description: AM Peak Level Of Service (LOS), based on volume/capacity ratio.
+          base: base_network
+          layers:
+              - 'AM Peak LOS'
+
+      Map_13:
+          name: PM Peak LOS
+          description: PM Peak Level Of Service (LOS), based on volume/capacity ratio.
+          base: base_network
+          layers:
+              - 'PM Peak LOS'
+
+      Map_14:
+          name: VMT
+          description: Vehicle Miles Traveled (VMT), graduated color and bandwidth.
+          base: base_network
+          layers:
+              - 'VMT'
+
+      Map_15:
+          name: VHD
+          description: Vehicle Hours of Delay (VHD), graduated color and bandwidth.
+          base: base_network
+          layers:
+              - 'VHD'
+
+      Map_16:
+          name: Congested Speeds
+          description: Congested Speeds, graduated color and bandwidth.
+          base: base_network
+          layers:
+              - 'Congested Speeds'
+
+      Map_17:
+          name: Transit Route Ridership
+          description: Transit Route Ridership, graduated color and bandwidth.
+          base: base_network
+          layers:
+              - 'Transit Route Ridership'
+
+      Map_18:
+          name: Origin of Passenger Vehicle Trips
+          description: Origin of Passenger Vehicle Trips by TAZ, graduated color.
+          ez_note: True
+          base: base_taz
+          layers:
+              - 'Passenger Trips - Origin'
+
+      Map_19:
+          name: Origin of Transit Trips
+          description: Origin of Transit Trips by TAZ, graduated color.
+          base: base_taz
+          layers:
+              - 'Transit Trips - Origin'
+
+      Map_20:
+          name: Origin of Truck Trips
+          description: Origin of Truck Trips by TAZ, graduated color.
+          ez_note: True
+          base: base_taz
+          layers:
+              - 'Truck Trips - Origin'
+
+      Map_21:
+          name: Destination of Passenger Vehicle Trips
+          description: Destination of Passenger Vehicle Trips by TAZ, graduated color.
+          ez_note: True
+          base: base_taz
+          layers:
+              - 'Passenger Trips - Destination'
+      Map_22:
+          name: Destination of Transit Trips
+          description: Destination of Transit Trips by TAZ, graduated color.
+          base: base_taz
+          layers:
+              - 'Transit Trips - Destination'
+      Map_23:
+          name: Destination of Truck Trips
+          description: Destination of Truck Trips by TAZ, graduated color.
+          ez_note: True
+          base: base_taz
+          layers:
+              - 'Truck Trips - Destination'
+
+
 
