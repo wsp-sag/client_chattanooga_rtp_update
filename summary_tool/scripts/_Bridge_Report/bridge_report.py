@@ -9,7 +9,7 @@ def create_bridge_report(model_output_path, summary_output_path, scenario, count
     network_df = pd.DataFrame()
 
     for scen in scenario:
-        network_load_path = (model_output_path / scen)
+        network_load_path = (model_output_path / str(scen))
         network = gpd.read_file(network_load_path / 'loaded_network.shp')
         network = network[['COUNTY','FUNCCLASS','LENGTH','TOTFLOW','AB_TOTFLOW','BA_TOTFLOW','AB_CTIME','BA_CTIME','FFTIME','DIR']]
 
@@ -79,14 +79,5 @@ def create_bridge_report(model_output_path, summary_output_path, scenario, count
     c_speed.round(2).to_csv(summary_output_path / 'RiverBridgeReport_CongSpeed_by_FC_and_county.csv')
 
 if __name__ == "__main__":
-    # TODO: these paths and inputs need to be coded as relative paths
-    MODEL_OUTPUT_PATH = Path(
-        r"C:\Users\USYS671257\Documents\GitHub\client_chattanooga_rtp_update\summary_tool\model_output"
-    )
-    SUMMARY_OUTPUT_PATH = Path(
-        r"C:\Users\USYS671257\Documents\GitHub\client_chattanooga_rtp_update\summary_tool\summary_output"
-    )
-    # TODO: these inputs need to be read from config file
-    SCENARIO = ['2019','2050']
-    COUNTY = ['Hamilton','Walker']
+
     create_bridge_report(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, SCENARIO, COUNTY)
