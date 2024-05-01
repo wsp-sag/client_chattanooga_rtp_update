@@ -28,7 +28,7 @@ scenario_impact:
 # project evaluation report #
 #############################
 project_evaluation:
-  CREATE_EVALUATION_REPORT: false
+  CREATE_EVALUATION_REPORT: true
   scenario:
     - 2019
     - 2050
