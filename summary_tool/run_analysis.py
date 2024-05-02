@@ -31,12 +31,22 @@ def get_config():
     return config
 
 
-# %%
+
+
+
+# print(config)
+
+#%%
+
 if __name__ == "__main__":
     config = get_config()
 
     
     if config["bridge_report"]['CREATE_BRIDGE_REPORT']:
+        print("creating bridge report subsets...")
+        for subset_name, links in config["bridge_report"]["subset_stats"].items():
+            # bridge_report.subset_catagories(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links)
+            bridge_report.subset_catagories(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links)
         print("creating bridge report")
         bridge_report.create_bridge_report(
             MODEL_OUTPUT_PATH, 
@@ -58,3 +68,5 @@ if __name__ == "__main__":
 
 
     print("done")
+
+#%%
