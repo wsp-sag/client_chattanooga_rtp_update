@@ -42,16 +42,13 @@ map_automation:
   CREATE_MAP_OUTPUT: false
   scenario:
     - 2019
-  filetype: 
-    - jpg
-    - pdf
   simple_legend: True
   ez_note: External Zones represent Key Areas for Traffic outside of the TPO Boundary.
   base_network:
       - 'TPO Boundary'
       - 'TN/GA State Line'
       - 'TPO GA Counties'
-      - 'TPO_TN_Counties' ## Placeholder
+      - 'TPO_TN_Counties'
       - 'thematic_layers' ## Thematic Layers Placeholder
       - 'TPO Interstates'
       - 'Controlled Access'
@@ -62,7 +59,7 @@ map_automation:
       - 'TPO Boundary'
       - 'TN/GA State Line'
       - 'TPO GA Counties'
-      - 'TPO_TN_Counties' ## Placeholder
+      - 'TPO_TN_Counties'
       - 'TPO Interstates'
       - 'Controlled Access'
       - 'Base Network'

@@ -5,10 +5,21 @@ try:
 except ImportError:
     from yaml import Loader, Dumper
 
+import sys
+sys.path.append(r'C:\OSGeo4W\apps\qgis-ltr\python') # OK!
 
-map_def_file = os.path.join('Maps_definitions', 'Chattanooga_Map_Dictionary.yaml')
+from qgis.core import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+
+qgs = QgsApplication([], False)
+qgs.initQgis()
+
+qgis_template = 'Chattanooga_Map_Deliverables.qgz'
+
+map_def_file = os.path.join('..', 'config.yml')
 logo_path = os.path.join('Data', 'rtp_logo.png')
-export_path = os.path.join('Maps_deliverables')
+export_path = os.path.join('..', 'summary_output')
 
 p_size = 'Letter'
 p_orient = QgsLayoutItemPage.Orientation.Portrait
@@ -16,7 +27,8 @@ map_size = [20, 20, 20, 20]
 legend_title = "Legend"
 
 ## Load Map Definitions from YAML
-deliverables_yml = yaml.load(open(map_def_file), Loader=Loader)
+# deliverables_yml1 = yaml.load(open(map_def_file), Loader=Loader)
+deliverables_yml = yaml.load(open(map_def_file), Loader=Loader)['map_automation']
 deliverables = deliverables_yml['maps']
 ## Base Layers
 base_network = deliverables_yml['base_network']
@@ -28,6 +40,7 @@ l_ez_note = deliverables_yml['ez_note']
 
 ## Start Project instance and Layout Manager
 project = QgsProject.instance()
+project.read(qgis_template)
 manager = project.layoutManager()
 
 def drop_layout(l_long_name):
@@ -84,18 +97,13 @@ def add_layout(l_number, l_name, l_long_name, l_description, layers, layers_lege
     title.attemptMove(QgsLayoutPoint(10, 10, QgsUnitTypes.LayoutMillimeters))
 
 
-#def add_legend(layout, layers_legend):
     legend = QgsLayoutItemLegend(layout)
-#    legend.setTitle(legend_title)
-#    legend.setStyleFont(QFont('Calibri', 10))
+
     layer_tree = QgsLayerTree()
     for layer in layers_legend:
         print(layer)
         layer_tree.addLayer(layer)
-#    print(layer_tree)
-    legend.model().setRootGroup(layer_tree)  ##BREAKS
-    #QgsLegendModel(layer_tree)  ##TEST
-    #legend.setAutoUpdateModel(False)  ## TEST
+    legend.model().setRootGroup(layer_tree)
     
     layout.addLayoutItem(legend)
     legend.attemptMove(QgsLayoutPoint(10,45, QgsUnitTypes.LayoutMillimeters))
@@ -108,15 +116,6 @@ def add_layout(l_number, l_name, l_long_name, l_description, layers, layers_lege
     description.setFixedSize(QgsLayoutSize(70, 60, QgsUnitTypes.LayoutMillimeters))
     layout.addLayoutItem(description)
     description.attemptMove(QgsLayoutPoint(10, 35, QgsUnitTypes.LayoutMillimeters))
-
-##def add_note(layout, l_ez_note):
-#    note = QgsLayoutItemLabel(layout)
-#    note.setText(l_ez_note)
-#    note.setFont(QFont('Calibri', 10))
-#    note.adjustSizeToText()
-#    note.setFixedSize(QgsLayoutSize(70, 60, QgsUnitTypes.LayoutMillimeters))
-#    layout.addLayoutItem(note)
-#    note.attemptMove(QgsLayoutPoint(10, 250, QgsUnitTypes.LayoutMillimeters))
 
     if 'ez_note' in meta and meta['ez_note']:
         note = QgsLayoutItemLabel(layout)
@@ -141,24 +140,22 @@ def add_layout(l_number, l_name, l_long_name, l_description, layers, layers_lege
     layout.addLayoutItem(scalebar)
     scalebar.attemptMove(QgsLayoutPoint(10, 260, QgsUnitTypes.LayoutMillimeters))
     
-#def add_logo(layout, logo_path):
     logo = QgsLayoutItemPicture(layout)
-#    logo.setPicturePath(os.path.join('Data', 'rtp_logo.png'))
+    # logo.setPicturePath(os.path.join('Data', 'rtp_logo.png'))
     logo.setPicturePath(logo_path)
     logo.attemptResize(QgsLayoutSize(60, 25))
     layout.addLayoutItem(logo)
     logo.attemptMove(QgsLayoutPoint(150, 250, QgsUnitTypes.LayoutMillimeters))
     
 
-#def export_pdf(file_name):
-#    exporter = QgsLayoutExporter(layout)
-#    exporter.exportToPdf(os.path.join(export_path, f'{l_number}.pdf'), QgsLayoutExporter.PdfExportSettings())
-#    print('\tMap exported to:', os.path.join(export_path, f'{l_number}.pdf'), '\n')
+    exporter = QgsLayoutExporter(layout)
+    exporter.exportToPdf(os.path.join(export_path, f'{l_number}.pdf'), QgsLayoutExporter.PdfExportSettings())
+    print('\tMap exported to:', os.path.join(export_path, f'{l_number}.pdf'), '\n')
     
 #def export_png(layout, l_number, export_path):
-    exporter = QgsLayoutExporter(layout)
-    exporter.exportToImage(os.path.join(export_path, f'{l_number}.png'), QgsLayoutExporter.ImageExportSettings())
-    print('\tMap exported to:', os.path.join(export_path, f'{l_number}.png'), '\n')
+    # exporter = QgsLayoutExporter(layout)
+    # exporter.exportToImage(os.path.join(export_path, f'{l_number}.png'), QgsLayoutExporter.ImageExportSettings())
+    # print('\tMap exported to:', os.path.join(export_path, f'{l_number}.png'), '\n')
     
 def generate_layout(d, meta):
     l_number = d
@@ -178,35 +175,19 @@ def generate_layout(d, meta):
         layers_legend = [l for l in layers_legend  if l not in lay_off] 
 
     print('Processing Layout for', l_long_name)
-    
-    ## Map Layers
+
     layers = [QgsProject.instance().mapLayersByName(l)[0] for l in layers]
-    ##Legend Layers
     layers_legend = [QgsProject.instance().mapLayersByName(l)[0] for l in layers_legend]
     
-#    ## Create Layouts
-#    drop_layout(l_long_name)
-#    layout = add_layout(l_long_name)
-#    map = add_map(layout, layers)
-#    add_title(layout, l_name)
-#    add_legend(layout, layers_legend)
-#    add_description(layout, l_description)
-#    if 'ez_note' in meta and meta['ez_note']: add_note(layout, l_ez_note)
-#    add_scalebar(layout, map)
-#    add_logo(layout, logo_path)
-#    export_png(layout, l_number, export_path)   
-##    export_pdf(l_long_name)
 
-    ## Create Layouts
     drop_layout(l_long_name)
     add_layout(l_number, l_name, l_long_name, l_description, layers, layers_legend)
 
-
-## RUN
-#for d, meta in list(deliverables.items())[5:6]:
 for d, meta in deliverables.items():
     generate_layout(d, meta)
 
+
+qgs.exitQgis()
 print('Map Export Complete\n')
 
     
