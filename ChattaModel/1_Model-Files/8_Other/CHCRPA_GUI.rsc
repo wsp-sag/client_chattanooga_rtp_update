@@ -127,6 +127,7 @@ Macro "loadpaths" (temp) do
 		outdir.tables       = root.scen + "\\Outputs\\6_TripTables\\"
 		outdir.rep          = root.scen + "\\Outputs\\7_Reports\\"
 		outdir.daysimrep    = root.scen + "\\Outputs\\7_Reports\\"
+		outdir.summary    = root.scen + "\\Outputs\\8_Summaries\\"
 		//outdir.daysimrep    = outdir.rep + "DaySimReporting\\"
 
 		//mvw.mzbuff       = root.daysim + "Inputs\\2_MicroZones\\Chatt_MZ"+i2s(info.modyear)+"_buffed.dat"
@@ -463,15 +464,20 @@ frame "IndSteps"  1, 12.5, 51.5, 17 prompt: "Single Modules"
 	RunMacro("CloseAll")
 	RunMacro("TransitAssignment")
 	RunMacro("TransitReport")
+	RunMacro("ExportTransitTripTable")
+	RunMacro("ExportRidership")
    endhere: endItem
 
    Button "step4" 5, 26, 45, 2  Prompt: "04 Run Assignment"        do on escape goto endhere
 	controller.loadpaths(null)
 	RunMacro("EI_Passenger_Model")
 	RunMacro("Truck_Model")
+	RunMacro("ExportTruckOD")
 	RunMacro("4TCV_Model")
 	RunMacro("UpdateTripTable", od)
+	RunMacro("ExportTripTable")
 	RunMacro("Assign_Process", 0, 1)
+	RunMacro("ExportNetwork")
    endhere: endItem
 
 /*
@@ -683,6 +689,7 @@ shared tazvec, linevec
 	RunMacro("WriteLog", "Executing SubModels")
 	RunMacro("EI_Passenger_Model")
 	RunMacro("Truck_Model")
+	RunMacro("ExportTruckOD")
 	RunMacro("4TCV_Model")
 
 
@@ -717,9 +724,11 @@ while info.prmseam > 1 and info.prmsepm > 1 and info.prmseop > 1 and info.iter <
 
 //Process Assignment
 	RunMacro("UpdateTripTable", od)
+	RunMacro("ExportTripTable")
 
 	RunMacro("WriteLog", "Starting Assignment")
 	RunMacro("Assign_Process", 0, 1) //[Time of Day & Preload]
+	RunMacro("ExportNetwork")
 	RunMacro("WriteLog", "Assignment Complete")
 
 //Update Congested times to .net
@@ -787,6 +796,8 @@ RunMacro("CloseAll")
 RunMacro("WriteLog", "Transit Assignment")
 RunMacro("TransitAssignment")
 RunMacro("TransitReport")
+RunMacro("ExportTransitTripTable")
+RunMacro("ExportRidership")
 RunMacro("WriteLog", "Transit Complete")
 
 RunMacro("CloseAll")
@@ -1110,5 +1121,99 @@ RunMacro("CalRep", 0, calTRK)
 
 {calALL.type, calALL.vol, calALL.cnt} = {"All", "TotFlow", "AADT"}
 RunMacro("CalRep", 1, calALL)
+
+endMacro
+
+
+Macro "ExportTransitTripTable"
+shared outdir //paths
+scen = {"AM","PM","OP"}
+
+for i = 1 to scen.length do
+
+	transit_trip_file = outdir.tables + "TransitTrip_" + scen[i] + ".mtx"
+
+	m = OpenMatrix(transit_trip_file, "True")
+	CreateTableFromMatrix(m, outdir.summary + "tranist_trip_tables_" + scen[i] + ".csv", "CSV", {{"Complete", "Yes"}})
+end
+
+endMacro
+
+
+Macro "ExportTripTable"
+shared info,outdir //paths
+
+//di = GetDirectoryInfo(outdir.tables + "TripTable*.mtx", "File")
+//max_iter_num = di.length
+trip_file = outdir.tables + "TripTable_I" + i2s(info.iter) + ".mtx"
+
+m = OpenMatrix(trip_file, "True")
+CreateTableFromMatrix(m, outdir.summary + "trip_tables.csv", "CSV", {{"Complete", "Yes"}})
+endMacro
+
+
+Macro "ExportTruckOD"
+shared outdir //paths
+
+m = OpenMatrix(outdir.truck + "Truck_OD.mtx", "True")
+CreateTableFromMatrix(m, outdir.summary + "Truck_OD.csv", "CSV", {{"Complete", "Yes"}})
+
+endMacro
+
+
+Macro "ExportNetwork"
+shared mvw,outdir //paths
+
+
+net_file = mvw.linefile
+file_info = GetDBInfo(net_file)
+scope = file_info[1]
+
+CreateMap(net, {{"Scope", scope},{"Auto Project", "True"}})
+
+layers = GetDBLayers(net_file)
+node_lyr = addlayer(net, layers[1], net_file, layers[1])
+link_lyr = addlayer(net, layers[2], net_file, layers[2])
+
+
+field_list_link = GetFields("Network_Base", "All")
+field_list_node = GetFields("Node", "All")
+
+
+ExportArcViewShape(link_lyr, outdir.summary + "loaded_network.shp",{{"Fields", field_list_link[1]}})
+ExportArcViewShape(node_lyr, outdir.summary + "loaded_network_nodes.shp",{{"Fields", field_list_node[1]}})
+
+
+endMacro
+
+
+Macro "ExportRidership"
+shared mvw,outdir //paths
+
+// Output: ALL_BOARDINGS
+
+name = "ALL_BOARDINGS"
+CopyFile(outdir.hwy + "Transit\\" + name + ".DBF", outdir.summary + name + ".DBF")
+CopyFile(outdir.hwy + "Transit\\" + name + ".MDX", outdir.summary + name + ".MDX")
+
+// Output: Route Shapefile
+
+// highway_dbd = outdir.hwy + "Network_Base.dbd"
+highway_dbd = mvw.linefile
+file_info = GetDBInfo(highway_dbd)
+CreateMap(net, {{"Scope", file_info[1]}, {"Auto Project", "True"}})
+
+route_file = mvw.rtsfile
+newlyr = AddRouteSystemLayer(map_name, "Transit Routes", route_file, )
+
+field_list_route = GetFields("Transit Routes", "All")
+field_list_stop = GetFields("Transit Stops", "All")
+
+
+ExportArcViewShape(newlyr[1], outdir.summary + "ChattaTransit_route.shp",{
+	{"Fields", field_list_route[1]}})
+
+ExportArcViewShape(newlyr[2], outdir.summary + "ChattaTransit_stop.shp",{
+	{"Fields", field_list_stop[1]}})
 
 endMacro
