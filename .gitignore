@@ -28,3 +28,4 @@ Scripts/build
 *.spec
 
 **/*/model_output
+**/*/summary_output

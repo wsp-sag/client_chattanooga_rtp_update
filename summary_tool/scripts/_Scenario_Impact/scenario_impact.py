@@ -50,4 +50,6 @@ def subset_catagories(
     )
     print("Outputting: ", specific_output / f"{scen}_{subset_name}.csv")
     summary_table = {key: [val] for key, val in summary_table.items()}
-    pd.DataFrame.from_dict(summary_table).to_csv(specific_output / "summary.csv")
+    pd.DataFrame.from_dict(summary_table).to_csv(
+        specific_output / f"{scen}_{subset_name}.csv"
+    )
