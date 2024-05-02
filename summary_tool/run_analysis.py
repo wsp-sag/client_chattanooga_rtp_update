@@ -47,7 +47,7 @@ if __name__ == "__main__":
             for subset_name, links in config["scenario_impact"]["subset"].items():
                 # bridge_report.subset_catagories(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links)
                 scenario_impact.subset_catagories(
-                    MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links
+                    MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, scen_str, subset_name, links
                 )
 
     if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
