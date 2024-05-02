@@ -11,8 +11,18 @@ bridge_report:
     - 'Walker'
     # - 'Dade'
     # - 'Catoosa'
-  subset_stats:
-    frazer:
+
+
+##########################
+# scenario impact report #
+##########################
+scenario_impact:
+  CREATE_IMPACT_REPORT: true
+  scenario:
+    - 2019
+    - 2050
+  subset:
+    frazer: # below are the link ids for the specific subset
       - 1429
       - 2185
       - 1416
@@ -28,16 +38,6 @@ bridge_report:
       - 1431
       - 2240
       - 2239
-
-
-##########################
-# scenario impact report #
-##########################
-scenario_impact:
-  CREATE_IMPACT_REPORT: false
-  scenario:
-    - 2019
-    - 2050
   link_query: 'link_id.csv'
 
 

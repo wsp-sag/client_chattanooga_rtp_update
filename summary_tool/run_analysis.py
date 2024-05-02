@@ -9,6 +9,7 @@ from typing import Optional, Literal
 
 import scripts._Bridge_Report.bridge_report as bridge_report
 import scripts._Project_Evaluation.project_evaluation as project_evaluation
+import scripts._Scenario_Impact.scenario_impact as scenario_impact
 
 
 cd = Path(os.getcwd())
@@ -22,7 +23,7 @@ def get_config():
 
     config_path = cd / "config.yml"
     if config_path.exists():
-        with open(config_path,'r') as f:
+        with open(config_path, "r") as f:
             config = yaml.safe_load(f)
             f.close()
     else:
@@ -31,42 +32,44 @@ def get_config():
     return config
 
 
-
-
-
 # print(config)
 
-#%%
+# %%
 
 if __name__ == "__main__":
     config = get_config()
 
-    
-    if config["bridge_report"]['CREATE_BRIDGE_REPORT']:
-        print("creating bridge report subsets...")
-        for subset_name, links in config["bridge_report"]["subset_stats"].items():
-            # bridge_report.subset_catagories(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links)
-            bridge_report.subset_catagories(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links)
+    if config["scenario_impact"]["CREATE_IMPACT_REPORT"]:
+        print("creating impact report subsets...")
+        for scenario in config["scenario_impact"]["scenario"]:
+            scen_str = str(scenario)
+            print(scen_str)
+            for subset_name, links in config["scenario_impact"]["subset"].items():
+                # bridge_report.subset_catagories(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links)
+                scenario_impact.subset_catagories(
+                    MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links
+                )
+
+    if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
         print("creating bridge report")
         bridge_report.create_bridge_report(
-            MODEL_OUTPUT_PATH, 
-            SUMMARY_OUTPUT_PATH, 
-            config["bridge_report"]['scenario'],
-            config["bridge_report"]['county'],
+            MODEL_OUTPUT_PATH,
+            SUMMARY_OUTPUT_PATH,
+            config["bridge_report"]["scenario"],
+            config["bridge_report"]["county"],
         )
         print("finish bridge report")
 
-    if config["project_evaluation"]['CREATE_EVALUATION_REPORT']:
+    if config["project_evaluation"]["CREATE_EVALUATION_REPORT"]:
         print("creating project evaluation report")
         project_evaluation.create_project_evaluation(
-            MODEL_OUTPUT_PATH, 
-            SUMMARY_OUTPUT_PATH, 
-            config["bridge_report"]['scenario'],
+            MODEL_OUTPUT_PATH,
+            SUMMARY_OUTPUT_PATH,
+            config["bridge_report"]["scenario"],
             LINK_QUERY_LOOKUP / config["project_evaluation"]["link_query"],
         )
         print("finish project evaluation report")
 
-
     print("done")
 
-#%%
+# %%
