@@ -33,9 +33,11 @@ def get_config():
 
 
 # print(config)
-
+network = geopandas.read_file(MODEL_OUTPUT_PATH / "2019" / "loaded_network.shp")
 # %%
+from importlib import reload
 
+reload(scenario_impact)
 if __name__ == "__main__":
     config = get_config()
 
@@ -47,8 +49,15 @@ if __name__ == "__main__":
             for subset_name, links in config["scenario_impact"]["subset"].items():
                 # bridge_report.subset_catagories(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links)
                 scenario_impact.subset_catagories(
-                    MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, scen_str, subset_name, links
+                    MODEL_OUTPUT_PATH,
+                    SUMMARY_OUTPUT_PATH,
+                    scen_str,
+                    subset_name,
+                    links,
+                    network,
                 )
+        # put them all into one report
+        scenario_impact.consolidate_one_report(SUMMARY_OUTPUT_PATH)
 
     if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
         print("creating bridge report")
