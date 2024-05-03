@@ -73,11 +73,13 @@ def subset_catagories(
             )
             summary_table["Total Daily Flow"] = summary_subset["TOTFLOW"].mean()
 
-            summary_table["Daily Capacity"] = f"{summary_subset["AB_DLYCAP"].mean():0.0f} - {summary_subset["BA_DLYCAP"].mean():0.0f}"
-            
+            summary_table["Daily Capacity"] = (
+                f"{summary_subset['AB_DLYCAP'].mean():0.0f} - {summary_subset['BA_DLYCAP'].mean():0.0f}"
+            )
 
             saturation = (
-                network["TOTFLOW"] / (network["AB_DLYCAP"] + network["BA_DLYCAP"])
+                summary_subset["TOTFLOW"]
+                / (summary_subset["AB_DLYCAP"] + summary_subset["BA_DLYCAP"])
             ).mean()
             los = _saturation_to_los(saturation)
             summary_table["LOS (Lowest Level of Service)"] = (
