@@ -133,6 +133,6 @@ def consolidate_one_report(summary_output_path: Path):
         all_tables.append(temp_table)
 
     shutil.rmtree(summary_output_path / "scenario_impact")
-    pd.concat(all_tables).drop(columns="Unnamed: 0").to_csv(
+    pd.concat(all_tables).drop(columns="Unnamed: 0").round(2).to_csv(
         summary_output_path / "scenario_impact.csv", index=False
     )
