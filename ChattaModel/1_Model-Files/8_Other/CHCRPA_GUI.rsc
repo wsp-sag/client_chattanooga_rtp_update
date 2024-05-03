@@ -1176,8 +1176,8 @@ node_lyr = addlayer(net, layers[1], net_file, layers[1])
 link_lyr = addlayer(net, layers[2], net_file, layers[2])
 
 
-field_list_link = GetFields("Network_Base", "All")
-field_list_node = GetFields("Node", "All")
+field_list_link = GetFields(link_lyr, "All")
+field_list_node = GetFields(node_lyr, "All")
 
 
 ExportArcViewShape(link_lyr, outdir.summary + "loaded_network.shp",{{"Fields", field_list_link[1]}})
