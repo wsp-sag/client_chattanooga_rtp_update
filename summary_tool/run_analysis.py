@@ -32,9 +32,6 @@ def get_config():
 
 
 # %%
-# print(config)
-network = geopandas.read_file(MODEL_OUTPUT_PATH / "2019" / "loaded_network.shp")
-# %%
 from importlib import reload
 
 reload(scenario_impact)
@@ -48,7 +45,6 @@ if __name__ == "__main__":
             SUMMARY_OUTPUT_PATH,
             scenario_impact._get_link_lookups(LINK_QUERY_LOOKUP),
             config["scenario_impact"]["scenario"],
-            network,
         )
         scenario_impact.consolidate_one_report(SUMMARY_OUTPUT_PATH)
 
