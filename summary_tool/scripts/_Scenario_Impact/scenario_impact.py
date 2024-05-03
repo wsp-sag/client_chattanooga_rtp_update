@@ -119,9 +119,6 @@ def subset_catagories(
                 * summary_subset["BA_TOTFLOW"]
             ) / 60
 
-            print(
-                "Outputting: ", specific_output / f"{scen_str}_{link_subset_name}.csv"
-            )
             summary_table = {key: [val] for key, val in summary_table.items()}
             pd.DataFrame.from_dict(summary_table).to_csv(
                 specific_output / f"{scen_str}_{link_subset_name}.csv"
