@@ -37,8 +37,7 @@ def subset_catagories(
     model_output_path: Path,
     summary_output_path: Path,
     link_subsets: pd.DataFrame,
-    scenarios: list,
-    network=None,
+    scenarios: list
 ):
     list_link_subsets = [
         (scen_name, link_subsets[link_subsets["Name"] == scen_name])
@@ -48,8 +47,7 @@ def subset_catagories(
         scen_str = str(scen)
         network_load_path = model_output_path / str(scen)
 
-        if network is None:
-            network = gpd.read_file(network_load_path / "loaded_network.shp")
+        network = gpd.read_file(network_load_path / "loaded_network.shp")
 
         for link_subset_name, link_subset_df in list_link_subsets:
 
