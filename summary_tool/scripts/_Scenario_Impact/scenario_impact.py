@@ -3,6 +3,7 @@ import pandas as pd
 from pathlib import Path
 import geopandas as gpd
 from itertools import product
+import os, shutil
 
 
 def _saturation_to_los(saturation: float, num_lanes=4):
@@ -102,14 +103,22 @@ def subset_catagories(
 
             summary_table["Congested Speed (MPH)"] = (
                 summary_table["Free Flow Speed (MPH)"]
-                * summary_table["Congested Time (seconds)"]
-                / summary_table["Free Flow Time (seconds)"]
+                * summary_table["Free Flow Time (seconds)"]
+                / summary_table["Congested Time (seconds)"]
             )
 
             # TODO check CRS is in Meters
             summary_table["Vehicle Miles Traveled (VMT)"] = (
                 summary_subset["LENGTH"].sum() * summary_table["Total Daily Flow"]
             )
+
+            summary_table["Vehicle Hours Delay (VHD)"] = (
+                (summary_table["AB_CTIME"] - summary_table["FFTIME"])
+                * summary_table["AB_TOTFLOW"]
+                + (summary_table["BA_CTIME"] - summary_table["FFTIME"])
+                * summary_table["BA_TOTFLOW"]
+            ) / 60
+
             print(
                 "Outputting: ", specific_output / f"{scen_str}_{link_subset_name}.csv"
             )
@@ -119,7 +128,7 @@ def subset_catagories(
             )
 
 
-def consolidate_one_report(summary_output_path):
+def consolidate_one_report(summary_output_path: Path):
 
     all_tables = []
     for output_path in (summary_output_path / "scenario_impact").glob("*.csv"):
@@ -127,6 +136,7 @@ def consolidate_one_report(summary_output_path):
         temp_table["scenario"] = output_path.stem
         all_tables.append(temp_table)
 
+    shutil.rmtree(summary_output_path / "scenario_impact")
     pd.concat(all_tables).drop(columns="Unnamed: 0").to_csv(
         summary_output_path / "scenario_impact.csv", index=False
     )

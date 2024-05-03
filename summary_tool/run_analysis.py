@@ -5,6 +5,7 @@ from pathlib import Path
 import yaml
 import pandas
 import geopandas
+
 from typing import Optional, Literal
 
 import scripts._Bridge_Report.bridge_report as bridge_report
@@ -32,9 +33,6 @@ def get_config():
 
 
 # %%
-from importlib import reload
-
-reload(scenario_impact)
 if __name__ == "__main__":
     config = get_config()
 
@@ -43,7 +41,9 @@ if __name__ == "__main__":
         scenario_impact.subset_catagories(
             MODEL_OUTPUT_PATH,
             SUMMARY_OUTPUT_PATH,
-            scenario_impact._get_link_lookups(LINK_QUERY_LOOKUP),
+            pandas.read_csv(
+                LINK_QUERY_LOOKUP / config["scenario_impact"]["link_query"]
+            ),
             config["scenario_impact"]["scenario"],
         )
         scenario_impact.consolidate_one_report(SUMMARY_OUTPUT_PATH)
