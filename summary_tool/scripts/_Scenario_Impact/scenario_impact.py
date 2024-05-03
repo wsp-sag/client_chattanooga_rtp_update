@@ -60,8 +60,8 @@ def subset_catagories(
 
             summary_table = {}
             summary_table["Average Speed Limit"] = summary_subset["SPD_LMT"].mean()
-            summary_table["Average AB Lanes"] = summary_subset["AB_TOTFLOW"].mean()
-            summary_table["Average BA Lanes"] = summary_subset["BA_TOTFLOW"].mean()
+            summary_table["Average AB Lanes"] = summary_subset["AB_LANES"].mean()
+            summary_table["Average BA Lanes"] = summary_subset["BA_LANES"].mean()
 
             summary_table["AM Peak Flow"] = summary_subset["AM_TOTFLOW"].mean()
             summary_table["PM Peak Flow"] = summary_subset["PM_TOTFLOW"].mean()
@@ -73,9 +73,8 @@ def subset_catagories(
             )
             summary_table["Total Daily Flow"] = summary_subset["TOTFLOW"].mean()
 
-            summary_table["Daily Capacity"] = (
-                summary_subset["AB_DLYCAP"].mean() + summary_subset["BA_DLYCAP"].mean()
-            ) / 2
+            summary_table["Daily Capacity"] = f"{summary_subset["AB_DLYCAP"].mean():0.0f} - {summary_subset["BA_DLYCAP"].mean():0.0f}"
+            
 
             saturation = (
                 network["TOTFLOW"] / (network["AB_DLYCAP"] + network["BA_DLYCAP"])
