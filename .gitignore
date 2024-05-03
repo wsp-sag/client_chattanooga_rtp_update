@@ -26,3 +26,6 @@ Log_*.txt
 Scripts/build
 *312.pyc
 *.spec
+
+**/*/model_output
+**/*/summary_output

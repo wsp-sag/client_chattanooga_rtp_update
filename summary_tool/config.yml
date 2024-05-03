@@ -17,10 +17,12 @@ bridge_report:
 # scenario impact report #
 ##########################
 scenario_impact:
-  CREATE_IMPACT_REPORT: false
+  CREATE_IMPACT_REPORT: true
   scenario:
     - 2019
     - 2050
+  # subset:
+    # frazer: # below are the link ids for the specific subset
   link_query: 'link_id.csv'
 
 
