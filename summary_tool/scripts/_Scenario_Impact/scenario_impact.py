@@ -113,10 +113,10 @@ def subset_catagories(
             )
 
             summary_table["Vehicle Hours Delay (VHD)"] = (
-                (summary_table["AB_CTIME"] - summary_table["FFTIME"])
-                * summary_table["AB_TOTFLOW"]
-                + (summary_table["BA_CTIME"] - summary_table["FFTIME"])
-                * summary_table["BA_TOTFLOW"]
+                (summary_subset["AB_CTIME"] - summary_subset["FFTIME"])
+                * summary_subset["AB_TOTFLOW"]
+                + (summary_subset["BA_CTIME"] - summary_subset["FFTIME"])
+                * summary_subset["BA_TOTFLOW"]
             ) / 60
 
             print(
