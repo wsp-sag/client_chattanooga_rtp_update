@@ -110,15 +110,15 @@ def subset_catagories(
 
             # TODO check CRS is in Meters
             summary_table["Vehicle Miles Traveled (VMT)"] = (
-                summary_subset["LENGTH"].sum() * summary_table["Total Daily Flow"]
-            )
+                summary_subset["LENGTH"] * summary_subset["TOTFLOW"]
+            ).sum()
 
-            summary_table["Vehicle Hours Delay (VHD)"] = (
+            summary_table["Vehicle Hours Delay (VHD)"] = ((
                 (summary_subset["AB_CTIME"] - summary_subset["FFTIME"])
                 * summary_subset["AB_TOTFLOW"]
                 + (summary_subset["BA_CTIME"] - summary_subset["FFTIME"])
                 * summary_subset["BA_TOTFLOW"]
-            ) / 60
+            ) / 60).sum()
 
             summary_table = {key: [val] for key, val in summary_table.items()}
             pd.DataFrame.from_dict(summary_table).to_csv(
