@@ -23,7 +23,7 @@ scenario_impact:
     - 2050
   # subset:
     # frazer: # below are the link ids for the specific subset
-  link_query: 'link_id.csv'
+  link_query: 'Frazier.csv'
 
 
 #############################
