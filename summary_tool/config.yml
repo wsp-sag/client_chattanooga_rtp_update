@@ -21,23 +21,8 @@ scenario_impact:
   scenario:
     - 2019
     - 2050
-  subset:
-    frazer: # below are the link ids for the specific subset
-      - 1429
-      - 2185
-      - 1416
-      - 1626
-      - 1317
-      - 1320
-      - 1428
-      - 1421
-      - 2088
-      - 2186
-      - 2268
-      - 2269
-      - 1431
-      - 2240
-      - 2239
+  # subset:
+    # frazer: # below are the link ids for the specific subset
   link_query: 'link_id.csv'
 
 

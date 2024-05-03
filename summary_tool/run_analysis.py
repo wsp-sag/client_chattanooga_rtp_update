@@ -20,7 +20,6 @@ LINK_QUERY_LOOKUP = cd / "lookups"
 
 
 def get_config():
-
     config_path = cd / "config.yml"
     if config_path.exists():
         with open(config_path, "r") as f:
@@ -32,6 +31,7 @@ def get_config():
     return config
 
 
+# %%
 # print(config)
 network = geopandas.read_file(MODEL_OUTPUT_PATH / "2019" / "loaded_network.shp")
 # %%
@@ -43,20 +43,13 @@ if __name__ == "__main__":
 
     if config["scenario_impact"]["CREATE_IMPACT_REPORT"]:
         print("creating impact report subsets...")
-        for scenario in config["scenario_impact"]["scenario"]:
-            scen_str = str(scenario)
-            print(scen_str)
-            for subset_name, links in config["scenario_impact"]["subset"].items():
-                # bridge_report.subset_catagories(MODEL_OUTPUT_PATH, SUMMARY_OUTPUT_PATH, "2019", subset_name, links)
-                scenario_impact.subset_catagories(
-                    MODEL_OUTPUT_PATH,
-                    SUMMARY_OUTPUT_PATH,
-                    scen_str,
-                    subset_name,
-                    links,
-                    network,
-                )
-        # put them all into one report
+        scenario_impact.subset_catagories(
+            MODEL_OUTPUT_PATH,
+            SUMMARY_OUTPUT_PATH,
+            scenario_impact._get_link_lookups(LINK_QUERY_LOOKUP),
+            config["scenario_impact"]["scenario"],
+            network,
+        )
         scenario_impact.consolidate_one_report(SUMMARY_OUTPUT_PATH)
 
     if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
