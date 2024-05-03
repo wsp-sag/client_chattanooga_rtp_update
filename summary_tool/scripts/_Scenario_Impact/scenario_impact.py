@@ -37,7 +37,7 @@ def subset_catagories(
     model_output_path: Path,
     summary_output_path: Path,
     link_subsets: pd.DataFrame,
-    scenarios: list[int],
+    scenarios: list,
     network=None,
 ):
     list_link_subsets = [
@@ -131,7 +131,7 @@ def consolidate_one_report(summary_output_path: Path):
     all_tables = []
     for output_path in (summary_output_path / "scenario_impact").glob("*.csv"):
         temp_table = pd.read_csv(output_path)
-        temp_table["scenario"] = output_path.stem
+        temp_table.insert(0, 'scenario', output_path.stem)
         all_tables.append(temp_table)
 
     shutil.rmtree(summary_output_path / "scenario_impact")
