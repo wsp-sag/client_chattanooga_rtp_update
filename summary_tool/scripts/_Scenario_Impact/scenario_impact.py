@@ -77,7 +77,7 @@ def subset_catagories(
             
 
             saturation = (
-                network["TOTFLOW"] / (network["AB_DLYCAP"] + network["BA_DLYCAP"])
+                summary_subset["TOTFLOW"] / (summary_subset["AB_DLYCAP"] + summary_subset["BA_DLYCAP"])
             ).mean()
             los = _saturation_to_los(saturation)
             summary_table["LOS (Lowest Level of Service)"] = (
