@@ -21,7 +21,7 @@ scenario_impact:
   scenario:
     - 2019
     - 2050
-  link_query: 'Frazier.csv'
+  link_query: 'Frazier_ave_anlysis.csv'
 
 
 #############################
