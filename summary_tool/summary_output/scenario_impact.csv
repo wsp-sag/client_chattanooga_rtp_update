@@ -1,0 +1,7 @@
+scenario,Average Speed Limit,Average AB Lanes,Average BA Lanes,AM Peak Flow,PM Peak Flow,Off Peak flow,Auto Daily Flow,Truck Daily Flow,Total Daily Flow,Daily Capacity,LOS (Lowest Level of Service),Free Flow Time (seconds),Congested Time (seconds),Free Flow Speed (MPH),Congested Speed (MPH),Vehicle Miles Traveled (VMT),Vehicle Hours Delay (VHD)
+2019_Cherokee Blvd,38.33,1.87,1.8,2245.53,2515.13,4824.17,9129.17,455.66,9584.83,29009 - 27426,0.194 (a),87.18,133.05,43.23,28.33,9625.55,152.23
+2019_Frazier Ave,30.0,1.8,1.8,2318.38,2400.79,5270.43,9346.89,642.7,9989.59,23601 - 26660,0.207 (a),29.02,44.43,36.46,23.81,2862.73,27.86
+2019_Manufacturers Rd,31.9,1.0,1.0,2020.66,2131.85,4155.28,7410.52,897.27,8307.79,13565 - 14423,0.296 (a),105.13,177.17,37.01,21.96,8000.45,178.22
+2050_Cherokee Blvd,38.33,1.87,1.8,2685.65,3722.0,7144.14,13033.84,517.94,13551.79,29009 - 27928,0.266 (a),87.18,146.53,43.23,25.72,13603.49,240.4
+2050_Frazier Ave,30.0,1.8,1.8,2753.6,3129.43,6977.01,12096.55,763.49,12860.04,25172 - 26660,0.261 (a),29.02,45.51,36.46,23.25,3690.8,36.0
+2050_Manufacturers Rd,31.9,1.0,1.0,2412.08,2388.15,4972.23,8540.53,1231.92,9772.45,13565 - 14423,0.348 (b),105.13,193.99,37.01,20.06,9307.43,256.9
