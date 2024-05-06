@@ -1,73 +1,40 @@
-# %%
 import os
 import pandas as pd
 import geopandas as gpd
 from pathlib import Path
 
 
-# ### Inputs
-
-# #### Network
-
-# In[1]:
-
-
-# network_load_path = os.path.join(
-#     "..", "Source_Data", "Model_Output", "loaded_network.shp"
-# )
-# network_save_path = os.path.join("..", "Data", "Model_Output", "loaded_network.shp")
-
-
-# # #### Ridership
-
-# routes_path = os.path.join("..", "Source_Data", "Model_Output", "Transit_network")
-
-# boards_load_path = os.path.join(routes_path, "ALL_BOARDINGS.DBF")
-# ref_load_path = os.path.join(routes_path, "route_ref_new.csv")
-# %%
-# routes_load_path = os.path.join(routes_path, "ChattaTransit_2019_route.shp")
-# routes_save_path = os.path.join("..", "Data", "Model_Output", "ridership.shp")
-
-
-# #### Trips
-
-
-# %%
-
-
-def load_trip_table(t, tloadpath):
+def load_trip_table(t, triptable_load_path):
     colnames = tt = list(
-        pd.read_csv(os.path.join(tloadpath, f"{t}.dcc")).index.get_level_values(0)
+        pd.read_csv(os.path.join(triptable_load_path, f"{t}.dcc"),skiprows=1).index.get_level_values(0)
     )
-    tt = pd.read_csv(os.path.join(tloadpath, f"{t}.csv"), names=colnames)
+    tt = pd.read_csv(os.path.join(triptable_load_path, f"{t}.csv"), names=colnames)
 
     return tt
 
 
-def build_map_files(
-    model_outputs_path: Path, model_data_path: Path, maps_save_dir: Path
-):
 
-    # model_outputs_path = Path(r"C:\Users\USLP095001\Desktop\temp_files\3_Model_Output")
-    # maps_save_dir = Path(
-    #     r"C:\Users\USLP095001\Desktop\temp_files\chatt_outputs\map_save_dir"
-    # )
-    network_load_path = model_outputs_path / "Model_Output" / "loaded_network.shp"
-    print(network_load_path)
+def build_map_files(model_outputs_path,maps_data_path,maps_save_dir):
+    
+   
+    network_load_path = model_outputs_path / "Model_Output" / "2019" / "loaded_network.shp"
     network_save_path = maps_save_dir / "loaded_network.shp"
 
     # #### Ridership
-    routes_path = model_outputs_path / "Model_Output" / "Transit_network"
 
-    boards_load_path = routes_path / "ALL_BOARDINGS.DBF"
-    ref_load_path = routes_path / "route_ref_new.csv"
 
-    routes_load_path = routes_path / "ChattaTransit_2019_route.shp"
+    boards_load_path =  model_outputs_path / "Model_Output"  / "2019" /  "ALL_BOARDINGS.DBF"
+    ref_load_path =  model_outputs_path / "lookups" / "route_ref_new.csv"
+
+    routes_load_path =  model_outputs_path / "Model_Output"  / "2019" /  "ChattaTransit_route.shp"
     routes_save_path = maps_save_dir / "ridership.shp"
 
-    taz_path = model_outputs_path / "Districts_01252021" / "TAZ_districts_Ext.shp"
+    taz_path = maps_data_path / "Districts_01252021" / "TAZ_districts_Ext.shp"
 
-    xref_path = model_outputs_path / "Districts_01252021" / "xref_taz_ext.csv"
+    xref_path = maps_data_path / "Districts_01252021" / "xref_taz_ext.csv"
+    
+    
+
 
     triptables_list = [
         "trip_tables",
@@ -76,12 +43,13 @@ def build_map_files(
         "tranist_trip_tables_OP",
         "Truck_OD",
     ]
-    triptable_load_path = model_outputs_path / "Model_Output"
-    trips_save_path = model_data_path / "Model_Output" / "trips.shp"
+    triptable_load_path = model_outputs_path / "Model_Output" / "2019"
+    trips_save_path = os.path.join(maps_save_dir,'trips.shp')
 
     dtypes = {"ROUTE_ID": "str"}
-    network = gpd.read_file(network_load_path)
 
+    network = gpd.read_file(network_load_path)
+    
     ##### Ridership
     routes = gpd.read_file(routes_load_path, dtype=dtypes)
     boards = gpd.read_file(boards_load_path, dtype=dtypes)
@@ -96,10 +64,12 @@ def build_map_files(
     # print(list(taz))
     taz = taz[["OBJECTID", "TAZ_Ext", "COUNTYID", "STATEID", "geometry"]].copy()
 
+
+
+
     tt = {}
     for t in triptables_list:
         tt[t] = load_trip_table(t, triptable_load_path)
-
     # ### Process Existing Conditions
 
     # #### Process Network Variables
@@ -136,9 +106,9 @@ def build_map_files(
     ].max(axis=1)
     network["C_SPEED"] = network["LENGTH"] / (network["CTIME"] / 60)
 
-    network.plot("C_SPEED")
+    # network.plot("C_SPEED")
 
-    network[["AM_LOS", "PM_LOS", "VMT", "VHD", "C_SPEED", "FFSPEED"]].describe()
+    # network[["AM_LOS", "PM_LOS", "VMT", "VHD", "C_SPEED", "FFSPEED"]].describe()
 
     # network["C_SPEED"].hist()
 
@@ -171,7 +141,7 @@ def build_map_files(
     )
     # route_boards = route_boards.groupby(['Route', 'Long Name'])['BOARDINGS'].sum().astype(int).reset_index()
 
-    route_boards.plot("BOARDINGS")
+    # route_boards.plot("BOARDINGS")
 
     # #### Process Trips Variables
 
@@ -203,7 +173,7 @@ def build_map_files(
     trips = trips.groupby("TAZ_Ext")["O_TRANSIT"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    taz_trips.plot("O_TRANSIT")
+    # taz_trips.plot("O_TRANSIT")
 
     ##  20. Map: Origin of Truck Trips by TAZ (graduated color)
     trips = (
@@ -220,7 +190,7 @@ def build_map_files(
     trips = trips.groupby("TAZ_Ext")["O_TRUCKS"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    taz_trips.plot("O_TRUCKS")
+    # taz_trips.plot("O_TRUCKS")
 
     ## DESTINATION
     ##  21. Map: Destination of Passenger Vehicle Trips by TAZ (graduated color)
@@ -231,7 +201,7 @@ def build_map_files(
     trips = trips.groupby("TAZ_Ext")["D_PASS"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    taz_trips.plot("D_PASS")
+    # taz_trips.plot("D_PASS")
 
     ##  22. Map: Destination of Transit Trips by TAZ (graduated color)
     trips = pd.concat([tt[f"tranist_trip_tables_{t}"] for t in ["AM", "PM", "OP"]])[
@@ -244,7 +214,7 @@ def build_map_files(
     trips = trips.groupby("TAZ_Ext")["D_TRANSIT"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    taz_trips.plot("D_TRANSIT")
+    # taz_trips.plot("D_TRANSIT")
 
     ##  23. Map: Destination of Truck Trips by TAZ (graduated color)
     trips = (
@@ -261,27 +231,25 @@ def build_map_files(
     trips = trips.groupby("TAZ_Ext")["D_TRUCKS"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    taz_trips.plot("D_TRUCKS")
+    # taz_trips.plot("D_TRUCKS")
 
     # ### Checks
 
-    network[["AM_LOS", "PM_LOS", "FFSPEED", "VMT", "VHD", "C_SPEED"]].describe()
+    # network[["AM_LOS", "PM_LOS", "FFSPEED", "VMT", "VHD", "C_SPEED"]].describe()
 
     # ### Export Datasets
 
     # #### Network
+    # fiona.open(path).crs
 
-    network.to_file(network_save_path, index=False)
+    network.to_file(network_save_path, index=False, crs='EPSG:4019')
 
-    route_boards.to_file(routes_save_path, index=False)
+    route_boards.to_file(routes_save_path, index=False, crs='EPSG:4019')
 
-    taz_trips.to_file(trips_save_path, index=False)
+    taz_trips.to_file(trips_save_path, index=False, crs='EPSG:4019')
 
-
-model_outputs_path = Path(r"C:\Users\USLP095001\Desktop\temp_files\Source_Data")
-maps_save_dir = Path(
-    r"C:\Users\USLP095001\Desktop\temp_files\chatt_outputs\map_save_dir"
-)
-a = Path(r"C:\Users\USLP095001\Desktop\temp_files\Data")
-build_map_files(model_outputs_path, a, maps_save_dir)
-# %%
+if __name__ == "__main__":
+    model_outputs_path = Path(r'C:\Users\USXH723910\Documents\GitHub\client_chattanooga_rtp_update\summary_tool')
+    maps_data_path = Path(r'C:\Users\USXH723910\Documents\GitHub\client_chattanooga_rtp_update\summary_tool\scripts\_Map_Automation\Data')
+    maps_save_dir = Path(r'C:\Users\USXH723910\Documents\GitHub\client_chattanooga_rtp_update\summary_tool\scripts\_Map_Automation\Data\Model_Output')
+    build_map_files(model_outputs_path,maps_data_path,maps_save_dir)

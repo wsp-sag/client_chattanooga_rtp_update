@@ -5,8 +5,9 @@ try:
 except ImportError:
     from yaml import Loader, Dumper
 
+from pathlib import Path
 import sys
-sys.path.append(r'C:\OSGeo4W\apps\qgis-ltr\python') # OK!
+sys.path.append(r'C:\Program Files\QGIS 3.28.4\apps\qgis-ltr\python')
 
 from qgis.core import *
 from PyQt5.QtCore import *
@@ -17,9 +18,22 @@ qgs.initQgis()
 
 qgis_template = 'Chattanooga_Map_Deliverables.qgz'
 
-map_def_file = os.path.join('..', 'config.yml')
+map_def_file = os.path.join('..\..', 'config.yml')
 logo_path = os.path.join('Data', 'rtp_logo.png')
-export_path = os.path.join('..', 'summary_output')
+export_path = os.path.join('..\..', 'summary_output')
+
+
+# model_outputs_path = Path(r'C:\Users\USXH723910\Documents\GitHub\client_chattanooga_rtp_update\summary_tool')
+
+# qgis_template = model_outputs_path / 'scripts' /'_Map_Automation' / 'Chattanooga_Map_Deliverables.qgz'
+
+# qgis_template = r"C:\Users\USXH723910\Documents\GitHub\client_chattanooga_rtp_update\summary_tool\scripts\_Map_Automation\Chattanooga_Map_Deliverables.qgz"
+
+# map_def_file = model_outputs_path / 'config.yml'
+# logo_path = model_outputs_path / 'scripts' /'_Map_Automation' / 'Data' / 'rtp_logo.png'
+# export_path = model_outputs_path / 'summary_output'
+
+
 
 p_size = 'Letter'
 p_orient = QgsLayoutItemPage.Orientation.Portrait
