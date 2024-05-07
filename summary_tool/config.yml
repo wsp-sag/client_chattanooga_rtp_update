@@ -39,9 +39,11 @@ project_evaluation:
 # map automation  #
 ###################
 map_automation:
-  CREATE_MAP_OUTPUT: false
-  scenario:
-    - 2019
+  OUTPUT_POSTPROCESS: true
+  CREATE_MAP_OUTPUT: true  ## If OUTPUT_POSTPROCESS is false, then CREATE_MAP_OUTPUT must be false
+  qgis_python_path: 'C:\Program Files\QGIS 3.28.4\apps\qgis-ltr\python'
+  python_executable_path: 'C:\Program Files\QGIS 3.28.4\apps\Python39\python.exe'
+  
   simple_legend: True
   ez_note: External Zones represent Key Areas for Traffic outside of the TPO Boundary.
   base_network:
