@@ -7,8 +7,6 @@ import pandas
 import geopandas
 import subprocess
 
-from typing import Optional, Literal
-
 import scripts._Bridge_Report.bridge_report as bridge_report
 import scripts._Project_Evaluation.project_evaluation as project_evaluation
 import scripts._Scenario_Impact.scenario_impact as scenario_impact

@@ -89,7 +89,7 @@ def subset_catagories(
             summary_table["Total Daily Flow"] = summary_subset["TOTFLOW"].agg(agg_methods["FLOW"])
 
             summary_table["Daily Capacity"] = (
-                f"{summary_subset['AB_DLYCAP'].agg(agg_methods["CAPACITY"]):0.0f} - {summary_subset['BA_DLYCAP'].agg(agg_methods["CAPACITY"]):0.0f}"
+                f"{summary_subset['AB_DLYCAP'].agg(agg_methods['CAPACITY']):0.0f} - {summary_subset['BA_DLYCAP'].agg(agg_methods['CAPACITY']):0.0f}"
             )
 
             saturation = (
