@@ -1,4 +1,4 @@
-# %%
+#%%
 import os
 from pathlib import Path
 
@@ -37,7 +37,7 @@ def get_config():
 import warnings
 warnings.filterwarnings("ignore")
 
-if __name__ == "__main__":
+if True:
     config = get_config()
 
     if config["scenario_impact"]["CREATE_IMPACT_REPORT"]:
