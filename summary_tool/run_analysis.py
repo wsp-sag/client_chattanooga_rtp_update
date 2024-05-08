@@ -36,6 +36,8 @@ def get_config():
 
 
 # %%
+import warnings
+warnings.filterwarnings("ignore")
 
 if __name__ == "__main__":
     config = get_config()
@@ -48,9 +50,11 @@ if __name__ == "__main__":
             pandas.read_csv(
                 LINK_QUERY_LOOKUP / config["scenario_impact"]["link_query"]
             ),
-            config["scenario_impact"]["scenario"],
+            config,
         )
         scenario_impact.consolidate_one_report(SUMMARY_OUTPUT_PATH)
+        print("done")
+        
 
     if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
         print("creating bridge report")
@@ -98,3 +102,5 @@ if __name__ == "__main__":
 
     print("done")
 
+
+# %%

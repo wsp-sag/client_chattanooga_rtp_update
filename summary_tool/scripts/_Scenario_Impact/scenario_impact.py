@@ -1,4 +1,5 @@
 # %%
+import yaml
 import pandas as pd
 from pathlib import Path
 import geopandas as gpd
@@ -6,20 +7,31 @@ from itertools import product
 import os, shutil
 
 
-def _saturation_to_los(saturation: float, num_lanes=4):
+def _saturation_to_los(degree_of_saturation: float, los_ranges):
     """
-    calculates LOS according to https://ccag.ca.gov/wp-content/uploads/2014/07/cmp_2005_Appendix_B.pdf
+    calculates los from saturation and los_ranges
     """
-    if num_lanes == 4:
-        breaks = [0, 0.318, 0.509, 0.747, 0.916, 1]
-    else:
-        raise NotImplementedError()
-    alphabet_iter = iter("abcdefghijklmnopqrstuvwxyz")
-    for start, end, alpha in zip(breaks[0:-1], breaks[1:], alphabet_iter):
-        if start <= saturation < end:
-            return alpha
+    # unfortunately yml file reads in pair of numbers as a string
+    # {}
+    los_range_cleaned = {}
+    try:
+        for key, val_string in los_ranges.items():
+            min_los, max_los = val_string.split(",")
+            los_range_cleaned[key] = (float(min_los.strip()), float(max_los.strip()))
+    except:
+        raise Exception("Please check the that LOS_ranges in config.yml are correctly formatted")
 
-    return next(alphabet_iter)
+    # check that whole range of saturation is covered, otherwise the user has made an error
+    prev_max_los = 0
+    for los, (min_los, max_los) in los_range_cleaned.items():
+        if prev_max_los != min_los:
+            raise Exception(f"in cofig.yml LOS_ranges, the min lf {los} is {min_los}, expected {prev_max_los}")
+        
+        prev_max_los = max_los
+    
+    for los, (min_los, max_los) in los_range_cleaned.items():
+        if min_los <= degree_of_saturation < max_los:
+            return los
 
 
 # %%
@@ -37,8 +49,13 @@ def subset_catagories(
     model_output_path: Path,
     summary_output_path: Path,
     link_subsets: pd.DataFrame,
-    scenarios: list
+    config: dict,
 ):
+
+    scenarios = config["scenario_impact"]["scenario"]
+    agg_methods = config["scenario_impact"]["agg_methods"]
+    los_ranges = config["scenario_impact"]["LOS_ranges"]
+
     list_link_subsets = [
         (scen_name, link_subsets[link_subsets["Name"] == scen_name])
         for scen_name in link_subsets["Name"].unique()
@@ -55,31 +72,31 @@ def subset_catagories(
             specific_output.mkdir(exist_ok=True)
 
             summary_subset = network[network["ID"].isin(link_subset_df["Link_ID"])]
-
+            
             summary_table = {}
-            summary_table["Average Speed Limit"] = summary_subset["SPD_LMT"].mean()
-            summary_table["Average AB Lanes"] = summary_subset["AB_LANES"].mean()
-            summary_table["Average BA Lanes"] = summary_subset["BA_LANES"].mean()
+            summary_table["Speed Limit"] = summary_subset["SPD_LMT"].agg(agg_methods["SPEED"])
+            summary_table["AB Lanes"] = summary_subset["AB_LANES"].agg(agg_methods["LANES"])
+            summary_table["BA Lanes"] = summary_subset["BA_LANES"].agg(agg_methods["LANES"])
 
-            summary_table["AM Peak Flow"] = summary_subset["AM_TOTFLOW"].mean()
-            summary_table["PM Peak Flow"] = summary_subset["PM_TOTFLOW"].mean()
-            summary_table["Off Peak flow"] = summary_subset["OP_TOTFLOW"].mean()
+            summary_table["AM Peak Flow"] = summary_subset["AM_TOTFLOW"].agg(agg_methods["FLOW"])
+            summary_table["PM Peak Flow"] = summary_subset["PM_TOTFLOW"].agg(agg_methods["FLOW"])
+            summary_table["Off Peak Flow"] = summary_subset["OP_TOTFLOW"].agg(agg_methods["FLOW"])
 
-            summary_table["Auto Daily Flow"] = summary_subset["TOT_AUTO"].mean()
+            summary_table["Auto Daily Flow"] = summary_subset["TOT_AUTO"].agg(agg_methods["FLOW"])
             summary_table["Truck Daily Flow"] = (
-                summary_subset["TOT_MUT"].mean() + summary_subset["TOT_SUT"].mean()
+                summary_subset["TOT_MUT"].agg(agg_methods["FLOW"]) + summary_subset["TOT_SUT"].agg(agg_methods["FLOW"])
             )
-            summary_table["Total Daily Flow"] = summary_subset["TOTFLOW"].mean()
+            summary_table["Total Daily Flow"] = summary_subset["TOTFLOW"].agg(agg_methods["FLOW"])
 
             summary_table["Daily Capacity"] = (
-                f"{summary_subset['AB_DLYCAP'].mean():0.0f} - {summary_subset['BA_DLYCAP'].mean():0.0f}"
+                f"{summary_subset['AB_DLYCAP'].agg(agg_methods["CAPACITY"]):0.0f} - {summary_subset['BA_DLYCAP'].agg(agg_methods["CAPACITY"]):0.0f}"
             )
 
             saturation = (
                 summary_subset["TOTFLOW"]
                 / (summary_subset["AB_DLYCAP"] + summary_subset["BA_DLYCAP"])
             ).mean()
-            los = _saturation_to_los(saturation)
+            los = _saturation_to_los(saturation, los_ranges)
             summary_table["LOS (Lowest Level of Service)"] = (
                 f"{saturation:0.3f} ({los})"
             )
@@ -98,7 +115,7 @@ def subset_catagories(
                 summary_subset["CTIME"].sum() * 60
             )
 
-            summary_table["Free Flow Speed (MPH)"] = summary_subset["FFSPEED"].mean()
+            summary_table["Free Flow Speed (MPH)"] = summary_subset["FFSPEED"].agg(agg_methods["SPEED"])
 
             summary_table["Congested Speed (MPH)"] = (
                 summary_table["Free Flow Speed (MPH)"]
