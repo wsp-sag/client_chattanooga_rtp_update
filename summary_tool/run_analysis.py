@@ -93,7 +93,7 @@ if True:
         python_executable_path = config['map_automation']['python_executable_path']
         
         os.environ["PYTHONPATH"] = qgis_python_path
-        subprocess.run([python_executable_path, generate_map_script], shell=True)
+        subprocess.run([str(python_executable_path), str(generate_map_script)], shell=True)
         print(f"{datetime.now()} finish pdf maps")
    
 
