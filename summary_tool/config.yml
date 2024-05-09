@@ -54,8 +54,8 @@ project_evaluation:
 ###################
 map_automation:
   CREATE_MAP_OUTPUT: true
-  qgis_python_path: 'C:\Program Files\QGIS 3.28.4\apps\qgis-ltr\python'
-  python_executable_path: 'C:\Program Files\QGIS 3.28.4\apps\Python39\python.exe'
+  qgis_python_path: 'C:\Program Files\QGIS 3.22.4\apps\qgis-ltr\python'
+  python_executable_path: 'C:\Program Files\QGIS 3.22.4\apps\Python39\python.exe'
 
   scenario:
     - 2019  
