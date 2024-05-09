@@ -8,10 +8,10 @@ import pandas
 import geopandas
 import subprocess
 
-import scripts._Bridge_Report.bridge_report as bridge_report
-import scripts._Project_Evaluation.project_evaluation as project_evaluation
-import scripts._Scenario_Impact.scenario_impact as scenario_impact
-import scripts._Map_Automation.build_map_files as build_map_files
+import _Bridge_Report.bridge_report as bridge_report
+import _Project_Evaluation.project_evaluation as project_evaluation
+import _Scenario_Impact.scenario_impact as scenario_impact
+import _Map_Automation.build_map_files as build_map_files
 
 
 cd = Path(os.getcwd())
