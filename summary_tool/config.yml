@@ -22,6 +22,25 @@ scenario_impact:
     - 2019
     - 2050
   link_query: 'Frazier_ave_anlysis.csv'
+  LOS_ranges:
+    A: 0, 0.318
+    B: 0.318, 0.509
+    C: 0.509, 0.747
+    D: 0.747, 0.916
+    F: 0.916, 100000 
+  # below must be one of
+  # 'mean', 'sum', 'max', 'min', 'median', 'mode'
+  # WARNING: this will affect saturation calculations
+  agg_methods:
+    LANES: mean
+    SPEED: sum
+    FLOW: max
+    CAPACITY: median
+    
+
+
+  
+
 
 
 #############################

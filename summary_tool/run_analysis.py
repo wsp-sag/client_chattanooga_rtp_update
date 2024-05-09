@@ -1,4 +1,4 @@
-# %%
+#%%
 import os
 from pathlib import Path
 
@@ -6,8 +6,6 @@ import yaml
 import pandas
 import geopandas
 import subprocess
-
-from typing import Optional, Literal
 
 import scripts._Bridge_Report.bridge_report as bridge_report
 import scripts._Project_Evaluation.project_evaluation as project_evaluation
@@ -36,8 +34,10 @@ def get_config():
 
 
 # %%
+import warnings
+warnings.filterwarnings("ignore")
 
-if __name__ == "__main__":
+if True:
     config = get_config()
 
     if config["scenario_impact"]["CREATE_IMPACT_REPORT"]:
@@ -48,9 +48,11 @@ if __name__ == "__main__":
             pandas.read_csv(
                 LINK_QUERY_LOOKUP / config["scenario_impact"]["link_query"]
             ),
-            config["scenario_impact"]["scenario"],
+            config,
         )
         scenario_impact.consolidate_one_report(SUMMARY_OUTPUT_PATH)
+        print("done")
+        
 
     if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
         print("creating bridge report")
@@ -96,3 +98,5 @@ if __name__ == "__main__":
 
     print("done")
 
+
+# %%
