@@ -1,6 +1,7 @@
 #%%
 import os
 from pathlib import Path
+from datetime import datetime
 
 import yaml
 import pandas
@@ -41,7 +42,7 @@ if True:
     config = get_config()
 
     if config["scenario_impact"]["CREATE_IMPACT_REPORT"]:
-        print("creating impact report subsets...")
+        print(f"{datetime.now()} creating impact report subsets...")
         scenario_impact.subset_catagories(
             MODEL_OUTPUT_PATH,
             SUMMARY_OUTPUT_PATH,
@@ -51,32 +52,32 @@ if True:
             config,
         )
         scenario_impact.consolidate_one_report(SUMMARY_OUTPUT_PATH)
-        print("done")
+        print(f"{datetime.now()} finish impact report")
         
 
     if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
-        print("creating bridge report")
+        print(f"{datetime.now()} creating bridge report")
         bridge_report.create_bridge_report(
             MODEL_OUTPUT_PATH,
             SUMMARY_OUTPUT_PATH,
             config["bridge_report"]["scenario"],
             config["bridge_report"]["county"],
         )
-        print("finish bridge report")
+        print(f"{datetime.now()} finish bridge report")
 
     if config["project_evaluation"]["CREATE_EVALUATION_REPORT"]:
-        print("creating project evaluation report")
+        print(f"{datetime.now()} creating project evaluation report")
         project_evaluation.create_project_evaluation(
             MODEL_OUTPUT_PATH,
             SUMMARY_OUTPUT_PATH,
             config["bridge_report"]["scenario"],
             LINK_QUERY_LOOKUP / config["project_evaluation"]["link_query"],
         )
-        print("finish project evaluation report")
+        print(f"{datetime.now()} finish project evaluation report")
 
     
     if config["map_automation"]["CREATE_MAP_OUTPUT"]:
-        print("postprocessing model outputs")
+        print(f"{datetime.now()} postprocessing model outputs for map automation")
         SHP_SAVE_PATH = MAP_DATA_PATH / "Model_Output"
         build_map_files.model_output_postprocess(
             MODEL_OUTPUT_PATH,
@@ -86,14 +87,14 @@ if True:
             LINK_QUERY_LOOKUP
         )
         
-        print("creating pdf maps")
+        print(f"{datetime.now()} creating pdf maps")
         generate_map_script =  cd / "scripts" / "_Map_Automation" / "Maps_Automate.py"
         qgis_python_path = config['map_automation']['qgis_python_path']
         python_executable_path = config['map_automation']['python_executable_path']
         
         os.environ["PYTHONPATH"] = qgis_python_path
         subprocess.run([python_executable_path, generate_map_script], shell=True)
-        print("finish pdf maps")
+        print(f"{datetime.now()} finish pdf maps")
    
 
     print("done")

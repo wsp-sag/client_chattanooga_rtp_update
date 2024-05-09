@@ -32,16 +32,11 @@ scenario_impact:
   # 'mean', 'sum', 'max', 'min', 'median', 'mode'
   # WARNING: this will affect saturation calculations
   agg_methods:
-    LANES: mean
-    SPEED: sum
+    LANES: max
+    SPEED: min
     FLOW: max
     CAPACITY: median
     
-
-
-  
-
-
 
 #############################
 # project evaluation report #

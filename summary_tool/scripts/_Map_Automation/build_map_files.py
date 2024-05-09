@@ -66,13 +66,11 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
     ### Process Network Variables
 
     ## Map12: AM Peak LOS (Volume/Capacity)
-    # network['AM_LOS'] = (network['AB_AM_TOTF']+network['BA_AM_TOTF'])/(network['AB_AMCAP']+network['BA_AMCAP'])
     network["AM_LOS"] = network["AM_TOTFLOW"] / (
         network["AB_AMCAP"] + network["BA_AMCAP"]
     )
 
     ## Map13: PM Peak LOS (Volume/Capacity)
-    # network['PM_LOS'] = (network['AB_PM_TOTF']+network['BA_PM_TOTF'])/(network['AB_PMCAP']+network['BA_PMCAP'])
     network["PM_LOS"] = network["PM_TOTFLOW"] / (
         network["AB_PMCAP"] + network["BA_PMCAP"]
     )
@@ -81,7 +79,6 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
     network["VMT"] = network["TOTFLOW"] * network["LENGTH"]
 
     ## Map15: VHD: Vehicle hours of delay
-    # network['VHD'] = ((network['CTIME'] - network['FFTIME']) / 60) * network['TOTFLOW']
     network["VHD"] = (
         (network["AB_CTIME"] - network["FFTIME"]) * network["AB_TOTFLOW"]
         + (network["BA_CTIME"] - network["FFTIME"]) * network["BA_TOTFLOW"]
@@ -122,7 +119,6 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
     route_boards["Route_Name"] = (
         route_boards["Route"] + ": " + route_boards["Long Name"]
     )
-    # route_boards = route_boards.groupby(['Route', 'Long Name'])['BOARDINGS'].sum().astype(int).reset_index()
 
     ### Process Trips Variables
 
@@ -141,7 +137,6 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
     trips = trips.groupby("TAZ_Ext")["O_PASS"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    taz_trips.plot("O_PASS")
 
     ##  19. Map: Origin of Transit Trips by TAZ (graduated color)
     trips = pd.concat([tt[f"tranist_trip_tables_{t}"] for t in ["AM", "PM", "OP"]])[
@@ -154,7 +149,6 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
     trips = trips.groupby("TAZ_Ext")["O_TRANSIT"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    # taz_trips.plot("O_TRANSIT")
 
     ##  20. Map: Origin of Truck Trips by TAZ (graduated color)
     trips = (
@@ -171,7 +165,6 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
     trips = trips.groupby("TAZ_Ext")["O_TRUCKS"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    # taz_trips.plot("O_TRUCKS")
 
     ## DESTINATION
     ##  21. Map: Destination of Passenger Vehicle Trips by TAZ (graduated color)
@@ -194,7 +187,6 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
     trips = trips.groupby("TAZ_Ext")["D_TRANSIT"].sum().reset_index()
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
-    # taz_trips.plot("D_TRANSIT")
 
     ##  23. Map: Destination of Truck Trips by TAZ (graduated color)
     trips = (
@@ -212,13 +204,6 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
 
     taz_trips = pd.merge(taz_trips, trips, on=tazcol, how="left")
 
-    ### Checks
-    # network[["AM_LOS", "PM_LOS", "FFSPEED", "VMT", "VHD", "C_SPEED"]].describe()
-
-    ### Export Datasets
-
-    ### Network
-    # fiona.open(path).crs
 
     network.to_file(network_save_path, index=False, crs='EPSG:4019')
 
