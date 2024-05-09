@@ -79,21 +79,23 @@ if True:
     if config["map_automation"]["CREATE_MAP_OUTPUT"]:
         print(f"{datetime.now()} postprocessing model outputs for map automation")
         SHP_SAVE_PATH = MAP_DATA_PATH / "Model_Output"
-        build_map_files.model_output_postprocess(
-            MODEL_OUTPUT_PATH,
-            MAP_DATA_PATH,
-            SHP_SAVE_PATH,
-            config["map_automation"]["scenario"],
-            LINK_QUERY_LOOKUP
-        )
-        
-        print(f"{datetime.now()} creating pdf maps")
-        generate_map_script =  cd / "scripts" / "_Map_Automation" / "Maps_Automate.py"
-        qgis_python_path = config['map_automation']['qgis_python_path']
-        python_executable_path = config['map_automation']['python_executable_path']
-        
-        os.environ["PYTHONPATH"] = qgis_python_path
-        subprocess.run([str(python_executable_path), str(generate_map_script)], shell=True)
+
+        for scenario in config["map_automation"]["scenario"]:
+            build_map_files.model_output_postprocess(
+                MODEL_OUTPUT_PATH,
+                MAP_DATA_PATH,
+                SHP_SAVE_PATH,
+                str(scenario),
+                LINK_QUERY_LOOKUP
+            )
+            
+            print(f"{datetime.now()} creating pdf maps")
+            generate_map_script =  cd / "scripts" / "_Map_Automation" / "Maps_Automate.py"
+            qgis_python_path = config['map_automation']['qgis_python_path']
+            python_executable_path = config['map_automation']['python_executable_path']
+            
+            os.environ["PYTHONPATH"] = qgis_python_path
+            subprocess.run([str(python_executable_path), str(generate_map_script)] + [str(scenario)], shell=True)
         print(f"{datetime.now()} finish pdf maps")
    
 

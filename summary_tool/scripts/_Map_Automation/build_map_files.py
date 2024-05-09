@@ -14,16 +14,16 @@ def load_trip_table(t, triptable_load_path):
 
 
 
-def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,scen_year,LOOKUP):
+def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,scenario,LOOKUP):
 
-    network_load_path = model_outputs_path /  str(scen_year[0])  / "loaded_network.shp"
+    network_load_path = model_outputs_path /  scenario  / "loaded_network.shp"
     network_save_path = maps_save_dir / "loaded_network.shp"
 
     ### Ridership
-    boards_load_path =  model_outputs_path /  str(scen_year[0]) /  "ALL_BOARDINGS.DBF"
+    boards_load_path =  model_outputs_path /  scenario /  "ALL_BOARDINGS.DBF"
     ref_load_path =  LOOKUP / "route_ref_new.csv"
 
-    routes_load_path =  model_outputs_path /  str(scen_year[0]) /  "ChattaTransit_route.shp"
+    routes_load_path =  model_outputs_path /  scenario /  "ChattaTransit_route.shp"
     routes_save_path = maps_save_dir / "ridership.shp"
 
     taz_path = maps_data_path / "Districts_01252021" / "TAZ_districts_Ext.shp"
@@ -37,7 +37,7 @@ def model_output_postprocess(model_outputs_path,maps_data_path,maps_save_dir,sce
         "tranist_trip_tables_OP",
         "Truck_OD",
     ]
-    triptable_load_path = model_outputs_path / str(scen_year[0])
+    triptable_load_path = model_outputs_path / scenario
     trips_save_path = maps_save_dir / 'trips.shp'
 
     dtypes = {"ROUTE_ID": "str"}

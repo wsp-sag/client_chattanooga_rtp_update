@@ -1,4 +1,5 @@
 import os
+import sys
 import yaml
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -10,6 +11,8 @@ from qgis.core import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
+arguments = sys.argv
+scenario = arguments[1]
 
 qgis_template = os.path.join('scripts','_Map_Automation','Chattanooga_Map_Deliverables.qgz')
 
@@ -19,7 +22,6 @@ export_path = os.path.join('summary_output')
 
 qgs = QgsApplication([], False)
 qgs.initQgis()
-
 
 p_size = 'Letter'
 p_orient = QgsLayoutItemPage.Orientation.Portrait
@@ -149,8 +151,8 @@ def add_layout(l_number, l_name, l_long_name, l_description, layers, layers_lege
     
 
     exporter = QgsLayoutExporter(layout)
-    exporter.exportToPdf(os.path.join(export_path, f'{l_number}.pdf'), QgsLayoutExporter.PdfExportSettings())
-    print('\tMap exported to:', os.path.join(export_path, f'{l_number}.pdf'), '\n')
+    exporter.exportToPdf(os.path.join(export_path, f'{l_number}_{scenario}.pdf'), QgsLayoutExporter.PdfExportSettings())
+    print('\tMap exported to:', os.path.join(export_path, f'{l_number}_{scenario}.pdf'), '\n')
     
 #def export_png(layout, l_number, export_path):
     # exporter = QgsLayoutExporter(layout)
