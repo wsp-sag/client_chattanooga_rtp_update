@@ -4,10 +4,6 @@ import numpy as np
 from pathlib import Path
 
 
-# %%
-
-
-# %%
 def create_bridge_report(model_output_path, summary_output_path, scenario, county):
     network_df = pd.DataFrame()
 
