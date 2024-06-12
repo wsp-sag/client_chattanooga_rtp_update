@@ -5,7 +5,7 @@ bridge_report:
   CREATE_BRIDGE_REPORT: true
   scenario:
     - 2019
-    - 2050
+    - EC2050
   county:
     - 'Hamilton'
     - 'Walker'
@@ -20,7 +20,7 @@ scenario_impact:
   CREATE_IMPACT_REPORT: true
   scenario:
     - 2019
-    - 2050
+    - EC2050
   link_query: 'Frazier_ave_anlysis.csv'
   LOS_ranges:
     A: 0, 0.318
@@ -45,7 +45,7 @@ project_evaluation:
   CREATE_EVALUATION_REPORT: true
   scenario:
     - 2019
-    - 2050
+    - EC2050
   link_query: 'cummings_hwy.csv'
 
 
@@ -54,11 +54,11 @@ project_evaluation:
 ###################
 map_automation:
   CREATE_MAP_OUTPUT: true
-  qgis_python_path: 'C:\Program Files\QGIS 3.28.4\apps\qgis-ltr\python'
-  python_executable_path: 'C:\Program Files\QGIS 3.28.4\apps\Python39\python.exe'
+  qgis_python_path: 'C:\Program Files\QGIS 3.22.4\apps\qgis-ltr\python'
+  python_executable_path: 'C:\Program Files\QGIS 3.22.4\apps\Python39\python.exe'
   scenario:
     - 2019
-    - 2050  
+    - EC2050  
   simple_legend: True
   ez_note: External Zones represent Key Areas for Traffic outside of the TPO Boundary.
   base_network:
