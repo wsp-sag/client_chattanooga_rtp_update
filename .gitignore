@@ -27,6 +27,6 @@ Scripts/build
 *312.pyc
 *.spec
 
-# **/*/model_output
+**/*/model_output
 **/*/scripts/environment
 **/*/scripts/_Map_Automation/Data/Model_Output_Intermediate
