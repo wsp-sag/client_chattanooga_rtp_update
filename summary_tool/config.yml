@@ -2,7 +2,7 @@
 # river bridge report #
 #######################
 bridge_report:
-  CREATE_BRIDGE_REPORT: true
+  CREATE_BRIDGE_REPORT: false
   scenario:
     - 2019
     - EC2050
@@ -32,17 +32,17 @@ scenario_impact:
   # 'mean', 'sum', 'max', 'min', 'median', 'mode'
   # WARNING: this will affect saturation calculations
   agg_methods:
-    LANES: max
-    SPEED: min
-    FLOW: max
-    CAPACITY: median
+    LANES: mean
+    SPEED: mean
+    FLOW: mean
+    CAPACITY: mode
     
 
 #############################
 # project evaluation report #
 #############################
 project_evaluation:
-  CREATE_EVALUATION_REPORT: true
+  CREATE_EVALUATION_REPORT: false
   scenario:
     - 2019
     - EC2050
@@ -53,7 +53,7 @@ project_evaluation:
 # map automation  #
 ###################
 map_automation:
-  CREATE_MAP_OUTPUT: true
+  CREATE_MAP_OUTPUT: false
   qgis_python_path: 'C:\Program Files\QGIS 3.22.4\apps\qgis-ltr\python'
   python_executable_path: 'C:\Program Files\QGIS 3.22.4\apps\Python39\python.exe'
   scenario:

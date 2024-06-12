@@ -55,6 +55,11 @@ def subset_catagories(
     scenarios = config["scenario_impact"]["scenario"]
     agg_methods = config["scenario_impact"]["agg_methods"]
     los_ranges = config["scenario_impact"]["LOS_ranges"]
+    
+    # pandas.agg does not accept 'mode' as an input, replace with pd.mode
+    for agg_column, method in agg_methods.items():
+        if method == 'mode':
+            agg_methods[agg_column] = lambda series: pd.Series.mode(series).iloc[0]
 
     list_link_subsets = [
         (scen_name, link_subsets[link_subsets["Name"] == scen_name])
@@ -87,6 +92,7 @@ def subset_catagories(
                 summary_subset["TOT_MUT"].agg(agg_methods["FLOW"]) + summary_subset["TOT_SUT"].agg(agg_methods["FLOW"])
             )
             summary_table["Total Daily Flow"] = summary_subset["TOTFLOW"].agg(agg_methods["FLOW"])
+            
 
             summary_table["Daily Capacity"] = (
                 f"{summary_subset['AB_DLYCAP'].agg(agg_methods['CAPACITY']):0.0f} - {summary_subset['BA_DLYCAP'].agg(agg_methods['CAPACITY']):0.0f}"
