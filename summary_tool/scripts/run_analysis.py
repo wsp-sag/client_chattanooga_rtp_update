@@ -34,12 +34,21 @@ def get_config():
     return config
 
 
-# %%
 import warnings
 warnings.filterwarnings("ignore")
 
 if True:
     config = get_config()
+
+    if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
+        print(f"{datetime.now()} creating bridge report")
+        bridge_report.create_bridge_report(
+            MODEL_OUTPUT_PATH,
+            SUMMARY_OUTPUT_PATH,
+            config["bridge_report"]["scenario"],
+            config["bridge_report"]["county"],
+        )
+        print(f"{datetime.now()} finish bridge report")
 
     if config["scenario_impact"]["CREATE_IMPACT_REPORT"]:
         print(f"{datetime.now()} creating impact report subsets...")
@@ -53,17 +62,6 @@ if True:
         )
         scenario_impact.consolidate_one_report(SUMMARY_OUTPUT_PATH)
         print(f"{datetime.now()} finish impact report")
-        
-
-    if config["bridge_report"]["CREATE_BRIDGE_REPORT"]:
-        print(f"{datetime.now()} creating bridge report")
-        bridge_report.create_bridge_report(
-            MODEL_OUTPUT_PATH,
-            SUMMARY_OUTPUT_PATH,
-            config["bridge_report"]["scenario"],
-            config["bridge_report"]["county"],
-        )
-        print(f"{datetime.now()} finish bridge report")
 
     if config["project_evaluation"]["CREATE_EVALUATION_REPORT"]:
         print(f"{datetime.now()} creating project evaluation report")
@@ -78,7 +76,7 @@ if True:
     
     if config["map_automation"]["CREATE_MAP_OUTPUT"]:
         print(f"{datetime.now()} postprocessing model outputs for map automation")
-        SHP_SAVE_PATH = MAP_DATA_PATH / "Model_Output"
+        SHP_SAVE_PATH = MAP_DATA_PATH / "Model_Output_Intermediate"
 
         for scenario in config["map_automation"]["scenario"]:
             build_map_files.model_output_postprocess(
@@ -100,6 +98,3 @@ if True:
    
 
     print("done")
-
-
-# %%
