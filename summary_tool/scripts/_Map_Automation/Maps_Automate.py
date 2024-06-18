@@ -17,7 +17,7 @@ scenario = arguments[1]
 qgis_template = os.path.join('scripts','_Map_Automation','Chattanooga_Map_Deliverables.qgz')
 
 map_def_file = os.path.join('config.yml')
-logo_path = os.path.join('scripts','_Map_Automation','Data')
+logo_path = os.path.join('scripts','_Map_Automation','Data','rtp_logo.png')
 export_path = os.path.join('summary_output')
 
 qgs = QgsApplication([], False)
