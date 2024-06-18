@@ -542,7 +542,7 @@ shared mvw, info
 	intra.factor    = .25 //factor applied to average of neighbors
 	intra.neighbors = 1
 	intra.operation = 1 //[1(replace values); 2(add values)]
-	intra.missing   = 2 //[1(missing=0); 2(missing=null)]
+	intra.missing   = 1 //[1(missing=0); 2(missing=null)]
 
 	RunMacro("WriteLog", "Calculating Intrazonals")
 	RunMacro("intrazonal", intra)
@@ -1545,10 +1545,10 @@ SetDataVectors(trkpavw + "|", {{"ID",tazvec.ID}, {"SU_Trks",SUT_Gen}, {"MU_Trks"
      k_EM = exp(-1.5518*tazvec.GenAccess)    //exp(trkparam.EMGA.value*GenAccess)
 
      // Exponentiated utilities (less any straight impedance component) by adding OD elements to TAZ component
-     mckIS := k_IS * exp(-0.8625*mcriv + -1.4781*mciz)	//k_IS * exp(trkparam.ISOR.value*mcriv + trkparam.ISIZ.value*mciz)
-     mckIM := k_IM * exp(3.1263*mcriv  + -5.3620*mciz)	//k_IM * exp(trkparam.IMOR.value*mcriv + trkparam.IMIZ.value*mciz)
-     mckES := k_ES * exp(-0.8282*mcriv + -1.0657*mciz)	//k_ES * exp(trkparam.ESOR.value*mcriv + trkparam.ESIZ.value*mciz)
-     mckEM := k_EM * exp(2.2265*mcriv  + 4.7372*mciz)	//k_EM * exp(trkparam.EMOR.value*mcriv + trkparam.EMIZ.value*mciz)
+     mckIS := k_IS * exp(-0.8625*nz(mcriv) + -1.4781*mciz)	//k_IS * exp(trkparam.ISOR.value*mcriv + trkparam.ISIZ.value*mciz)
+     mckIM := k_IM * exp(3.1263*nz(mcriv)  + -5.3620*mciz)	//k_IM * exp(trkparam.IMOR.value*mcriv + trkparam.IMIZ.value*mciz)
+     mckES := k_ES * exp(-0.8282*nz(mcriv) + -1.0657*mciz)	//k_ES * exp(trkparam.ESOR.value*mcriv + trkparam.ESIZ.value*mciz)
+     mckEM := k_EM * exp(2.2265*nz(mcriv)  + 4.7372*mciz)	//k_EM * exp(trkparam.EMOR.value*mcriv + trkparam.EMIZ.value*mciz)
 
 	//Run Gravity Model to get PAs
 	RunMacro("TCB Init")
@@ -1722,7 +1722,7 @@ SetDataVectors(cvpavw + "|", {{"ID",tazvec.ID},
      k_CV = exp(-0.4923*tazvec.GenAccess)
 
      // Exponentiated utilities (less any straight impedance component) by adding OD elements to TAZ component
-     mckCV := k_CV * exp(-0.8625*mcriv + -1.4781*mciz)
+     mckCV := k_CV * exp(-0.8625*nz(mcriv) + -1.4781*mciz)
 
 	//Run Gravity Model to get PAs
 	RunMacro("TCB Init")
