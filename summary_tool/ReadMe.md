@@ -1,28 +1,15 @@
 # Descirption
-This folder contains The Scripts for processing the outputs of a ChattaModel. For deployment these scripts are compiled to a .exe file so the client can run without dealing with python dependencies ect.
+The summary tool is compatible with TransCAD 10 and includes a `config.yml`, a `run_analysis.bat` script, a ‘ReadMe.md’ and four subfolders.
 
-# Build / Deployment
-To create an exe file, use the pyinstaller ibrary on run_analysis.py
+# Folders
+- Lookups: Stores all link queries, lookup tables, and cross-reference files.
+- Model_output: Keeps all model outputs for each scenario.
+- Scripts: Houses the source code for all summary tools.
+- Summary_output: Contains all summary outputs, which are subsequently used in the reports.
 
-```
-activate YOUR_ENVIRONMENT
+# Files
+- ReadMe.md: Contains a brief overview of the summary tool's structure.
+- Config.yml: Contains basic settings for each summary report, such as whether to generate the report, which scenarios to include, and which link queries to use.
+- Run_analysis.bat: The primary script used to execute all summary tools.
 
-cd path/to/repo/client_chattanooga_rtp_update/Scripts/
-
-pyinstaller --onefile run_analysis.py
-```
-
-## Common Issues
-
-If the build fails, you may need to upgrade pysintaller
-```
-conda update pyinstaller
-```
-
-If the build still fails, it may be useful to make the smallest viable environment contains all the packages. As of most recent writing:
-```
-conda install -n geopandas pandas PyYAML pyinstaller
-```
-# Usage
-The exe created has the same behavior as running the run_analysis.py, this function will create a config file with cli prompts if a config.yml does not exist in the same directory. If the config.yml file exists, then the file will output the respective summaries according to the config.
 
