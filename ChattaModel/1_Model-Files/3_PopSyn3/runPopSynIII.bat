@@ -48,7 +48,7 @@ ECHO %startTime%%Time%: Completed processing input tables...
 REM ###########################################################################
 
 ECHO %startTime%%Time%: Running population synthesizer...
-SET JAVA_64_PATH="C:\Program Files\Java\jdk1.7.0_80"
+SET JAVA_64_PATH="C:\Program Files\Java\jre1.8.0_181"
 SET CLASSPATH=runtime\config
 SET CLASSPATH=%CLASSPATH%;runtime\*
 SET CLASSPATH=%CLASSPATH%;runtime\lib\*
