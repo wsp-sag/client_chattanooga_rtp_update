@@ -1,0 +1,22 @@
+
+#path: C:\Current\yerra\Chattanooga\_data_for_repo\model outputs
+
+path: C:\Users\USVA682771\OneDrive - WSP O365\Documents\client_chattanooga_TNHTS\data\processed\survey_daysim
+alternatives: survey
+
+taz_dist_xref: county_districts_chattanooga.csv
+
+excludeChildren5: 
+runWrkSchLocationChoice: True
+runVehAvailability: True
+runDayPattern: True
+runTourDestination: True
+runTourMode: True
+runTourTOD: True
+runTripDestination: True
+runTripMode: True
+runTripTOD: True
+
+
+
+
