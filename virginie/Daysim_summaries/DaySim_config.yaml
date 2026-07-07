@@ -1,0 +1,22 @@
+
+#path: C:\Current\yerra\Chattanooga\_data_for_repo\model outputs
+path: Z:\projects\temp_va\temp_chattanooga\model_outputs
+
+alternatives: base year
+
+taz_dist_xref: county_districts_chattanooga.csv
+
+excludeChildren5: 
+runWrkSchLocationChoice: True
+runVehAvailability: True
+runDayPattern: True
+runTourDestination: True
+runTourMode: True
+runTourTOD: True
+runTripDestination: True
+runTripMode: True
+runTripTOD: True
+
+
+
+
