@@ -97,6 +97,7 @@ class DaysimSummary:
 
         perdata = perdata.merge(hhdata, on="hhno", how="left")
         perdata["wrkr"] = np.where((perdata.pwtyp>0) & (perdata.pwtaz!=0), 1, 0)
+        perdata["employed"] = np.where(perdata.pwtyp>0, 1, 0)
         perdata["outhmwrkr"] = np.where((perdata.pwtaz>0) & (perdata.hhparcel!=perdata.pwpcl), 1, 0)
         perdata["wrkrtyp"] = np.where(perdata.pptyp==1, "FT", 
                                       np.where(perdata.pptyp==2, "PT","NotFTPT"))
@@ -139,6 +140,11 @@ class DaysimSummary:
         perdata["pwaudist"] = np.where(perdata.pwaudist<0, np.nan, perdata.pwaudist)
         perdata["psautime"] = np.where(perdata.psautime<0, np.nan, perdata.psautime)
         perdata["psaudist"] = np.where(perdata.psaudist<0, np.nan, perdata.psaudist)
+        if "inccat" not in perdata.columns:
+            perdata["inccat"] = pd.cut(perdata["hhincome"], 
+                                  bins=[0,15000,50000,75000,float("inf")], 
+                                  labels=["0K-15K", "15K-50K", "50K-75K", ">75K"], 
+                                  right=True)
 
         return perdata
 
@@ -702,6 +708,10 @@ class DaysimSummary:
         elif subsetvar== "sfh":
             summary = self.summary_func(perdata, "hhcounty", "stutyp", "psexpfac", subsetvar=subsetvar, subsetval=1) 
         return summary
+    
+    def summary_wfh_by_inc(self):
+        perdata = self.perdata_wrkschloc[self.perdata_wrkschloc["employed"]==1]
+        return self.summary_func(perdata, "inccat", "wfh", "psexpfac")   
 
     def summary_trip_mode(self, purpose):
         tripdata = self.tripdata_trip_mode
@@ -885,6 +895,7 @@ class DaysimSummary:
         d['has_tour'] = np.where(d[col_map[purpose]] >= 1, 1, 0)
         summary = d.groupby('has_tour')['psexpfac'].sum().to_frame()
         return summary
+    
 
     # -- Day Pattern — tour count constants -----------------------------------
     def summary_day_pattern_tour_count(self, purpose):
@@ -901,7 +912,9 @@ class DaysimSummary:
             'meal':   'mltopt',
             'socrec': 'sotopt',
         }
-        pdaydata = self.pdaydata_day_pattern_pday
+        pdaydata = self.pdaydata_day_pattern_pday.copy()
+        col  = col_map[purpose]
+        pdaydata[col] = np.where(pdaydata[col] > 3, 3, pdaydata[col])
         summary = pdaydata.groupby(col_map[purpose])['psexpfac'].sum().to_frame()
         return summary
 
@@ -909,7 +922,7 @@ class DaysimSummary:
     def summary_day_pattern_subtour_purpose_rate(self):
         """For each purpose, weighted count of workers with/without at least 1 work-based subtour.
         Base population: workers making at least 1 work tour.
-        Returns DataFrame: rows = 0/1 (no subtour / has subtour), columns = purpose.
+        Returns DataFrame: rows = purpose, columns = 0/1 (no subtour / has subtour).
         """
         tourdata = self.pdaydata_day_pattern_tour
         purpose_map = {1: 'Work', 2: 'School', 3: 'Escort', 4: 'PB',
@@ -923,7 +936,7 @@ class DaysimSummary:
             merged = workers.merge(has, on=["hhno","pno"], how="left")
             merged["has_subtour"] = merged["has_subtour"].fillna(0).astype(int)
             result[purp_name] = merged.groupby("has_subtour")["psexpfac"].sum()
-        return pd.DataFrame(result).fillna(0)
+        return pd.DataFrame(result).fillna(0).T
 
     # -- Work tour mode -------------------------------------------------------
     def summary_work_tour_mode(self):
@@ -973,6 +986,7 @@ class DaysimSummary:
         """Weighted count of work tours by arrival hour. Calibration targets: rows 7, 8, 9."""
         tourdata = self.tourdata_tour_tod
         d = tourdata[tourdata["pdpurp2"] == 1].copy()
+        d = d[d["arrtimecat"].cat.codes != -1]  # filter out missing categories ADDED
         d["arrhour"] = d["arrtimecat"].astype(float).apply(math.trunc)
         summary = d.groupby("arrhour")["psexpfac"].sum().to_frame()
         return summary
@@ -981,6 +995,7 @@ class DaysimSummary:
         """Weighted count of work tours by departure hour. Calibration targets: rows 16, 17, 18."""
         tourdata = self.tourdata_tour_tod
         d = tourdata[tourdata["pdpurp2"] == 1].copy()
+        d = d[d["deptimecat"].cat.codes != -1]  # filter out missing categories ADDED
         d["dephour"] = d["deptimecat"].astype(float).apply(math.trunc)
         summary = d.groupby("dephour")["psexpfac"].sum().to_frame()
         return summary
@@ -990,15 +1005,26 @@ class DaysimSummary:
         """Weighted count of school tours by arrival hour. Calibration targets: rows 7, 8, 9."""
         tourdata = self.tourdata_tour_tod
         d = tourdata[tourdata["pdpurp2"] == 2].copy()
+        d = d[d["arrtimecat"].cat.codes !=-1]  # filter out missing categories ADDED
         d["arrhour"] = d["arrtimecat"].astype(float).apply(math.trunc)
         summary = d.groupby("arrhour")["psexpfac"].sum().to_frame()
         return summary
-
+    
     def summary_school_tour_dep_tod(self):
+        """Weighted count of school tours by departure hour. Calibration targets: TBD"""
+        tourdata = self.tourdata_tour_tod
+        d = tourdata[tourdata["pdpurp2"] == 2].copy()
+        d = d[d["deptimecat"].cat.codes != -1]
+        d["dephour"] = d["deptimecat"].astype(float).apply(math.trunc)
+        summary = d.groupby("dephour")["psexpfac"].sum().to_frame()
+        return summary
+
+    def summary_school_tour_dep_tod_bin(self):
         """Weighted count of school tours by departure bin.
         Calibration targets: 7-9, 10-12, 13-14, 16, 17."""
         tourdata = self.tourdata_tour_tod
         d = tourdata[tourdata["pdpurp2"] == 2].copy()
+        d = d[d["deptimecat"].cat.codes != -1]  # filter out missing categories ADDED
         d["dephour"] = d["deptimecat"].astype(float).apply(math.trunc)
         d["depbin"] = np.select(
             [d["dephour"].between(7,  9),
@@ -1018,8 +1044,10 @@ class DaysimSummary:
         """Weighted count of school tours by duration hour. Calibration target: rows 7-8."""
         tourdata = self.tourdata_tour_tod
         d = tourdata[tourdata["pdpurp2"] == 2].copy()
+        d = d[d["durdestcat"].cat.codes != -1]  # filter out missing categories ADDED   
         d["durhour"] = d["durdestcat"].astype(float).apply(math.trunc)
-        summary = d.groupby("durhour")["psexpfac"].sum().to_frame()
+        d["durbin"] = np.where(d["durhour"].isin([7,8]), "7-8", d["durhour"].astype(str))
+        summary = d.groupby("durbin")["psexpfac"].sum().to_frame()
         return summary
 
 
@@ -1036,9 +1064,93 @@ class DaysimSummary:
         summary = (tripdata.groupby("tripmode")["psexpfac"].sum()
                    .reindex(mode_order).fillna(0).to_frame())
         return summary
+    
+    # -- Day pattern: participation additional ------------------------------------------------
+    def summary_ipdp_participation(self, target):
+        """Weighted count of persons by person type with or without stop or any activity (stop or tour) for a given purpose.
+        target: 'work','school','escort','pb','shop','meal','socrec'
+        """
 
+        _tour_col = {
+            'work': 'wktours',
+            'school': 'sctours',    
+            'escort': 'estours',
+            'pb': 'pbtours',
+            'shop': 'shtours',
+            'meal': 'mltours',  
+            'socrec': 'sotours'
+        }
 
+        _stops_col = {
+            'work': 'wkstops',
+            'school': 'scstops',
+            'escort': 'esstops',
+            'pb': 'pbstops',
+            'shop': 'shstops',
+            'meal': 'mlstops',
+            'socrec': 'sostops'
+            }
 
+        _pptyp_map = {
+            'FT': 1,
+            'PT': 2,
+            'Retired': 3,
+            'Nonworker': 4,
+            'Stu16': 5,
+            'Ch515': 6,
+        }   # excluding UnivSt
+
+        purpose, suffix = target.rsplit("_", 1)
+        if purpose not in _tour_col:
+            raise ValueError(f"Unknown purpose: {purpose!r}")
+        
+        d = self.pdaydata_day_pattern_pday.copy()
+        if suffix == "Stop":
+            d["has_activity"] = np.where(d[_stops_col[purpose]] >= 1, 1, 0)
+        elif suffix in _pptyp_map:
+            d = d[d["pptyp"] == _pptyp_map[suffix]].copy()
+            d["has_activity"] = np.where((d[_tour_col[purpose]] >= 1) | (d[_stops_col[purpose]] >= 1), 1, 0) 
+        else:
+            raise ValueError(f"Unknown suffix: {suffix!r}")
+        
+        return d.groupby("has_activity")["psexpfac"].sum().to_frame()
+
+    # -- Paid work parking ------------------------------------------------------
+    def summary_paid_parking(self):
+        """Weighted count of out-of-home workers who pay for parking at work."""
+        perdata = self.perdata_wrkschloc
+        d = perdata[(perdata["wrkr"] == 1) & (perdata["wfh"] == 0)].copy()
+        summary = d.groupby("ppaidprk")["psexpfac"].sum().to_frame()
+        return summary
+
+    # -- Other home-based tour mode ------------------------------------------------------
+    def summary_other_home_based_tour_mode(self):
+        """Weighted count of non-work, non-school tours by mode.
+        Modes: Drive Alone, Shared Ride 2, Shared Ride 3+, Walk-Transit, Drive-Transit, Bike, Walk."""
+        tourdata = self.tourdata_tour_mode
+        mode_order = ['Drive Alone', 'Shared Ride 2', 'Shared Ride 3+',
+                      'Walk-Transit', 'Drive-Transit', 'Bike', 'Walk']
+        d = tourdata[(tourdata["pdpurp2"].isin([4,5,6,7]))].copy()
+        summary = (d.groupby("tourmode")["psexpfac"].sum()
+                    .reindex(mode_order)
+                    .fillna(0)
+                    .to_frame())
+        return summary
+    
+    # -- Work-based subtour mode ------------------------------------------------------
+    def summary_work_based_subtour_mode(self):
+        """Weighted count of work-based subtours by mode.
+        Modes: Drive Alone, Shared Ride 2, Shared Ride 3+, Walk-Transit, Drive-Transit, Bike, Walk."""
+        tourdata = self.tourdata_tour_mode
+        mode_order = ['Drive Alone', 'Shared Ride 2', 'Shared Ride 3+',
+                      'Walk-Transit', 'Drive-Transit', 'Bike', 'Walk']
+        d = tourdata[(tourdata["pdpurp2"] == 8)].copy()
+        summary = (d.groupby("tourmode")["psexpfac"].sum()
+                    .reindex(mode_order)
+                    .fillna(0)
+                    .to_frame())
+        return summary
+    
 if __name__ == '__main__':
 
     DaySim = DaysimSummary()

@@ -1,0 +1,29 @@
+# calibration settings
+damping_factor: 0.85 # to prevent over-adjustment, the calculated beta change is multiplied by this factor (between 0 and 1)
+threshold: 2.0  # allowable percentage difference between model and survey
+copy_back: False # if True, overwrite input co2efficient file with updated coefficient files to be ready for the next round (use with caution)
+# paths
+paths:
+  targets_file: calibration_targets.csv  # CSV with calibration targets
+  mapping_file: calibration_mapping.csv     # CSV mapping f12 models to calibration groups
+  coefficient_files_input_dir: 9_Coefficients  # Directory with current coefficient files    
+  coefficient_files_interim_dir: data/interim  # Directory to save updated coefficient files for review 
+  log_file: calibration_log.csv  # CSV to log calibration adjustments and results
+
+# models to calibrate
+models:
+ WorkLocation: True
+ SchoolLocation: True
+ PayToParkAtWorkplace: True
+ AutoOwnership: True
+ IndividualPersonDayPattern: False
+ PersonExactNumberOfTours: False
+ WorkTourMode: True
+ SchoolTourMode: False
+ EscortTourMode: False
+ OtherHomeBasedTourMode: False
+ WorkBasedSubtourMode: False
+ WorkTourTime: False
+ SchoolTourTime: False
+ WorkBasedSubTourTime: False
+
