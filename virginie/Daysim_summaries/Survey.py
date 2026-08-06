@@ -197,7 +197,7 @@ class DaysimSummary_Survey:
         perdata = perdata[["hhno","pno","pptyp"]]
         tourdata = pd.merge(tourdata, perdata, on =["hhno","pno"], how="left")    
         tourdata["pdpurp2"] = np.where(tourdata.parent==0, tourdata.pdpurp, 8)   # workbased trips
-
+        
         #tourdata = self.prep_tomode(tourdata)
         #tripdata = self.prep_trmode(tripdata)
 
@@ -285,6 +285,15 @@ class DaysimSummary_Survey:
         #perdata = perdata[["hhno","pno","pptyp","vehcat","psexpfac"]]
         perdata = perdata[["hhno","pno","pptyp","vehcat"]]
         #tourdata = self.prep_tomode(tourdata)
+        mode_map = {1:"Walk",
+                    2:"Bike",
+                    3:"Drive Alone",
+                    4:"Shared Ride 2",
+                    5:"Shared Ride 3+",
+                    6:"Walk-Transit",
+                    7:"Drive-Transit",
+                    8:"School Bus"}
+        tourdata["tourmode"] = tourdata["tourmode"].map(mode_map).fillna("Unknown")
 
         tourdata = pd.merge(tourdata, perdata, on =["hhno","pno"], how="left")
         if self.excludeChildren5:
@@ -972,11 +981,11 @@ class DaysimSummary_Survey:
     def summary_escort_tour_mode(self):
         """Weighted count of escort tours by mode. HOV2 and HOV3 combined as Shared Ride 2+."""
         tourdata = self.tourdata_tour_mode
-        mode_order = ['School Bus', 'Walk-Transit', 'Shared Ride 2+',
-                      'Drive Alone', 'Bike', 'Walk']
+        mode_order = ['School Bus',  'Shared Ride 2',
+                      'Shared Ride 3+', 'Drive Alone', 'Bike', 'Walk']
         d = tourdata[tourdata["pdpurp2"] == 3].copy()
-        d["tourmode"] = d["tourmode"].replace({'Shared Ride 2': 'Shared Ride 2+',
-                                               'Shared Ride 3+': 'Shared Ride 2+'})
+        #d["tourmode"] = d["tourmode"].replace({'Shared Ride 2': 'Shared Ride 2+',
+        #                                       'Shared Ride 3+': 'Shared Ride 2+'})
         summary = (d.groupby("tourmode")["psexpfac"].sum()
                     .reindex(mode_order)
                     .fillna(0)

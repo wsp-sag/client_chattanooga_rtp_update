@@ -33,6 +33,8 @@ def _parse_f12_lines(path, skip=3):
                 # Keep only coefficient rows (e.g., '1 Beta00001 F -2.57 .48')
                # if not tokens[1].startswith("Beta"):
                 #    raise ValueError("Not a coefficient row")
+                if(len(tokens[2]) != 1 or not tokens[2].isalpha()):
+                    raise ValueError("Not a coefficient row")
 
                 records.append(
                     {
@@ -262,9 +264,9 @@ def _make_csv_key_fn(key_mode,method_arg):
 # Log
 def save_log(comp_df, log_csv):
 
-    cols = ['f12_model', 'end','group','alternative', 'target','within_threshold','survey_pct', 'model_pct', 'diff',  'current_beta', 'adjustment', 'new_beta']
+    cols = ['f12_model', 'end','group','alternative', 'target','calibrate','within_threshold','survey_pct', 'model_pct', 'diff',  'current_beta', 'adjustment', 'new_beta']
 
-    this_run = comp_df[comp_df['calibrate']][[c for c in cols if c in comp_df.columns ]].copy()
+    this_run = comp_df[[c for c in cols if c in comp_df.columns ]].copy()
 
     if os.path.exists(log_csv):
             existing = pd.read_csv(log_csv)

@@ -968,17 +968,18 @@ class DaysimSummary:
 
     # -- Escort tour mode -----------------------------------------------------
     def summary_escort_tour_mode(self):
-        """Weighted count of escort tours by mode. HOV2 and HOV3 combined as Shared Ride 2+."""
+        """Weighted count of escort tours by mode."""
         tourdata = self.tourdata_tour_mode
-        mode_order = ['School Bus', 'Walk-Transit', 'Shared Ride 2+',
+        mode_order = ['School Bus','Shared Ride 2', 'Shared Ride 3+',
                       'Drive Alone', 'Bike', 'Walk']
         d = tourdata[tourdata["pdpurp2"] == 3].copy()
-        d["tourmode"] = d["tourmode"].replace({'Shared Ride 2': 'Shared Ride 2+',
-                                               'Shared Ride 3+': 'Shared Ride 2+'})
+        #d["tourmode"] = d["tourmode"].replace({'Shared Ride 2': 'Shared Ride 2+',
+        #                                       'Shared Ride 3+': 'Shared Ride 2+'})
         summary = (d.groupby("tourmode")["psexpfac"].sum()
                     .reindex(mode_order)
                     .fillna(0)
                     .to_frame())
+        
         return summary
 
     # -- Work tour time of day ------------------------------------------------
