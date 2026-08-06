@@ -16,14 +16,13 @@ models:
  SchoolLocation: True
  PayToParkAtWorkplace: True
  AutoOwnership: True
- IndividualPersonDayPattern: False
- PersonExactNumberOfTours: False
+ IndividualPersonDayPattern: True
+ PersonExactNumberOfTours: True
  WorkTourMode: True
- SchoolTourMode: False
- EscortTourMode: False
- OtherHomeBasedTourMode: False
- WorkBasedSubtourMode: False
- WorkTourTime: False
- SchoolTourTime: False
- WorkBasedSubTourTime: False
+ SchoolTourMode: 
+ EscortTourMode: True
+ OtherHomeBasedTourMode: True
+ WorkBasedSubtourMode: True
+ WorkTourTime: True
+ SchoolTourTime: True
 
