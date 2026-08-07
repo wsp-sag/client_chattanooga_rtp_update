@@ -11,6 +11,9 @@ SchoolLocation,person type,Ch515,distance to school,0-1 mi,10,0.05,,,
 SchoolLocation,person type,Ch515,distance to school,1-5 mi,11,0.3,,,1 to 5
 SchoolLocation,person type,Ch515,distance to school,5+ mi,12,0.26,median distance in top bin in survey (pool) is 7.6,,
 SchoolLocation,person type,Stu16,distance to school,1,13,0.32,median distance from survey is 3.8,,
+SchoolLocation,person type,Stu16,distance to school,0-1 mi,,,(not part of the model),,
+SchoolLocation,person type,Stu16,distance to school,1-5 mi,,,(not part of the model),,
+SchoolLocation,person type,Stu16,distance to school,5+ mi,,,(not part of the model) median distance in top bin in survey (pool) is 8.3,,
 SchoolLocation,person type,UniStu,distance to school,1,,,not enough data to calibrate,,
 SchoolLocation,,,homeschooled (sfh),1,,,,,
 PayToParkAtWorkplace,,,paid to park at work (ppaidprk),1,1,,"not calibrated last time, survey % who pay is based on trip data",,
@@ -164,12 +167,12 @@ WorkTourTime,departure time,dep,hour,18,27,,calibrated last time; survey shows 1
 SchoolTourTime,arrival time,arr,hour,7,13,,calibrated last time; survey shows 7-8 as peak in pool mpos,13,
 SchoolTourTime,arrival time,arr,hour,8,14,,calibrated last time; survey shows 7-8 as peak in pool mpos,14,
 SchoolTourTime,arrival time,arr,hour,9,,,calibrated last time - removed,15,
-SchoolTourTime,departure time,dep,time bin,7-9,,,calibrated last time - removed,22,7 to 9
-SchoolTourTime,departure time,dep,time bin,10-12,,,calibrated last time - removed,23,10 to 12
-SchoolTourTime,departure time,dep,time bin,13-14,24,,calibrated last time; survey shows 13:30-14:30 as peak in pool mpos,24,13 to 14
+SchoolTourTime,departure time,dep,time bin,7 to 9,,,calibrated last time - removed,22,7 to 9
+SchoolTourTime,departure time,dep,time bin,10 to 12,,,calibrated last time - removed,23,10 to 12
+SchoolTourTime,departure time,dep,time bin,13 to 14,24,,calibrated last time; survey shows 13:30-14:30 as peak in pool mpos,24,13 to 14
 SchoolTourTime,departure time,dep,hour,16,,,calibrated last time - removed,25,
 SchoolTourTime,departure time,dep,hour,17,,,calibrated last time - removed,26,
-SchoolTourTime,duration,dur,duration in hours,7-8,34,,calibrated last time,34,7 to 8
+SchoolTourTime,duration,dur,duration in hours,7 to 8,34,,calibrated last time,34,7 to 8
 OtherHomeBasedTourTime,,,,,,,Not calibrated last time,,
 WorkBasedSubTourTime,,,,,,,Not calibrated last time,,
 IntermediateStopGeneration,,,,,,,Not calibrated last time,,
