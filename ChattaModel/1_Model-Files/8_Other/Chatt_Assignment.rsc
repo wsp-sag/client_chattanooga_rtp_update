@@ -1327,7 +1327,7 @@ end
 if type = "II" then do
 //Create Matrix index of Internals-only zones
 	SetView(mvw.node)
-	numsel = SelectByQuery("Internals", "Several", "Select * where TAZID < 1000", )
+	numsel = SelectByQuery("Internals", "Several", "Select * where TAZID > 1000", )
 	IIset = mvw.node + "|Internals"
 	tazindex = CreateMatrixIndex("Internals", sm, "Both", IIset, "TAZID", "TAZID")  // put a new index (TAZ) to skim table
 
@@ -1482,7 +1482,7 @@ end
 if type = "II" then do
 //Create Matrix index of Internals-only zones
 	SetView(mvw.node)
-	numsel = SelectByQuery("Internals", "Several", "Select * where TAZID < 1000", )
+	numsel = SelectByQuery("Internals", "Several", "Select * where TAZID > 1000", )
 	IIset = mvw.node + "|Internals"
 	tazindex = CreateMatrixIndex("Internals", sm, "Both", IIset, "TAZID", "TAZID")  // put a new index (TAZ) to skim table
 
