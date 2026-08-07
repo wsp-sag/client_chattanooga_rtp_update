@@ -155,7 +155,9 @@ def load_beta_lookup(mapping_df, f12_files, coefficient_files_input_dir):
                 continue
             e = int(row['end'])
             vm = row.get('variable_mean',np.nan)
-            beta_lookup[(f12_model, str(row['group']), str(row['alternative']))] = { 
+            #beta_lookup[(f12_model, str(row['group']), str(row['alternative']))] = { 
+            grp_key = '' if pd.isna(row['group']) else str(row['group'])
+            beta_lookup[(f12_model, grp_key, str(row['alternative']))] = { 
              'end': e, 
              'beta': beta_map.get(e, np.nan), 
              'variable_mean': 1.0 if pd.isna(vm) else float(vm)}

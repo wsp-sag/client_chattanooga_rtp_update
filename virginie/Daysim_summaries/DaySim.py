@@ -116,7 +116,8 @@ class DaysimSummary:
         perdata["outhmstud"] = np.where((perdata.pstaz>0) & (perdata.hhparcel!=perdata.pspcl), 1, 0)
         perdata["stutyp"] = np.where(perdata.pptyp==5, "UniStu",
                                      np.where(perdata.pptyp==6, "Stu16",
-                                     np.where(perdata.pptyp==7, "Ch515", "NotStdu")))
+                                     np.where(perdata.pptyp==7, "Ch515",         
+                                     np.where(perdata.pptyp==8, "Child<5", "NotStdu"))))
         perdata["stutyp"] = perdata["stutyp"].astype(pd.CategoricalDtype(categories=["Ch515","Stu16","UniStu","NotStdu"]))
         perdata["schdistcat"] = pd.cut(perdata["psaudist"], 
                                        bins=range(0, 90),  
@@ -862,6 +863,20 @@ class DaysimSummary:
         summary = d.groupby("wrkdist3cat", observed=True)["psexpfac"].sum().to_frame()
         return summary
 
+    def summary_wrkschloc_wfh(self):
+        """Weighted count of persons working from home."""
+        perdata = self.perdata_wrkschloc
+        d = perdata[perdata["employed"] == 1].copy()
+        summary = d.groupby("wfh")["psexpfac"].sum().to_frame()
+        return summary
+
+    def summary_wrkschloc_wfh_by_wrkrtyp(self):
+        """Weighted count of persons working from home by worker type."""
+        perdata = self.perdata_wrkschloc
+        d = perdata[(perdata["employed"] == 1) & (perdata["wfh"] == 1)].copy()
+        summary = d.groupby(["wrkrtype"])["psexpfac"].sum().to_frame()
+        return summary
+
     # -- School Location ------------------------------------------------------
     def summary_wrkschloc_sch_dist(self):
         """One-way driving distance to school by student person type.
@@ -1033,10 +1048,10 @@ class DaysimSummary:
              d["dephour"].between(13, 14),
              d["dephour"] == 16,
              d["dephour"] == 17],
-            ["7-9", "10-12", "13-14", "16", "17"],
+            ["7 to 9", "10 to 12", "13 to 14", "16", "17"],
             default="other"
         )
-        order = ["7-9", "10-12", "13-14", "16", "17", "other"]
+        order = ["7 to 9", "10 to 12", "13 to 14", "16", "17", "other"]
         summary = (d.groupby("depbin")["psexpfac"].sum()
                     .reindex(order).fillna(0).to_frame())
         return summary
@@ -1047,7 +1062,7 @@ class DaysimSummary:
         d = tourdata[tourdata["pdpurp2"] == 2].copy()
         d = d[d["durdestcat"].cat.codes != -1]  # filter out missing categories ADDED   
         d["durhour"] = d["durdestcat"].astype(float).apply(math.trunc)
-        d["durbin"] = np.where(d["durhour"].isin([7,8]), "7-8", d["durhour"].astype(str))
+        d["durbin"] = np.where(d["durhour"].isin([7,8]), "7 to 8", d["durhour"].astype(str))
         summary = d.groupby("durbin")["psexpfac"].sum().to_frame()
         return summary
 

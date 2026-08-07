@@ -112,7 +112,8 @@ class DaysimSummary_Survey:
         #perdata["outhmstud"] = np.where((perdata.pstaz>0) & (perdata.hhparcel!=perdata.pspcl), 1, 0)
         perdata["stutyp"] = np.where(perdata.pptyp==5, "UniStu",
                                      np.where(perdata.pptyp==6, "Stu16",
-                                     np.where(perdata.pptyp==7, "Ch515", "NotStdu")))
+                                     np.where(perdata.pptyp==7, "Ch515",         
+                                     np.where(perdata.pptyp==8, "Child<5", "NotStdu"))))
         perdata["stutyp"] = perdata["stutyp"].astype(pd.CategoricalDtype(categories=["Ch515","Stu16","UniStu","NotStdu"]))
         perdata["schdistcat"] = pd.cut(perdata["psaudist"], 
                                        bins=range(0, 90),  
@@ -293,14 +294,16 @@ class DaysimSummary_Survey:
                     6:"Walk-Transit",
                     7:"Drive-Transit",
                     8:"School Bus"}
-        tourdata["tourmode"] = tourdata["tourmode"].map(mode_map).fillna("Unknown")
+        if pd.api.types.is_numeric_dtype(tourdata["tourmode"]):
+            tourdata["tourmode"] = tourdata["tourmode"].map(mode_map).fillna("Unknown")
 
         tourdata = pd.merge(tourdata, perdata, on =["hhno","pno"], how="left")
         if self.excludeChildren5:
             tourdata = tourdata[tourdata["pptyp"]<8]
         tourdata["pdpurp"] = np.where(tourdata.pdpurp==8, 7, tourdata.pdpurp)   # combine recreational 8 with socail 7
         tourdata["pdpurp"] = np.where(tourdata.pdpurp==9, 4, tourdata.pdpurp)   # combine medical 8 with personal business 4
-        tourdata["pdpurp2"] = np.where(tourdata.parent==0, tourdata.pdpurp, 8)   # workbased trips
+        #tourdata["pdpurp2"] = np.where(tourdata.parent==0, tourdata.pdpurp, 8)   # workbased trips
+        tourdata["pdpurp2"] = np.where(tourdata["parent"]>0, 8, tourdata.pdpurp)   # workbased trips
 
         wrktours = tourdata[tourdata["pdpurp"]==1]
         wrktours = wrktours[["hhno","pno","tour","tourmode"]]
@@ -308,11 +311,18 @@ class DaysimSummary_Survey:
         wrkbasedtours = tourdata[tourdata["parent"]>0]
         wrkbasedtours = pd.merge(wrkbasedtours,wrktours,on=["hhno","pno","parent"],how="left")
 
-        nonwrkbasedtours = tourdata[tourdata["parent"]==0].copy()
+        #nonwrkbasedtours = tourdata[tourdata["parent"]==0].copy()
+        nonwrkbasedtours = tourdata[tourdata["parent"]<=0].copy()
         nonwrkbasedtours.loc[:,"parenttourmode"]=0
-
+       
         wrkbasedtours = wrkbasedtours[nonwrkbasedtours.columns]
         tourdata = pd.concat([nonwrkbasedtours,wrkbasedtours])
+
+        # subtour rows have psepfac as 0 in tour file, use person weight instead
+        per_expfac = self.perdata[["hhno","pno","psexpfac"]].rename(columns={"psexpfac":"person_psexpfac"})
+        tourdata = pd.merge(tourdata, per_expfac, on=["hhno","pno"], how="left")
+        tourdata.loc[tourdata["parent"]>0, "psexpfac"] = tourdata.loc[tourdata["parent"]>0, "person_psexpfac"]
+        tourdata = tourdata.drop(columns="person_psexpfac")
 
         return tourdata
     
@@ -874,6 +884,20 @@ class DaysimSummary_Survey:
         summary = d.groupby("wrkdist3cat", observed=True)["psexpfac"].sum().to_frame()
         return summary
 
+    def summary_wrkschloc_wfh(self):
+        """Weighted count of persons working from home."""
+        perdata = self.perdata_wrkschloc
+        d = perdata[perdata["employed"] == 1].copy()
+        summary = d.groupby("wfh")["psexpfac"].sum().to_frame()
+        return summary
+
+    def summary_wrkschloc_wfh_by_wrkrtyp(self):
+        """Weighted count of persons working from home by worker type."""
+        perdata = self.perdata_wrkschloc
+        d = perdata[(perdata["employed"] == 1) & (perdata["wfh"] == 1)].copy()
+        summary = d.groupby(["wrkrtype"])["psexpfac"].sum().to_frame()
+        return summary
+
     # -- School Location ------------------------------------------------------
     def summary_wrkschloc_sch_dist(self):
         """One-way driving distance to school by student person type.
@@ -1042,10 +1066,10 @@ class DaysimSummary_Survey:
              d["dephour"].between(13, 14),
              d["dephour"] == 16,
              d["dephour"] == 17],
-            ["7-9", "10-12", "13-14", "16", "17"],
+            ["7 to 9", "10 to 12", "13 to 14", "16", "17"],
             default="other"
         )
-        order = ["7-9", "10-12", "13-14", "16", "17", "other"]
+        order = ["7 to 9", "10 to 12", "13 to 14", "16", "17", "other"]
         summary = (d.groupby("depbin")["psexpfac"].sum()
                     .reindex(order).fillna(0).to_frame())
         return summary
@@ -1056,7 +1080,7 @@ class DaysimSummary_Survey:
         d = tourdata[tourdata["pdpurp2"] == 2].copy()
         d = d[d["durdestcat"].cat.codes != -1]
         d["durhour"] = d["durdestcat"].astype(float).apply(math.trunc)
-        d["durbin"] = np.where(d["durhour"].isin([7,8]), "7-8", d["durhour"].astype(str))
+        d["durbin"] = np.where(d["durhour"].isin([7,8]), "7 to 8", d["durhour"].astype(str))
         summary = d.groupby("durbin")["psexpfac"].sum().to_frame()
         return summary
 

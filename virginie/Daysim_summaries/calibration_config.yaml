@@ -19,7 +19,7 @@ models:
  IndividualPersonDayPattern: True
  PersonExactNumberOfTours: True
  WorkTourMode: True
- SchoolTourMode: 
+ SchoolTourMode: True
  EscortTourMode: True
  OtherHomeBasedTourMode: True
  WorkBasedSubtourMode: True

@@ -1,5 +1,7 @@
 model,f12_model,label,type,method,method_arg,key_mode
 WorkLocation,WorkLocation,WorkLocation,1d,summary_wrkschloc_ft_nwfh_dist,,
+WorkLocation,WorkLocation,WorkLocationWFH,1d,summary_wrkschloc_wfh,,
+WorkLocation,WorkLocation,WorkLocationWFHbyType,1d,summary_wrkschloc_wfh_by_wrkrtyp,,fixed_group:wfh
 SchoolLocation,SchoolLocation,SchoolLocation,2d,summary_wrkschloc_sch_dist,,
 PayToParkAtWorkplace,PayToParkAtWorkplace,PaidParking,1d,summary_paid_parking,,
 AutoOwnership,AutoOwnership,AutoOwnership,2d,summary_vehavail_drivers_vehs,,
@@ -75,5 +77,5 @@ WorkBasedSubtourMode,WorkBasedSubtourMode,WorkBasedSubtourMode,1d,summary_work_b
 WorkTourTime,WorkTourTime,WorkTourArrTOD,1d,summary_work_tour_arr_tod,,fixed_group:arr
 WorkTourTime,WorkTourTime,WorkTourDepTOD,1d,summary_work_tour_dep_tod,,fixed_group:dep
 SchoolTourTime,SchoolTourTime,SchoolTourArrTOD,1d,summary_school_tour_arr_tod,,fixed_group:arr
-SchoolTourTime,SchoolTourTime,SchoolTourDepTOD,1d,summary_school_tour_dep_tod,,fixed_group:dep
+SchoolTourTime,SchoolTourTime,SchoolTourDepTOD,1d,summary_school_tour_dep_tod_bin,,fixed_group:dep
 SchoolTourTime,SchoolTourTime,SchoolTourDur,1d,summary_school_tour_dur,,fixed_group:dur
