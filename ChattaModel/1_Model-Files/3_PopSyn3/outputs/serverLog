@@ -1,42 +1,4 @@
-
-(1 rows affected)
-
-(1 rows affected)
-
-(1 rows affected)
-
-(1 rows affected)
-
-(1 rows affected)
-
-(1 rows affected)
-
-(1 rows affected)
-
-(1 rows affected)
-BULK INSERT control_totals_maz FROM 'C:\Users\USYS671257\Desktop\PopSyn2019\data\mazData.csv' WITH (FIELDTERMINATOR = ',', ROWTERMINATOR = '\n', FIRSTROW = 2, MAXERRORS = 0, TABLOCK);
-added primary key geographic file
-Appending other geographic ids to maz control table
-DELETE FROM dbo.control_totals_taz WHERE GEOID10_tract NOT IN (13047030100,13047030201,13047030202,13047030301,13047030303,13047030304,13047030401,13047030402,13047030500,13047030600,13047030700,13083040101,13083040300,13295020100,13295020200,13295020301,13295020302,13295020400,13295020501,13295020502,13295020601,47065000400,47065000600,47065000700,47065000800,47065001100,47065001200,47065001300,47065001400,47065001600,47065001800,47065001900,47065002000,47065002300,47065002400,47065002500,47065002600,47065002800,47065002900,47065003000,47065003100,47065003200,47065003300,47065003400,47065010101,47065010103,47065010104,47065010201,47065010202,47065010303,47065010304,47065010305,47065010306,47065010307,47065010411,47065010412,47065010413,47065010431,47065010432,47065010433,47065010434,47065010435,47065010501,47065010502,47065010600,47065010700,47065010800,47065010901,47065010902,47065010903,47065011001,47065011002,47065011100,47065011201,47065011203,47065011204,47065011311,47065011314,47065011321,47065011323,47065011324,47065011325,47065011326,47065011402,47065011411,47065011413,47065011442,47065011443,47065011444,47065011445,47065011446,47065011447,47065011600,47065011700,47065011800,47065011900,47065012000,47065012100,47065012200,47065012300,47065012400,47065980100,47065980200)
-deleted missing TAZ records from TAZ file
-FINISHED Appending other geographic ids to maz control table
-Loaded acs2019 5 year raw pums datasets...
-Starting pums seed data processing
-Census acs2019 5 year input household data inserted into [hhtable]
-Census acs2019 5 year input person data inserted into [perstable]
-Warning: Null value is eliminated by an aggregate or other SET operation.
-Census acs2015 5 year input group quarter household data inserted into [hhtable]
-Census acs2015 5 year input group quarter person data inserted into [perstable]
-Finished rebuilding indexes...
-Seed table creation complete!
-Changed database context to 'Chattanooga'.
-
-(7575 rows affected)
-
-(103 rows affected)
-
-(1 rows affected)
-
-(198738 rows affected)
-
-(468128 rows affected)
+Sqlcmd: Error: Microsoft SQL Server Native Client 11.0 : SQL Server Network Interfaces: Error Locating Server/Instance Specified [xFFFFFFFF]. .
+Sqlcmd: Error: Microsoft SQL Server Native Client 11.0 : Login timeout expired.
+Sqlcmd: Error: Microsoft SQL Server Native Client 11.0 : A network-related or instance-specific error has occurred while establishing a connection to SQL Server. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online..
+Canceling connection...

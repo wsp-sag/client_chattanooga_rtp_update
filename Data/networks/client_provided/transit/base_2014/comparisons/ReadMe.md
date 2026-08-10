@@ -1,1 +1,0 @@
-Output location for transit comparisons.

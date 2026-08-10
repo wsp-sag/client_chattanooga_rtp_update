@@ -542,7 +542,7 @@ shared mvw, info
 	intra.factor    = .25 //factor applied to average of neighbors
 	intra.neighbors = 1
 	intra.operation = 1 //[1(replace values); 2(add values)]
-	intra.missing   = 2 //[1(missing=0); 2(missing=null)]
+	intra.missing   = 1 //[1(missing=0); 2(missing=null)]
 
 	RunMacro("WriteLog", "Calculating Intrazonals")
 	RunMacro("intrazonal", intra)
@@ -973,10 +973,11 @@ shared mvw, net, netparam
      Opts = null
      Opts.Input.Database = mvw.linefile
      Opts.Input.Network = net.assign
-	 Opts.Input.[Toll Set] = {mvw.linefile+"|"+mvw.line, mvw.line}
-	 Opts.Input.[Centroids Set] = {mvw.linefile+"|"+mvw.node, mvw.node, "Centroids", "Select * where Centroid = 1"}
-	 Opts.Global.[Link to Link Penalty Method] = "Table"
+	   Opts.Input.[Toll Set] = {mvw.linefile+"|"+mvw.line, mvw.line}
+	   Opts.Input.[Centroids Set] = {mvw.linefile+"|"+mvw.node, mvw.node, "Centroids", "Select * where Centroid = 1"}
+	   Opts.Global.[Link to Link Penalty Method] = "Table"
      Opts.Global.[Global Turn Penalties] = {left_tp, right_tp, 0, -1}
+     Opts.Global.[Use Centroid Turn Penalties] = "True"
 	 //Opts.Global.[Global Turn Penalties] = {0.999, 0.265734, 0, -1}
 	ok = RunMacro("TCB Run Operation", "Network Settings", Opts, &Ret)
     if !ok then Return( RunMacro("TCB Closing", ok, True ) )
@@ -1085,23 +1086,23 @@ status = RunProgram("cmd /c robocopy "+root.daysim+"Inputs\\ "+indir.daysim+" /S
 	dscfg[185] = "PayToParkAtWorkplaceModelCoefficients="+indir.daysim+"\9_Coefficients\\PayToParkAtWorkplaceCoefficients_Chattanooga.F12"
 	dscfg[188] = "TransitPassOwnershipModelCoefficients="+indir.daysim+"\9_Coefficients\\TransitPassOwnershipCoefficients_Chattanooga.F12"
 	dscfg[191] = "AutoOwnershipModelCoefficients="+indir.daysim+"\9_Coefficients\\AutoOwnershipCoefficients_Chattanooga.F12"
-	dscfg[195] = "IndividualPersonDayPatternModelCoefficients="+indir.daysim+"\9_Coefficients\\IndividualPersonDayPatternCoefficients_Chattanooga.F12"
+	dscfg[195] = "IndividualPersonDayPatternModelCoefficients="+indir.daysim+"\9_Coefficients\\IndividualPersonDayPatternCoefficients_Chattanooga_wfh.F12"
 	dscfg[197] = "PersonExactNumberOfToursModelCoefficients="+indir.daysim+"\9_Coefficients\\PersonExactNumberOfToursCoefficients_Chattanooga.F12"
 	dscfg[201] = "WorkTourDestinationModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkTourDestinationCoefficients_Chattanooga.F12"
 	dscfg[203] = "OtherTourDestinationModelCoefficients="+indir.daysim+"\9_Coefficients\\OtherTourDestinationCoefficients_Chattanooga.F12"
 	dscfg[206] = "WorkBasedSubtourGenerationModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkBasedSubtourGenerationCoefficients_Chattanooga.F12"
-	dscfg[209] = "WorkTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkTourModeCoefficients_Chattanooga.F12"
-	dscfg[211] = "SchoolTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\SchoolTourModeCoefficients_Chattanooga.F12"
-	dscfg[213] = "WorkBasedSubtourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkBasedSubtourModeCoefficients_Chattanooga.F12"
+	dscfg[209] = "WorkTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkTourModeCoefficients_Chattanooga_tnc.F12"
+	dscfg[211] = "SchoolTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\SchoolTourModeCoefficients_Chattanooga_tnc.F12"
+	dscfg[213] = "WorkBasedSubtourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkBasedSubtourModeCoefficients_Chattanooga_tnc.F12"
 	dscfg[215] = "EscortTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\EscortTourModeCoefficients_Chattanooga.F12"
-	dscfg[217] = "OtherHomeBasedTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\OtherHomeBasedTourModeCoefficients_Chattanooga.F12"
+	dscfg[217] = "OtherHomeBasedTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\OtherHomeBasedTourModeCoefficients_Chattanooga_tnc.F12"
 	dscfg[220] = "WorkTourTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkTourTimeCoefficients_Chattanooga.F12"
 	dscfg[222] = "SchoolTourTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\SchoolTourTimeCoefficients_Chattanooga.F12"
 	dscfg[224] = "OtherHomeBasedTourTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\OtherHomeBasedTourTimeCoefficients_Chattanooga.F12"
 	dscfg[226] = "WorkBasedSubtourTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkbasedSubtourTimeCoefficients_Chattanooga.F12"
 	dscfg[229] = "IntermediateStopGenerationModelCoefficients="+indir.daysim+"\9_Coefficients\\IntermediateStopGenerationCoefficients_Chattanooga.F12"
 	dscfg[232] = "IntermediateStopLocationModelCoefficients="+indir.daysim+"\9_Coefficients\\IntermediateStopLocationCoefficients_Chattanooga.F12"
-	dscfg[235] = "TripModeModelCoefficients="+indir.daysim+"\9_Coefficients\\TripModeCoefficients_Chattanooga.F12"
+	dscfg[235] = "TripModeModelCoefficients="+indir.daysim+"\9_Coefficients\\TripModeCoefficients_Chattanooga_tnc.F12"
 	dscfg[238] = "TripTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\TripTimeCoefficients_Chattanooga.F12"
 	ptr = OpenFile(daysim.cfg_out, "w")
 	WriteArray(ptr, dscfg)
@@ -1130,23 +1131,23 @@ status = RunProgram("cmd /c robocopy "+root.daysim+"Inputs\\ "+indir.daysim+" /S
 	dscfg[185] = "PayToParkAtWorkplaceModelCoefficients="+indir.daysim+"\9_Coefficients\\PayToParkAtWorkplaceCoefficients_Chattanooga.F12"
 	dscfg[188] = "TransitPassOwnershipModelCoefficients="+indir.daysim+"\9_Coefficients\\TransitPassOwnershipCoefficients_Chattanooga.F12"
 	dscfg[191] = "AutoOwnershipModelCoefficients="+indir.daysim+"\9_Coefficients\\AutoOwnershipCoefficients_Chattanooga.F12"
-	dscfg[195] = "IndividualPersonDayPatternModelCoefficients="+indir.daysim+"\9_Coefficients\\IndividualPersonDayPatternCoefficients_Chattanooga.F12"
+	dscfg[195] = "IndividualPersonDayPatternModelCoefficients="+indir.daysim+"\9_Coefficients\\IndividualPersonDayPatternCoefficients_Chattanooga_wfh.F12"
 	dscfg[197] = "PersonExactNumberOfToursModelCoefficients="+indir.daysim+"\9_Coefficients\\PersonExactNumberOfToursCoefficients_Chattanooga.F12"
 	dscfg[201] = "WorkTourDestinationModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkTourDestinationCoefficients_Chattanooga.F12"
 	dscfg[203] = "OtherTourDestinationModelCoefficients="+indir.daysim+"\9_Coefficients\\OtherTourDestinationCoefficients_Chattanooga.F12"
 	dscfg[206] = "WorkBasedSubtourGenerationModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkBasedSubtourGenerationCoefficients_Chattanooga.F12"
-	dscfg[209] = "WorkTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkTourModeCoefficients_Chattanooga.F12"
-	dscfg[211] = "SchoolTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\SchoolTourModeCoefficients_Chattanooga.F12"
-	dscfg[213] = "WorkBasedSubtourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkBasedSubtourModeCoefficients_Chattanooga.F12"
+	dscfg[209] = "WorkTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkTourModeCoefficients_Chattanooga_tnc.F12"
+	dscfg[211] = "SchoolTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\SchoolTourModeCoefficients_Chattanooga_tnc.F12"
+	dscfg[213] = "WorkBasedSubtourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkBasedSubtourModeCoefficients_Chattanooga_tnc.F12"
 	dscfg[215] = "EscortTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\EscortTourModeCoefficients_Chattanooga.F12"
-	dscfg[217] = "OtherHomeBasedTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\OtherHomeBasedTourModeCoefficients_Chattanooga.F12"
+	dscfg[217] = "OtherHomeBasedTourModeModelCoefficients="+indir.daysim+"\9_Coefficients\\OtherHomeBasedTourModeCoefficients_Chattanooga_tnc.F12"
 	dscfg[220] = "WorkTourTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkTourTimeCoefficients_Chattanooga.F12"
 	dscfg[222] = "SchoolTourTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\SchoolTourTimeCoefficients_Chattanooga.F12"
 	dscfg[224] = "OtherHomeBasedTourTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\OtherHomeBasedTourTimeCoefficients_Chattanooga.F12"
 	dscfg[226] = "WorkBasedSubtourTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\WorkbasedSubtourTimeCoefficients_Chattanooga.F12"
 	dscfg[229] = "IntermediateStopGenerationModelCoefficients="+indir.daysim+"\9_Coefficients\\IntermediateStopGenerationCoefficients_Chattanooga.F12"
 	dscfg[232] = "IntermediateStopLocationModelCoefficients="+indir.daysim+"\9_Coefficients\\IntermediateStopLocationCoefficients_Chattanooga.F12"
-	dscfg[235] = "TripModeModelCoefficients="+indir.daysim+"\9_Coefficients\\TripModeCoefficients_Chattanooga.F12"
+	dscfg[235] = "TripModeModelCoefficients="+indir.daysim+"\9_Coefficients\\TripModeCoefficients_Chattanooga_tnc.F12"
 	dscfg[238] = "TripTimeModelCoefficients="+indir.daysim+"\9_Coefficients\\TripTimeCoefficients_Chattanooga.F12"
 	ptr = OpenFile(daysim.sp_out, "w")
 	WriteArray(ptr, dscfg)
@@ -1402,6 +1403,7 @@ SetDataVectors(eipassvw + "|", {{"ID",tazvec.ID}, {"EI_Gen",EI_Gen}, {"EI_Pivot"
 	 Opts.Input.[V2 Holding Sets] = {{eipassfile, "eipass", "Externals", "Select * where ID > 1000"}}
      Opts.Field.[Vector 1] = {eipassvw+".EI_O"}
      Opts.Field.[Vector 2] = {eipassvw+".EI_D"}
+     Opts.Global.[Output Type] = "FILL"
 	 ok = RunMacro("TCB Run Procedure", "Balance", Opts, null)
 	 if !ok then Return( RunMacro("TCB Closing", ok, True ) )
 
@@ -1512,6 +1514,7 @@ SetDataVectors(trkpavw + "|", {{"ID",tazvec.ID}, {"SU_Trks",SUT_Gen}, {"MU_Trks"
 	 Opts.Input.[V2 Holding Sets] = {{trkpafile, "trkpa", "Externals", "Select * where ID > 1000"}, {trkpafile, "trkpa", "Externals"}, {trkpafile, "trkpa", "Externals"}, {trkpafile, "trkpa", "Externals"}}
      Opts.Field.[Vector 1] = {trkpavw+".II_SUT_O", trkpavw+".II_MUT_O", trkpavw+".EI_SUT_P", trkpavw+".EI_MUT_P"}
      Opts.Field.[Vector 2] = {trkpavw+".II_SUT_D", trkpavw+".II_MUT_D", trkpavw+".EI_SUT_A", trkpavw+".EI_MUT_A"}
+     Opts.Global.[Output Type] = "FILL"
      if !RunMacro("TCB Run Procedure", 1, "Balance", Opts) then Return(RunMacro("TCB Closing", 0))
 
 
@@ -1542,10 +1545,10 @@ SetDataVectors(trkpavw + "|", {{"ID",tazvec.ID}, {"SU_Trks",SUT_Gen}, {"MU_Trks"
      k_EM = exp(-1.5518*tazvec.GenAccess)    //exp(trkparam.EMGA.value*GenAccess)
 
      // Exponentiated utilities (less any straight impedance component) by adding OD elements to TAZ component
-     mckIS := k_IS * exp(-0.8625*mcriv + -1.4781*mciz)	//k_IS * exp(trkparam.ISOR.value*mcriv + trkparam.ISIZ.value*mciz)
-     mckIM := k_IM * exp(3.1263*mcriv  + -5.3620*mciz)	//k_IM * exp(trkparam.IMOR.value*mcriv + trkparam.IMIZ.value*mciz)
-     mckES := k_ES * exp(-0.8282*mcriv + -1.0657*mciz)	//k_ES * exp(trkparam.ESOR.value*mcriv + trkparam.ESIZ.value*mciz)
-     mckEM := k_EM * exp(2.2265*mcriv  + 4.7372*mciz)	//k_EM * exp(trkparam.EMOR.value*mcriv + trkparam.EMIZ.value*mciz)
+     mckIS := k_IS * exp(-0.8625*nz(mcriv) + -1.4781*mciz)	//k_IS * exp(trkparam.ISOR.value*mcriv + trkparam.ISIZ.value*mciz)
+     mckIM := k_IM * exp(3.1263*nz(mcriv)  + -5.3620*mciz)	//k_IM * exp(trkparam.IMOR.value*mcriv + trkparam.IMIZ.value*mciz)
+     mckES := k_ES * exp(-0.8282*nz(mcriv) + -1.0657*mciz)	//k_ES * exp(trkparam.ESOR.value*mcriv + trkparam.ESIZ.value*mciz)
+     mckEM := k_EM * exp(2.2265*nz(mcriv)  + 4.7372*mciz)	//k_EM * exp(trkparam.EMOR.value*mcriv + trkparam.EMIZ.value*mciz)
 
 	//Run Gravity Model to get PAs
 	RunMacro("TCB Init")
@@ -1697,6 +1700,7 @@ SetDataVectors(cvpavw + "|", {{"ID",tazvec.ID},
 	 Opts.Global.[Holding Method] = {"Weighted Sum"}
 	 Opts.Global.[Percent Weight] = {50}
 	 Opts.Global.[Store Type] = "Real"
+   Opts.Global.[Output Type] = "FILL"
      if !RunMacro("TCB Run Procedure", 1, "Balance", Opts) then Return(RunMacro("TCB Closing", 0))
 
 // ----- CV TRIP DISTRIBUTION ------
@@ -1718,7 +1722,7 @@ SetDataVectors(cvpavw + "|", {{"ID",tazvec.ID},
      k_CV = exp(-0.4923*tazvec.GenAccess)
 
      // Exponentiated utilities (less any straight impedance component) by adding OD elements to TAZ component
-     mckCV := k_CV * exp(-0.8625*mcriv + -1.4781*mciz)
+     mckCV := k_CV * exp(-0.8625*nz(mcriv) + -1.4781*mciz)
 
 	//Run Gravity Model to get PAs
 	RunMacro("TCB Init")
