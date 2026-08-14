@@ -140,24 +140,24 @@ def write_f12(model_name, end_to_beta,f12_files, coefficient_input_dir, coeffici
 def load_beta_lookup(mapping_df, f12_files, coefficient_files_input_dir):
     """Build beta lookup from mapping dataframe and F12 files."""
     beta_lookup = {}
-    for f12_model in mapping_df['f12_model'].unique():
-        if f12_model not in f12_files:
+    for model in mapping_df['model'].unique():
+        if model not in f12_files:
             print
             continue
-        path = os.path.join(coefficient_files_input_dir , f12_files[f12_model])
+        path = os.path.join(coefficient_files_input_dir , f12_files[model])
         beta_map = {
                 r['end']: r['beta']
                 for r in _parse_f12_lines(path)
                 if r['is_data']
             }
-        for _, row in mapping_df[mapping_df['f12_model'] == f12_model].iterrows():
+        for _, row in mapping_df[mapping_df['model'] == model].iterrows():
             if pd.isna(row['end']):
                 continue
             e = int(row['end'])
             vm = row.get('variable_mean',np.nan)
-            #beta_lookup[(f12_model, str(row['group']), str(row['alternative']))] = { 
+            #beta_lookup[(model, str(row['group']), str(row['alternative']))] = { 
             grp_key = '' if pd.isna(row['group']) else str(row['group'])
-            beta_lookup[(f12_model, grp_key, str(row['alternative']))] = { 
+            beta_lookup[(model, grp_key, str(row['alternative']))] = { 
              'end': e, 
              'beta': beta_map.get(e, np.nan), 
              'variable_mean': 1.0 if pd.isna(vm) else float(vm)}
@@ -181,14 +181,14 @@ def _get_raw(obj,method,method_arg):
     else:
         return getattr(obj, method)()
 
-def _make_row(target, f12_model, group, alt, csv_grp,csv_alt,mc_val,sc_val,m_tot,s_tot, beta_lookup,damping_factor,threshold):
+def _make_row(target, model, group, alt, csv_grp,csv_alt,mc_val,sc_val,m_tot,s_tot, beta_lookup,damping_factor,threshold):
     """Computes new beta."""
     m_pct = mc_val/ m_tot * 100 if m_tot > 0 else 0.0
     s_pct = sc_val/ s_tot * 100 if s_tot > 0 else 0.0
     diff = round(m_pct - s_pct, 2) # switched 7.16
     within = abs(diff) <= threshold
-    print(repr((f12_model, str(csv_grp), str(csv_alt))))
-    entry = beta_lookup.get((f12_model, str(csv_grp), str(csv_alt))) if csv_grp is not None else None
+    print(repr((model, str(csv_grp), str(csv_alt))))
+    entry = beta_lookup.get((model, str(csv_grp), str(csv_alt))) if csv_grp is not None else None
     end = entry['end'] if entry is not None else None
     current_beta = entry['beta'] if entry is not None else np.nan
     vm = entry['variable_mean'] if entry is not None else np.nan
@@ -210,10 +210,10 @@ def _make_row(target, f12_model, group, alt, csv_grp,csv_alt,mc_val,sc_val,m_tot
         'new_beta': new_beta,
         'end': end,
         'variable_mean': vm,
-        'f12model': f12_model,
+        'model': model,
     }
 
-def run_1d(target,f12_model,m_raw,s_raw,beta_lookup,damping_factor,threshold,csv_key_fn=None):
+def run_1d(target,model,m_raw,s_raw,beta_lookup,damping_factor,threshold,csv_key_fn=None):
     """Run D1 calibration for a single target/model."""
     mc, s = _ser(m_raw), _ser(s_raw)
     sc = s.reindex(mc.index, fill_value=0)
@@ -224,14 +224,14 @@ def run_1d(target,f12_model,m_raw,s_raw,beta_lookup,damping_factor,threshold,csv
         key = csv_key_fn(alt) if csv_key_fn else ('', alt)
         grp, a = key if key is not None else (None, None)
         print(repr(('run_id', alt, grp, a)))
-        row = _make_row(target, f12_model, '',alt, grp, a, 
+        row = _make_row(target, model, '',alt, grp, a, 
                         float(mc[alt]), float(sc[alt]), m_tot, s_tot, 
                         beta_lookup, damping_factor, threshold)
         rows.append(row)
 
     return rows
 
-def run_2d(target,f12_model,m_raw,s_raw,beta_lookup,damping_factor,threshold):
+def run_2d(target,model,m_raw,s_raw,beta_lookup,damping_factor,threshold):
     """Run D2 calibration for a single target/model."""
     rows = []
     for grp in m_raw.index:
@@ -239,7 +239,7 @@ def run_2d(target,f12_model,m_raw,s_raw,beta_lookup,damping_factor,threshold):
         sc = s_raw.loc[grp].reindex(mc.index, fill_value=0) if grp in s_raw.index else pd.Series(0, index=mc.index)
         m_tot = mc.sum()
         s_tot = sc.sum()
-        rows += [_make_row(target, f12_model, grp, alt, str(grp), str(alt),
+        rows += [_make_row(target, model, grp, alt, str(grp), str(alt),
                           float(mc[alt]), float(sc[alt]), m_tot, s_tot, 
                           beta_lookup, damping_factor, threshold) 
                 for alt in mc.index]
@@ -266,7 +266,7 @@ def _make_csv_key_fn(key_mode,method_arg):
 # Log
 def save_log(comp_df, log_csv):
 
-    cols = ['f12_model', 'end','group','alternative', 'target','calibrate','within_threshold','survey_pct', 'model_pct', 'diff',  'current_beta', 'adjustment', 'new_beta']
+    cols = ['model', 'end','group','alternative', 'target','calibrate','within_threshold','survey_pct', 'model_pct', 'diff',  'current_beta', 'adjustment', 'new_beta']
 
     this_run = comp_df[[c for c in cols if c in comp_df.columns ]].copy()
 
