@@ -519,6 +519,13 @@ class DaysimSummary:
         pdaydata["pbstops"] = pdaydata["pbstops"]+pdaydata["mestops"]   
         pdaydata["sostops"] = pdaydata["sostops"]+pdaydata["restops"] 
 
+        pdaydata["mainttours"] = pdaydata["estours"]+pdaydata["pbtours"]+pdaydata["shtours"]
+        pdaydata["maintstops"] = pdaydata["esstops"]+pdaydata["pbstops"]+pdaydata["shstops"]
+        pdaydata["mainttopt"] = np.where(pdaydata["mainttours"]>3, 3, pdaydata["mainttours"])
+        pdaydata["disctours"] = pdaydata["mltours"]+pdaydata["sotours"]
+        pdaydata["discstops"] = pdaydata["mlstops"]+pdaydata["sostops"]
+        pdaydata["disctopt"] = np.where(pdaydata["disctours"]>3, 3, pdaydata["disctours"])
+
         pdaydata["tottours"] = (pdaydata["wktours"]
                                 +pdaydata["sctours"]
                                 +pdaydata["estours"]
@@ -871,11 +878,10 @@ class DaysimSummary:
         return summary
 
     def summary_wrkschloc_wfh_by_wrkrtyp(self):
-        """Weighted count of persons working from home by worker type."""
+        """Percent of workers that work from home by worker type."""
         perdata = self.perdata_wrkschloc
-        d = perdata[(perdata["employed"] == 1) & (perdata["wfh"] == 1)].copy()
-        summary = d.groupby(["wrkrtype"])["psexpfac"].sum().to_frame()
-        return summary
+        d = perdata[(perdata["employed"] == 1)].copy()
+        return d.groupby(["wrkrtyp", "wfh"])["psexpfac"].sum().unstack(fill_value=0)
 
     # -- School Location ------------------------------------------------------
     def summary_wrkschloc_sch_dist(self):
@@ -894,7 +900,7 @@ class DaysimSummary:
     def summary_day_pattern_purpose_rate(self, purpose):
         """Weighted count of persons making 0 vs 1+ tours for a given purpose.
         Calibrates the purpose participation constant.
-        purpose: 'work','school','escort','pb','shop','meal','socrec'
+        purpose: 'work','school','escort','pb','shop','meal','socrec' and aggregated purposes maint and disc
         """
         col_map = {
             'work':   'wktours',
@@ -904,6 +910,8 @@ class DaysimSummary:
             'shop':   'shtours',
             'meal':   'mltours',
             'socrec': 'sotours',
+            'maint': 'mainttours',
+            'disc': 'disctours',
         }
         pdaydata = self.pdaydata_day_pattern_pday
         d = pdaydata.copy()
@@ -916,7 +924,7 @@ class DaysimSummary:
     def summary_day_pattern_tour_count(self, purpose):
         """Weighted count of persons by tour count (0/1/2/3+) for a given purpose.
         Rows 2 and 3 calibrate the 2-tour and 3+-tour constants.
-        purpose: 'work','school','escort','pb','shop','meal','socrec'
+        purpose: 'work','school','escort','pb','shop','meal','socrec' and aggregated purposes maint and disc
         """
         col_map = {
             'work':   'wktopt',
@@ -926,6 +934,8 @@ class DaysimSummary:
             'shop':   'shtopt',
             'meal':   'mltopt',
             'socrec': 'sotopt',
+            'maint': 'mainttopt',
+            'disc': 'disctopt'
         }
         pdaydata = self.pdaydata_day_pattern_pday.copy()
         col  = col_map[purpose]
@@ -1084,7 +1094,7 @@ class DaysimSummary:
     # -- Day pattern: participation additional ------------------------------------------------
     def summary_ipdp_participation(self, target):
         """Weighted count of persons by person type with or without stop or any activity (stop or tour) for a given purpose.
-        target: 'work','school','escort','pb','shop','meal','socrec'
+        target: 'work','school','escort','pb','shop','meal','socrec' and aggregated purposes maint and disc
         """
 
         _tour_col = {
@@ -1094,7 +1104,9 @@ class DaysimSummary:
             'pb': 'pbtours',
             'shop': 'shtours',
             'meal': 'mltours',  
-            'socrec': 'sotours'
+            'socrec': 'sotours',
+            'maint': 'mainttours',
+            'disc': 'disctours' 
         }
 
         _stops_col = {
@@ -1104,7 +1116,9 @@ class DaysimSummary:
             'pb': 'pbstops',
             'shop': 'shstops',
             'meal': 'mlstops',
-            'socrec': 'sostops'
+            'socrec': 'sostops',
+            'maint': 'maintstops',
+            'disc': 'discstops'
             }
 
         _pptyp_map = {
@@ -1130,6 +1144,7 @@ class DaysimSummary:
             raise ValueError(f"Unknown suffix: {suffix!r}")
         
         return d.groupby("has_activity")["psexpfac"].sum().to_frame()
+
 
     # -- Paid work parking ------------------------------------------------------
     def summary_paid_parking(self):

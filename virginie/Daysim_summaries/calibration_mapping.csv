@@ -1,4 +1,4 @@
-f12_model,group_name,group,alt_name,alternative,end, variable_mean ,notes,unused end,bins backup
+model,group_name,group,alt_name,alternative,end, variable_mean ,notes,unused end,bins backup
 WorkLocation,,,distance to work,0-3.5 mi,6,0.18,,,
 WorkLocation,,,distance to work,3.5-10 mi,7,0.33,,,
 WorkLocation,,,distance to work,10+ mi,8,0.5,median distance in top bin in survey (pool) is 15,,
@@ -14,7 +14,7 @@ SchoolLocation,person type,Stu16,distance to school,1,13,0.32,median distance fr
 SchoolLocation,person type,Stu16,distance to school,0-1 mi,,,(not part of the model),,
 SchoolLocation,person type,Stu16,distance to school,1-5 mi,,,(not part of the model),,
 SchoolLocation,person type,Stu16,distance to school,5+ mi,,,(not part of the model) median distance in top bin in survey (pool) is 8.3,,
-SchoolLocation,person type,UniStu,distance to school,1,,,not enough data to calibrate,,
+SchoolLocation,person type,UniStu,distance to school,distance to school,distance to school,,not enough data to calibrate,,
 SchoolLocation,,,homeschooled (sfh),1,,,,,
 PayToParkAtWorkplace,,,paid to park at work (ppaidprk),1,1,,"not calibrated last time, survey % who pay is based on trip data",,
 TransitPassOwnership,,,,,,,not enough data to calibrate,,
