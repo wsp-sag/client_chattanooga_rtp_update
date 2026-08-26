@@ -57,10 +57,10 @@ Class "CHCRPA.GUIController"
 		info.prmseam = 100
 		info.prmsepm = 100
 		info.prmseop = 100
-		info.baseyear = 2019
-		info.modyear = 2019
+		info.baseyear = 2024
+		info.modyear = 2024
 		info.cores = 16
-		info.pyear = 2019
+		info.pyear = 2024
 		info.domoves = 1
 		mvw.scnfile = null
 		dt = CreateDateTime()
@@ -532,7 +532,7 @@ text "Scenario Year" 3, 2.5
 	text "todfile"   2.5, 24.5, 48 framed variable: Substitute(todfactor, pscendir, "..", null)
 
    Button "post" 5, 30, 45, 3  Prompt: "Run Post Processor" do on escape goto endhere
-   	if pyear < 2019 then pyear = 2019   // update 2014 to 2019 --YS
+   	if pyear < 2024 then pyear = 2024
 		if pyear > 2050 then pyear = 2050
 		if pyear < 2020 then info.domoves = 0
 		if plinefile = null then throw("No Network Selected!")
@@ -1030,7 +1030,7 @@ TotTrk = CreateExpression(mvw.line, "TotTrk" , "Tot_SUT + Tot_MUT", null)
 SetRecordsValues(null, {{"AB_TRKFlow","BA_TRKFlow","Tot_TRKFlow"}, null}, "Formula", {"ABTrk","BATrk","TotTrk"},null)
 
 //Reporting
-if info.modyear = 2019 then do // update 2014 to 2019 --YS
+if info.modyear = 2024 then do
 	// {calSUT.type , calSUT.vol , calSUT.cnt} = {"SUT", "Tot_SUT", "AADT_SUT"}
 	// RunMacro("CalRep", 0, calSUT)
 
