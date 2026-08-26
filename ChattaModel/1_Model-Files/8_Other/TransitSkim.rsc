@@ -369,7 +369,7 @@ Macro "BuildDriveConnectors"
     // STEP 3.2: TCSPMAT - Centroids to Parking Nodes Skim
         Opts = null
         Opts.Input.Network = innet
-        Opts.Input.[Origin Set] = {db_nodelyr, nlayer, "Selection", "Select * where Centroid=1 & ID<1000"} // exclude external TAZ centroids
+        Opts.Input.[Origin Set] = {db_nodelyr, nlayer, "Selection", "Select * where Centroid=1 & ID>1000"} // exclude external TAZ centroids
         Opts.Input.[Destination Set] = {db_nodelyr, nlayer, "PNR_NODE", "Select * where [PNR_NODE]=1"}
         Opts.Input.[Via Set] = {db_nodelyr, nlayer}
         Opts.Field.Minimize = "TimeC" + Periods[iper] + "_*"

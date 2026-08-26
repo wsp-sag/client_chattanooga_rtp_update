@@ -1355,7 +1355,7 @@ jnvw = JoinViews(mvw.taz + eivw, mvw.taz+".ID", eivw+".ID1", null)
 {EI_CNT, BASE_A, SEED_A} = GetDataVectors(jnvw+"|",{"EI_PASS", "BASE_ATR", "SEED_ATR"},{{"Sort Order",{{"ID","Ascending"}}},{"Missing as Zero","True"}})
 
 //EI_Gen = 22.8865*Pow(tazvec.TotEmp,0.5) + 0.2752*tazvec.HH + 0.34456*tazvec.FDL
-EI_Gen = if tazvec.ID < 1000 then max(337.826 - 28.8085*tazvec.GenAccess + 3.3727*Pow(tazvec.TOTEMP,0.5) + 0.6764*tazvec.FDL, 0) else 0
+EI_Gen = if tazvec.ID > 1000 then max(337.826 - 28.8085*tazvec.GenAccess + 3.3727*Pow(tazvec.TOTEMP,0.5) + 0.6764*tazvec.FDL, 0) else 0
 SCEN_A = EI_Gen
 
 if info.scenname = "Base" and info.modyear = 2019 then do // update 2014 to 2019 --YS  3/15/2022
