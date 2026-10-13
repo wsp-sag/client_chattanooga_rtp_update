@@ -1400,7 +1400,7 @@ SetDataVectors(eipassvw + "|", {{"ID",tazvec.ID}, {"EI_Gen",EI_Gen}, {"EI_Pivot"
      RunMacro("TCB Init")
      Opts = null
      Opts.Input.[Data View Set] = {eipassfile, eipassvw}
-	 Opts.Input.[V2 Holding Sets] = {{eipassfile, "eipass", "Externals", "Select * where ID > 1000"}}
+	 Opts.Input.[V2 Holding Sets] = {{eipassfile, "eipass", "Externals", "Select * where ID < 1000"}}
      Opts.Field.[Vector 1] = {eipassvw+".EI_O"}
      Opts.Field.[Vector 2] = {eipassvw+".EI_D"}
      Opts.Global.[Output Type] = "FILL"
@@ -1511,7 +1511,7 @@ SetDataVectors(trkpavw + "|", {{"ID",tazvec.ID}, {"SU_Trks",SUT_Gen}, {"MU_Trks"
      RunMacro("TCB Init")
      Opts = null
      Opts.Input.[Data View Set] = {trkpafile, trkpavw}
-	 Opts.Input.[V2 Holding Sets] = {{trkpafile, "trkpa", "Externals", "Select * where ID > 1000"}, {trkpafile, "trkpa", "Externals"}, {trkpafile, "trkpa", "Externals"}, {trkpafile, "trkpa", "Externals"}}
+	 Opts.Input.[V2 Holding Sets] = {{trkpafile, "trkpa", "Externals", "Select * where ID < 1000"}, {trkpafile, "trkpa", "Externals"}, {trkpafile, "trkpa", "Externals"}, {trkpafile, "trkpa", "Externals"}}
      Opts.Field.[Vector 1] = {trkpavw+".II_SUT_O", trkpavw+".II_MUT_O", trkpavw+".EI_SUT_P", trkpavw+".EI_MUT_P"}
      Opts.Field.[Vector 2] = {trkpavw+".II_SUT_D", trkpavw+".II_MUT_D", trkpavw+".EI_SUT_A", trkpavw+".EI_MUT_A"}
      Opts.Global.[Output Type] = "FILL"
@@ -1693,8 +1693,8 @@ SetDataVectors(cvpavw + "|", {{"ID",tazvec.ID},
      RunMacro("TCB Init")
      Opts = null
      Opts.Input.[Data View Set] = {cvgenfile, cvpavw}
-	 Opts.Input.[V1 Holding Sets] = {{cvgenfile, "cvpa", "Externals", "Select * where ID > 1000"}}
-	 Opts.Input.[V2 Holding Sets] = {{cvgenfile, "cvpa", "Externals", "Select * where ID > 1000"}}
+	 Opts.Input.[V1 Holding Sets] = {{cvgenfile, "cvpa", "Externals", "Select * where ID < 1000"}}
+	 Opts.Input.[V2 Holding Sets] = {{cvgenfile, "cvpa", "Externals", "Select * where ID < 1000"}}
      Opts.Field.[Vector 1] = {cvpavw+".CV_II_O"}
      Opts.Field.[Vector 2] = {cvpavw+".CV_II_D"}
 	 Opts.Global.[Holding Method] = {"Weighted Sum"}
