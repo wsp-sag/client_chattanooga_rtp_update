@@ -1,0 +1,263 @@
+
+    <target> 
+  <!-- define conditions for 24 Meta level industry employment controls --> 
+   <marginals> 
+    <id>10</id> 
+    <description>Number of workers in industry</description> 
+    <geographyType>meta</geographyType> 
+    <controlType>count</controlType> 
+    <table>newPersonTable</table> 
+    <enablePumas>all</enablePumas>
+    <constraint id="1"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS11</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>11</value> 
+   </wave>
+    </constraint> 
+    <constraint id="2"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS21</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>21</value> 
+   </wave>
+    </constraint> 
+    <constraint id="3"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS22</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>22</value> 
+   </wave>
+    </constraint> 
+    <constraint id="4"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS23</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>23</value> 
+   </wave>
+    </constraint> 
+    <constraint id="5"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS31</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>31</value> 
+   </wave>
+    </constraint> 
+    <constraint id="6"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS32</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>32</value> 
+   </wave>
+    </constraint> 
+    <constraint id="7"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS33</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>33</value> 
+   </wave>
+    </constraint> 
+    <constraint id="8"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS42</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>42</value> 
+   </wave>
+    </constraint> 
+    <constraint id="9"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS44</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>44</value> 
+   </wave>
+    </constraint> 
+    <constraint id="10"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS45</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>45</value> 
+   </wave>
+    </constraint> 
+    <constraint id="11"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS48</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>48</value> 
+   </wave>
+    </constraint> 
+    <constraint id="12"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS49</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>49</value> 
+   </wave>
+    </constraint> 
+    <constraint id="13"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS51</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>51</value> 
+   </wave>
+    </constraint> 
+    <constraint id="14"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS52</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>52</value> 
+   </wave>
+    </constraint> 
+    <constraint id="15"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS53</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>53</value> 
+   </wave>
+    </constraint> 
+    <constraint id="16"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS54</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>54</value> 
+   </wave>
+    </constraint> 
+    <constraint id="17"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS55</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>55</value> 
+   </wave>
+    </constraint> 
+    <constraint id="18"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS56</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>56</value> 
+   </wave>
+    </constraint> 
+    <constraint id="19"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS61</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>61</value> 
+   </wave>
+    </constraint> 
+    <constraint id="20"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS62</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>62</value> 
+   </wave>
+    </constraint> 
+    <constraint id="21"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS71</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>71</value> 
+   </wave>
+    </constraint> 
+    <constraint id="22"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS72</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>72</value> 
+   </wave>
+    </constraint> 
+    <constraint id="23"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS81</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>81</value> 
+   </wave>
+    </constraint> 
+    <constraint id="24"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS92</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>92</value>
+     </wave> 
+    </constraint> 
+    <constraint id="25"> 
+     <importance>100</importance> 
+     <field>indus_code</field> 
+     <controlField>SNAICS99</controlField> 
+      <wave id="all">
+     <type>equality</type> 
+     <value>99</value> 
+   </wave>
+    </constraint> 
+   </marginals> 
+   
+    </target> 
+ 
+      <target> 
+ 
+         <!-- define conditions for 1 Meta level Other university students controls --> 
+         <marginals> 
+             <id>11</id> 
+          <description>Number of Students Enrolled in Other Universities</description> 
+             <geographyType>meta</geographyType> 
+             <controlType>count</controlType> 
+             <table>newPersonTable</table> 
+             <enablePumas>all</enablePumas>
+             <constraint id="1"> 
+              <importance>1000000</importance> 
+              <controlField>othunivenr</controlField> 
+              <field>othuniv</field> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>1</value>
+              </wave> 
+       </constraint> 
+         </marginals> 
+ 
+     </target> 
+ 
+ </targets> 

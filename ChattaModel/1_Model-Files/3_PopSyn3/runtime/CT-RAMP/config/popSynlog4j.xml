@@ -1,0 +1,501 @@
+<?xml version="1.0"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!--
+ A simple configuration file for the Log4j logging classes. Basic FILE and CONSOLE
+ Appenders are created. Also, debug logger output is sent to a separate DEBUG-FILE.
+ 
+-->
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+
+        </layout>        
+    </appender>
+
+    <appender name="DUMP-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event_dump.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+
+    <appender name="LB-101-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./outputs/logs/event-puma101-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-102-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma102-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-103-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma103-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-104-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma104-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-105-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma105-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-106-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma106-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-107-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma107-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-108-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma108-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-109-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma109-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-110-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma110-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-111-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma111-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-112-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma112-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-113-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma113-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-114-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma114-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-115-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma115-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-116-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma116-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-117-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma117-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-118-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma118-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-119-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma119-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-120-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma120-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-121-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma121-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-122-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma122-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-500-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma500-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LB-800-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-puma800-balancing.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="WORKS-AT-HOME-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-worksAtHome.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="SOA-LOCATION-CHOICE-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-soaLocationChoice.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="LOCATION-SAMPLE-CHOICE-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-locationSampleChoice.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="USUAL-WORK-LOCATION-CHOICE-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-usualWorkLocationChoice.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="USUAL-WORK-LOCATION-UTILITIES-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-usualWorkLocationUtilities.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="UNIV-EMP-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-univEmp.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="UNIV-LIVING-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-univLiving.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="UNIV-RES_LOCATION-FAMILY-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-univResLocFam.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="UNIV-RES_LOCATION-NON-FAMILY-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-univResLocNonFam.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+    <appender name="SE-MATCH-FILE" class="org.apache.log4j.FileAppender">
+        <param name="File" value="./dump/event-seMatch.log"/>
+        <param name="Append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+
+<!--
+-->
+
+<!-- The default logger will log info level to both CONSOLE and FILE -->
+
+<!--
+    <logger name="dump" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="DUMP-FILE"/>
+    </logger>
+
+    <logger name="lb_101" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-101-FILE"/>
+    </logger>
+
+    <logger name="lb_102" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-102-FILE"/>
+    </logger>
+
+    <logger name="lb_103" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-103-FILE"/>
+    </logger>
+
+    <logger name="lb_104" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-104-FILE"/>
+    </logger>
+
+    <logger name="lb_105" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-105-FILE"/>
+    </logger>
+
+    <logger name="lb_106" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-106-FILE"/>
+    </logger>
+
+    <logger name="lb_107" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-107-FILE"/>
+    </logger>
+
+    <logger name="lb_108" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-108-FILE"/>
+    </logger>
+
+    <logger name="lb_109" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-109-FILE"/>
+    </logger>
+
+    <logger name="lb_110" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-110-FILE"/>
+    </logger>
+
+    <logger name="lb_111" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-111-FILE"/>
+    </logger>
+
+    <logger name="lb_112" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-112-FILE"/>
+    </logger>
+
+    <logger name="lb_113" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-113-FILE"/>
+    </logger>
+
+    <logger name="lb_114" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-114-FILE"/>
+    </logger>
+
+    <logger name="lb_115" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-115-FILE"/>
+    </logger>
+
+    <logger name="lb_116" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-116-FILE"/>
+    </logger>
+
+    <logger name="lb_117" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-117-FILE"/>
+    </logger>
+
+    <logger name="lb_118" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-118-FILE"/>
+    </logger>
+
+    <logger name="lb_119" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-119-FILE"/>
+    </logger>
+
+    <logger name="lb_120" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-120-FILE"/>
+    </logger>
+
+    <logger name="lb_121" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-121-FILE"/>
+    </logger>
+
+    <logger name="lb_122" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-122-FILE"/>
+    </logger>
+
+    <logger name="lb_500" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-500-FILE"/>
+    </logger>
+
+    <logger name="lb_800" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LB-800-FILE"/>
+    </logger>
+
+    <logger name="worksAtHome" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="WORKS-AT-HOME-FILE"/>
+    </logger>
+
+    <logger name="locationSampleChoice" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="LOCATION-SAMPLE-CHOICE-FILE"/>
+    </logger>
+
+    <logger name="soaLocationChoice" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="SOA-LOCATION-CHOICE-FILE"/>
+    </logger>
+
+    <logger name="uwlChoiceLogger" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="USUAL-WORK-LOCATION-CHOICE-FILE"/>
+    </logger>
+
+    <logger name="uwlUtilitiesLogger" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="USUAL-WORK-LOCATION-UTILITIES-FILE"/>
+    </logger>
+
+    <logger name="universityEmployment" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="UNIV-EMP-FILE"/>
+    </logger>
+
+
+    <logger name="universityLivingArrangement" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="UNIV-LIVING-FILE"/>
+    </logger>
+
+
+    <logger name="universityResLocFamily" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="UNIV-RES_LOCATION-FAMILY-FILE"/>
+    </logger>
+
+
+    <logger name="universityResLocNonFamily" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="UNIV-RES_LOCATION-NON-FAMILY-FILE"/>
+    </logger>
+-->
+
+
+    <logger name="seMatch" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="SE-MATCH-FILE"/>
+    </logger>
+
+
+    <root>
+        <level value="info"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+        
+</log4j:configuration>

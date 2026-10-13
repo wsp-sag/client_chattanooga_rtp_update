@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+ 
+ <targets> 
+   <!-- Specify the PUMS data table names from which PUMA incidence tables are generated, as well as the field name for a unique identifier and the PUMS weight field name --> 
+   <pumsData> 
+     <idField>hhid</idField> 
+     <pumaFieldName>puma_2000</pumaFieldName> 
+     <metaFieldName>region</metaFieldName> 
+     <tazFieldName>TAZ</tazFieldName> 
+     <mazFieldName>MAZ</mazFieldName> 
+     <weightField>newWeight</weightField> 
+     <pumaCorrespondenceTable>pumaAcrossWaves</pumaCorrespondenceTable>
+     <wavesGlobalWeights>waveglobalWeights</wavesGlobalWeights>
+     <hhTable>newHouseholdTable</hhTable> 
+     <persTable>newPersonTable</persTable> 
+     <pumsHhTable>newHouseholdTable</pumsHhTable> 
+     <pumsHhIdField>hhid</pumsHhIdField> 
+     <pumsPersTable>newPersonTable</pumsPersTable> 
+     <tazPromotionField>np</tazPromotionField> 
+     <tazPromotionFactor>2</tazPromotionFactor> 
+     <maxExpansionFactor>100</maxExpansionFactor> 
+     <synpopOutputHhTableName>synpop_hh</synpopOutputHhTableName> 
+     <synpopOutputPersTableName>synpop_person</synpopOutputPersTableName> 
+     <outputHhAttributes>serialno, np, hincp, bld, nwrkrs_esr, type, familytype, num_studs</outputHhAttributes> 
+     <outputPersAttributes>sporder, agep, sex, wkhp, esr, schg, employed, schl, indus_code, majuniv, majdorm, othuniv, othdorm, campustaz, campEmpLiv</outputPersAttributes> 
+   </pumsData> 
+ 
+   <!-- Specify the table name and name of id field for the MAZ control totals table --> 
+   <mazControlsTable> 
+     <mazTable id="1"> 
+       <table_name>mazPopsynControls</table_name> 
+       <id_field_name>MAZ</id_field_name> 
+       <aggregation_level>MAZ</aggregation_level> 
+     </mazTable> 
+   </mazControlsTable> 
+ 
+   <!-- Specify the table name, id field name, and aggregation level for each table of META control totals --> 
+   <metaControlsTables> 
+     <metaTable id="1"> 
+       <table_name>regionPopsynControls</table_name> 
+       <id_field_name>region</id_field_name> 
+       <aggregation_level>puma_2000</aggregation_level> 
+     </metaTable> 
+   </metaControlsTables> 
+ 
+   <target> 
+     <!-- Total households + GQ University in each MAZ Control#0 --> 
+     <marginals> 
+       <id>0</id> 
+       <description>MAZ Level Control: Total Number of Households + GQ</description> 
+       <totalHouseholdsControl>true</totalHouseholdsControl> 
+       <controlType>simple</controlType> 
+       <geographyType>MAZ</geographyType> 
+       <table>newHouseholdTable</table> 
+       <enablePumas>all</enablePumas>
+       <constraint id="1"> 
+         <importance>1.0E9</importance> 
+         <controlField>tot_hh_gq</controlField> 
+         <field>familyType</field> 
+         <wave id="all">
+           <type>interval</type> 
+           <lo_value>1</lo_value>   
+           <lo_type>closed</lo_type> 
+           <hi_value>3</hi_value> 
+           <hi_type>closed</hi_type> 
+         </wave>
+       </constraint> 
+     </marginals> 
+   </target> 
+ 
+     <target> 
+ 
+         <!-- define conditions for total households control for households --> 
+         <marginals> 
+             <id>1</id> 
+          <description>Number of Family and Non-Family Households Category</description> 
+             <controlType>simple</controlType> 
+             <geographyType>maz</geographyType> 
+             <table>newHouseholdTable</table> 
+             <enablePumas>all</enablePumas>
+             <constraint id="1"> 
+              <importance>1.0E7</importance> 
+              <controlField>tot_hh</controlField> 
+              <field>familyType</field> 
+              <wave id="all">
+                <type>interval</type> 
+                <lo_value>1</lo_value> 
+                <lo_type>closed</lo_type> 
+                <hi_value>2</hi_value> 
+                <hi_type>closed</hi_type> 
+              </wave>
+       </constraint> 
+         </marginals> 
+ 
+     </target> 
+ 
+     <target> 
+ 
+         <!-- define conditions for 1 MAZ level other students in dorms controls --> 
+         <!-- this control set should be positioned after the total households and family/non-family households controls, 
+              before the first set of other controls --> 
+         <marginals> 
+             <id>2</id> 
+          <description>Number of major university Dorm Households Category</description> 
+          <majorGroupQuartersIndicatorField>true</majorGroupQuartersIndicatorField> 
+             <geographyType>maz</geographyType> 
+             <controlType>count</controlType> 
+             <table>newPersonTable</table> 
+             <enablePumas>all</enablePumas>
+             <constraint id="1"> 
+             <importance>1.0E7</importance>              
+             <controlField>dorms</controlField> 
+             <field>majDorm</field> 
+             <wave id="all">
+               <type>equality</type> 
+               <value>1</value> 
+             </wave>
+       </constraint> 
+         </marginals> 
+ 
+     </target> 
+ 
+ 
+     <target> 
+         <marginals> 
+             <id>3</id> 
+          <description>Number of other university Dorm Households Category</description> 
+          <otherGroupQuartersIndicatorField>true</otherGroupQuartersIndicatorField> 
+             <geographyType>maz</geographyType> 
+             <controlType>count</controlType> 
+             <table>newPersonTable</table> 
+             <enablePumas>all</enablePumas>
+             <constraint id="1"> 
+             <importance>1.0E7</importance>              
+             <controlField>othdorms</controlField> 
+             <field>othDorm</field> 
+             <wave id="all">
+               <type>equality</type> 
+               <value>1</value> 
+             </wave>
+       </constraint> 
+         </marginals> 
+ 
+     </target> 
+ 
+   <target> 
+   <!-- define conditions for total population control --> 
+  <marginals> 
+   <id>4</id> 
+   <description>Residential Population</description> 
+     <controlType>count</controlType> 
+   <geographyType>maz</geographyType> 
+   <table>newPersonTable</table> 
+   <enablePumas>all</enablePumas>
+   <constraint id="1"> 
+    <importance>1.0E5</importance> 
+    <controlField>hhpop</controlField> 
+    <field>hhagep</field> 
+    <wave id="all">
+      <type>interval</type> 
+      <lo_value>0</lo_value> 
+      <lo_type>closed</lo_type> 
+      <hi_value>infinity</hi_value> 
+      <hi_type>open</hi_type> 
+    </wave>
+   </constraint> 
+  </marginals> 
+   </target> 
+ 
+   <target> 
+    <!-- define conditions for total number of workers --> 
+  <marginals> 
+   <id>5</id> 
+   <description>Number of workers</description> 
+     <controlType>count</controlType> 
+   <geographyType>maz</geographyType> 
+   <table>newPersonTable</table> 
+   <enablePumas>all</enablePumas>
+   <constraint id="1"> 
+    <importance>10000</importance> 
+    <field>employed</field> 
+    <controlField>workers</controlField> 
+     <wave id="all">
+      <type>equality</type> 
+      <value>1</value> 
+     </wave>
+   </constraint> 
+  </marginals> 
+   </target> 
+ 
+   <target> 
+    <!-- define conditions for population less than 18 --> 
+  <marginals> 
+   <id>6</id> 
+   <description>Number of children</description> 
+     <controlType>count</controlType> 
+   <geographyType>maz</geographyType> 
+   <table>newPersonTable</table> 
+   <enablePumas>all</enablePumas>
+   <constraint id="1"> 
+    <importance>10000</importance> 
+    <field>agep</field> 
+    <controlField>POP18</controlField> 
+     <wave id="all">
+      <type>interval</type> 
+      <lo_value>0</lo_value> 
+      <lo_type>closed</lo_type> 
+      <hi_value>18</hi_value> 
+      <hi_type>closed</hi_type> 
+     </wave>
+   </constraint> 
+  </marginals> 
+   </target> 
+ 
+ <target> 
+    <!-- define conditions for HH income--> 
+  <marginals> 
+   <id>7</id> 
+   <description>Total Household income</description> 
+     <controlType>simple</controlType> 
+   <geographyType>maz</geographyType> 
+   <table>newHouseholdTable</table> 
+   <enablePumas>all</enablePumas>
+   <constraint id="1"> 
+    <importance>1000</importance> 
+    <field>hincpScaled</field> 
+    <controlField>sumIncome</controlField> 
+     <wave id="all">
+      <type>exact</type> 
+      <value>1</value> 
+     </wave>
+   </constraint> 
+  </marginals> 
+   </target> 
+ 
+ 
+       <target> 
+ 
+         <!-- define conditions for campus level major university enrolled student controls for 1st campus--> 
+         <marginals> 
+             <id>8</id> 
+          <description>Number of students attending each campus, excluding dorms</description> 
+             <geographyType>maz</geographyType> 
+             <controlType>count</controlType> 
+             <table>newPersonTable</table> 
+             <enablePumas>all</enablePumas>
+             <constraint id="1"> 
+              <importance>10000</importance> 
+              <controlField>c123_tot</controlField> 
+              <field>majnondorm</field> 
+               <wave id="all">
+                <type>equality</type> 
+                <value>1</value> 
+               </wave>
+       </constraint> 
+         </marginals> 
+ 
+     </target> 
+ 
+ 
+    <target> 
+ 
+         <!-- define conditions for Major university student controls --> 
+         <marginals> 
+             <id>9</id> 
+          <description>Number of students in campus/employment/living arrangement</description> 
+          <groupQuartersControl>true</groupQuartersControl> 
+             <geographyType>maz</geographyType> 
+             <controlType>count</controlType> 
+             <table>newPersonTable</table> 
+             <enablePumas>all</enablePumas>
+             <constraint id="1"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e1_l1</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>11</value> 
+            </wave>
+       </constraint> 
+             <constraint id="2"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e2_l1</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>21</value> 
+            </wave>
+       </constraint> 
+             <constraint id="3"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e3_l1</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>31</value> 
+               </wave>
+       </constraint> 
+             <constraint id="4"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e1_l2</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>12</value> 
+            </wave>
+       </constraint> 
+             <constraint id="5"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e2_l2</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>22</value> 
+            </wave>
+       </constraint> 
+             <constraint id="6"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e3_l2</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>32</value> 
+            </wave>
+       </constraint> 
+             <constraint id="7"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e1_l3</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>13</value> 
+            </wave>
+       </constraint> 
+             <constraint id="8"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e2_l3</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>23</value> 
+            </wave>
+       </constraint> 
+             <constraint id="9"> 
+              <importance>1000</importance> 
+              <field>campEmpLivWoCamp</field> 
+              <controlField>c123_e3_l3</controlField> 
+               <wave id="all">
+              <type>equality</type> 
+              <value>33</value> 
+            </wave>
+       </constraint>  
+  </marginals> 
+    </target> 
+ 

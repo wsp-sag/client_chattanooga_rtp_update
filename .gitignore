@@ -22,3 +22,8 @@ report.xsl
 Log_*.txt
 
 **/2_Scenarios/*/Outputs
+
+## CT-RAMP Lib
+**/*/3_PopSyn3/data
+**/*/3_PopSyn3/intermediate
+**/*/3_PopSyn3/runtime/CT-RAMP/lib

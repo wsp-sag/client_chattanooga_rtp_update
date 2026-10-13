@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!--
+ A simple configuration file for the Log4j logging classes.  A ROLLING appender is created.  
+ This is a rolling file, where the file with the smallest number is the oldest logs.  The 
+ messages will also be logged to the console window.
+ -->
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+
+    <appender name="ROLLING" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="./dump/DCOMLog.log"/>
+        <param name="Append" value="true"/>
+        <param name="MaxFileSize" value="2000KB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss:SSS}, %p, %m%n"/>
+        </layout>        
+    </appender>
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- Configures the root/default logger -->
+<!-- The default logger will log all levels (debug and above) and above to both CONSOLE and FILE -->
+<!-- Logging level order is: debug -> info -> warn -> error -> fatal -->
+    <root>
+        <level value="info"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ROLLING"/>
+    </root>
+        
+</log4j:configuration>

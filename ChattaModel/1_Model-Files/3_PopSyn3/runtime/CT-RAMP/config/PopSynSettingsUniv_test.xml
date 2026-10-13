@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<targets> 
+  <database> 
+    <server>localhost</server> 
+    <type>MYSQL</type> 
+    <user>root</user> 
+    <password>Model_10</password> 
+    <dbName>C_D10PopSyn</dbName> 
+  </database> 
+
+  <!-- Specify the PUMS data table names from which PUMA incidence tables are generated, as well as the field name for a unique identifier and the PUMS weight field name --> 
+  <pumsData> 
+    <idField>hhid</idField> 
+    <pumaFieldName>PUMA_2000</pumaFieldName> 
+    <metaFieldName>REGION</metaFieldName> 
+    <tazFieldName>TAZ</tazFieldName> 
+    <mazFieldName>MAZ</mazFieldName> 
+    <weightField>newWeight</weightField> 
+    <hhTable>newHouseholdTable</hhTable> 
+    <persTable>newPersonTable</persTable> 
+    <pumsHhTable>newHouseholdTable</pumsHhTable> 
+    <pumsHhIdField>hhid</pumsHhIdField> 
+    <pumsPersTable>newPersonTable</pumsPersTable> 
+    <tazPromotionField>np</tazPromotionField> 
+    <tazPromotionFactor>2</tazPromotionFactor> 
+    <maxExpansionFactor>150</maxExpansionFactor> 
+    <synpopOutputHhTableName>synpop_hh</synpopOutputHhTableName> 
+    <synpopOutputPersTableName>synpop_person</synpopOutputPersTableName> 
+    <outputHhAttributes>serialno, np, hincp, bld, nwrkrs_esr, type, familytype, num_studs</outputHhAttributes> 
+    <outputPersAttributes>sporder, agep, sex, wkhp, esr, schg, employed, schl, indus_code, majuniv, majdorm, othuniv, othdorm, campustaz, campEmpLiv</outputPersAttributes> 
+  </pumsData> 
+
+  <!-- Specify the table name and name of id field for the MAZ control totals table --> 
+  <mazControlsTable> 
+    <mazTable id="1"> 
+      <table_name>control_totals_maz</table_name> 
+      <id_field_name>MAZ</id_field_name> 
+      <aggregation_level>MAZ</aggregation_level> 
+    </mazTable> 
+  </mazControlsTable> 
+
+  <!-- Specify the table name and name of id field for the table of TAZ control totals that are not fields in the MAZ control total table --> 
+  <tazControlsTable> 
+    <tazTable id="1"> 
+      <table_name>control_totals_taz</table_name> 
+      <id_field_name>TAZ</id_field_name> 
+      <aggregation_level>TAZ</aggregation_level> 
+    </tazTable> 
+  </tazControlsTable> 
+
+  <!-- Specify the table name, id field name, and aggregation level for each table of META control totals --> 
+  <metaControlsTables> 
+    <metaTable id="1"> 
+      <table_name>control_totals_meta</table_name> 
+      <id_field_name>REGION</id_field_name> 
+      <aggregation_level>PUMA_2000</aggregation_level> 
+    </metaTable> 
+  </metaControlsTables> 
+
+  <target> 
+    <!-- Total households + GQ University in each MAZ Control#0 --> 
+    <marginals> 
+      <id>0</id> 
+      <description>MAZ Level Control: Total Number of Households + GQ</description> 
+      <totalHouseholdsControl>true</totalHouseholdsControl> 
+      <controlType>simple</controlType> 
+      <geographyType>MAZ</geographyType> 
+      <table>newHouseholdTable</table> 
+      <constraint id="1"> 
+        <importance>1.0E9</importance> 
+        <controlField>tot_hh_gq</controlField> 
+        <field>familyType</field> 
+        <type>interval</type> 
+        <lo_value>1</lo_value>   
+        <lo_type>closed</lo_type> 
+        <hi_value>3</hi_value> 
+        <hi_type>closed</hi_type> 
+      </constraint> 
+    </marginals> 
+  </target> 
+
+    <target> 
+
+        <!-- define conditions for total households control for households --> 
+        <marginals> 
+            <id>1</id> 
+         <description>Number of Family and Non-Family Households Category</description> 
+            <controlType>simple</controlType> 
+            <geographyType>maz</geographyType> 
+            <table>newHouseholdTable</table> 
+            <constraint id="1"> 
+             <importance>1.0E7</importance> 
+             <controlField>tot_hh</controlField> 
+             <field>familyType</field> 
+             <type>interval</type> 
+             <lo_value>1</lo_value> 
+             <lo_type>closed</lo_type> 
+             <hi_value>2</hi_value> 
+             <hi_type>closed</hi_type> 
+      </constraint> 
+        </marginals> 
+
+    </target> 
+
+    <target> 
+
+        <!-- define conditions for 1 MAZ level other students in dorms controls --> 
+        <!-- this control set should be positioned after the total households and family/non-family households controls, 
+             before the first set of other controls --> 
+        <marginals> 
+            <id>2</id> 
+         <description>Number of major university Dorm Households Category</description> 
+         <majorGroupQuartersIndicatorField>true</majorGroupQuartersIndicatorField> 
+            <geographyType>maz</geographyType> 
+            <controlType>count</controlType> 
+            <table>newPersonTable</table> 
+            <constraint id="1"> 
+            <importance>1.0E7</importance>              
+   <controlField>dorms</controlField> 
+            <field>majDorm</field> 
+            <type>equality</type> 
+            <value>1</value> 
+      </constraint> 
+        </marginals> 
+
+    </target> 
+
+
+  
+  <target> 
+  <!-- define conditions for total population control --> 
+ <marginals> 
+  <id>3</id> 
+  <description>Residential Population</description> 
+    <controlType>count</controlType> 
+  <geographyType>maz</geographyType> 
+  <table>newPersonTable</table> 
+  <constraint id="1"> 
+   <importance>1.0E5</importance> 
+   <controlField>hhpop</controlField> 
+   <field>hhagep</field> 
+   <type>interval</type> 
+   <lo_value>0</lo_value> 
+   <lo_type>closed</lo_type> 
+   <hi_value>infinity</hi_value> 
+   <hi_type>open</hi_type> 
+  </constraint> 
+ </marginals> 
+  </target> 
+
+  <target> 
+   <!-- define conditions for total number of workers --> 
+ <marginals> 
+  <id>4</id> 
+  <description>Number of workers</description> 
+    <controlType>count</controlType> 
+  <geographyType>maz</geographyType> 
+  <table>newPersonTable</table> 
+  <constraint id="1"> 
+   <importance>10000</importance> 
+   <field>employed</field> 
+   <controlField>workers</controlField> 
+   <type>equality</type> 
+   <value>1</value> 
+  </constraint> 
+ </marginals> 
+  </target> 
+
+      <target> 
+
+        <!-- define conditions for campus level major university enrolled student controls for 1st campus--> 
+        <marginals> 
+            <id>5</id> 
+         <description>Number of students attending each campus, excluding dorms</description> 
+            <geographyType>maz</geographyType> 
+            <controlType>count</controlType> 
+            <table>newPersonTable</table> 
+            <constraint id="1"> 
+             <importance>10000</importance> 
+             <controlField>c123_tot</controlField> 
+             <field>majnondorm</field> 
+             <type>equality</type> 
+             <value>1</value> 
+      </constraint> 
+        </marginals> 
+
+    </target> 
+
+
+   <target> 
+
+        <!-- define conditions for Major university student controls --> 
+        <marginals> 
+            <id>6</id> 
+         <description>Number of students in campus/employment/living arrangement</description> 
+         <groupQuartersControl>true</groupQuartersControl> 
+            <geographyType>maz</geographyType> 
+            <controlType>count</controlType> 
+            <table>newPersonTable</table> 
+            <constraint id="1"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e1_l1</controlField> 
+             <type>equality</type> 
+             <value>11</value> 
+      </constraint> 
+            <constraint id="2"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e2_l1</controlField> 
+             <type>equality</type> 
+             <value>21</value> 
+      </constraint> 
+            <constraint id="3"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e3_l1</controlField> 
+             <type>equality</type> 
+             <value>31</value> 
+      </constraint> 
+            <constraint id="4"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e1_l2</controlField> 
+             <type>equality</type> 
+             <value>12</value> 
+      </constraint> 
+            <constraint id="5"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e2_l2</controlField> 
+             <type>equality</type> 
+             <value>22</value> 
+      </constraint> 
+            <constraint id="6"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e3_l2</controlField> 
+             <type>equality</type> 
+             <value>32</value> 
+      </constraint> 
+            <constraint id="7"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e1_l3</controlField> 
+             <type>equality</type> 
+             <value>13</value> 
+      </constraint> 
+            <constraint id="8"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e2_l3</controlField> 
+             <type>equality</type> 
+             <value>23</value> 
+      </constraint> 
+            <constraint id="9"> 
+             <importance>1000</importance> 
+             <field>campEmpLivWoCamp</field> 
+             <controlField>c123_e3_l3</controlField> 
+             <type>equality</type> 
+             <value>33</value> 
+      </constraint>  
+ </marginals> 
+   </target> 
+
+   <target> 
+ <!-- define conditions for 24 Meta level industry employment controls --> 
+  <marginals> 
+   <id>7</id> 
+   <description>Number of workers in industry</description> 
+   <geographyType>meta</geographyType> 
+   <controlType>count</controlType> 
+   <table>newPersonTable</table> 
+   <constraint id="1"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS11</controlField> 
+    <type>equality</type> 
+    <value>11</value> 
+   </constraint> 
+   <constraint id="2"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS21</controlField> 
+    <type>equality</type> 
+    <value>21</value> 
+   </constraint> 
+   <constraint id="3"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS22</controlField> 
+    <type>equality</type> 
+    <value>22</value> 
+   </constraint> 
+   <constraint id="4"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS23</controlField> 
+    <type>equality</type> 
+    <value>23</value> 
+   </constraint> 
+   <constraint id="5"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS31</controlField> 
+    <type>equality</type> 
+    <value>31</value> 
+   </constraint> 
+   <constraint id="6"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS32</controlField> 
+    <type>equality</type> 
+    <value>32</value> 
+   </constraint> 
+   <constraint id="7"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS33</controlField> 
+    <type>equality</type> 
+    <value>33</value> 
+   </constraint> 
+   <constraint id="8"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS42</controlField> 
+    <type>equality</type> 
+    <value>42</value> 
+   </constraint> 
+   <constraint id="9"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS44</controlField> 
+    <type>equality</type> 
+    <value>44</value> 
+   </constraint> 
+   <constraint id="10"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS45</controlField> 
+    <type>equality</type> 
+    <value>45</value> 
+   </constraint> 
+   <constraint id="11"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS48</controlField> 
+    <type>equality</type> 
+    <value>48</value> 
+   </constraint> 
+   <constraint id="12"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS49</controlField> 
+    <type>equality</type> 
+    <value>49</value> 
+   </constraint> 
+   <constraint id="13"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS51</controlField> 
+    <type>equality</type> 
+    <value>51</value> 
+   </constraint> 
+   <constraint id="14"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS52</controlField> 
+    <type>equality</type> 
+    <value>52</value> 
+   </constraint> 
+   <constraint id="15"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS53</controlField> 
+    <type>equality</type> 
+    <value>53</value> 
+   </constraint> 
+   <constraint id="16"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS54</controlField> 
+    <type>equality</type> 
+    <value>54</value> 
+   </constraint> 
+   <constraint id="17"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS55</controlField> 
+    <type>equality</type> 
+    <value>55</value> 
+   </constraint> 
+   <constraint id="18"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS56</controlField> 
+    <type>equality</type> 
+    <value>56</value> 
+   </constraint> 
+   <constraint id="19"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS61</controlField> 
+    <type>equality</type> 
+    <value>61</value> 
+   </constraint> 
+   <constraint id="20"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS62</controlField> 
+    <type>equality</type> 
+    <value>62</value> 
+   </constraint> 
+   <constraint id="21"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS71</controlField> 
+    <type>equality</type> 
+    <value>71</value> 
+   </constraint> 
+   <constraint id="22"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS72</controlField> 
+    <type>equality</type> 
+    <value>72</value> 
+   </constraint> 
+   <constraint id="23"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS81</controlField> 
+    <type>equality</type> 
+    <value>81</value> 
+   </constraint> 
+   <constraint id="24"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS92</controlField> 
+    <type>equality</type> 
+    <value>92</value> 
+   </constraint> 
+   <constraint id="25"> 
+    <importance>100</importance> 
+    <field>indus_code</field> 
+    <controlField>SNAICS99</controlField> 
+    <type>equality</type> 
+    <value>99</value> 
+   </constraint> 
+  </marginals> 
+  
+   </target> 
+
+     <target> 
+
+        <!-- define conditions for 1 Meta level Other university students controls --> 
+        <marginals> 
+            <id>8</id> 
+         <description>Number of Students Enrolled in Other Universities</description> 
+            <geographyType>meta</geographyType> 
+            <controlType>count</controlType> 
+            <table>newPersonTable</table> 
+            <constraint id="1"> 
+             <importance>10000000</importance> 
+             <controlField>othunivenr</controlField> 
+             <field>othuniv</field> 
+             <type>equality</type> 
+             <value>1</value> 
+      </constraint> 
+        </marginals> 
+
+    </target> 
+
+</targets> 
